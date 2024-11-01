@@ -13,19 +13,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PROTECTED)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "permission")
-public class PermissionEntity {
+@Table(name = "service")
+public class ServiceEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="id")
 	long id;
-	@Column(unique = true, name = "name",nullable = false)
+	@Column(name="name",nullable = false,unique = true)
 	String name;
-//	@ManyToMany(mappedBy = "permissions")
-//	Set<EmployeeEntity> employees;
+	
 }

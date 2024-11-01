@@ -3,15 +3,16 @@ package final_project_spa_shop.final_project_spa_shop.entity;
 
 import java.sql.Date;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -24,12 +25,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PROTECTED)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "account")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class AccountEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,7 +52,7 @@ public class AccountEntity {
 	Date birth;
 	@Column(name="fullName",nullable = false)
 	String fullName;
-	@CreatedDate
+	@CreationTimestamp
 	Date created_at;
 	@UpdateTimestamp
 	Date updated_at;
