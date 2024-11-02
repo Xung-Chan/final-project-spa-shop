@@ -2,8 +2,6 @@ package final_project_spa_shop.final_project_spa_shop.entity;
 
 import java.sql.Date;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,9 +28,9 @@ public class VoucherEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	long id;
 	@Column(name ="percent")
+	@NotNull(message = "NULL_VALUE")
 	double percent;
-	@CreationTimestamp
-	Date created_at;
+	@Future(message = "INVALID_TIME")
 	@Column(name="expired_at")
 	Date expired_at;
 	@OneToOne

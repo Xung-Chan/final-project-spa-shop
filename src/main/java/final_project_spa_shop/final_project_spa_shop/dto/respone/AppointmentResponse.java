@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 	
-@FieldDefaults(level = AccessLevel.PROTECTED)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

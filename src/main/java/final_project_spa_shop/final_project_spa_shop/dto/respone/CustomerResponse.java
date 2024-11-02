@@ -1,8 +1,7 @@
 package final_project_spa_shop.final_project_spa_shop.dto.respone;
 
-import java.util.Set;
+import java.sql.Date;
 
-import final_project_spa_shop.final_project_spa_shop.entity.ServiceEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,11 +13,15 @@ import lombok.experimental.FieldDefaults;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BillResponse {
+public class CustomerResponse {
 	long id;
-	String employeeName;
-	String customerName;
-	double discount;
-	Set<ServiceEntity> services;
-	boolean status = false;
+	String username;
+	String password;
+	String phoneNumber;
+	String email;
+	Date birth;
+	String fullName;
+	long points;
+	Date created_at;
+	Date updated_at;
 }

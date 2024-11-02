@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Future;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class ScheduleEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
 	long id;
+	@Future
 	@Column(name="date")
 	Date date;
 	@ManyToOne

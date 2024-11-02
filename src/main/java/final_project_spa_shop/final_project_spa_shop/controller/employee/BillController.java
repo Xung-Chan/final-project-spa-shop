@@ -17,36 +17,47 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import final_project_spa_shop.final_project_spa_shop.dto.request.BillRequest;
+import final_project_spa_shop.final_project_spa_shop.dto.respone.ApiResponse;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.BillResponse;
 import final_project_spa_shop.final_project_spa_shop.service.IBillService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/bill")
 public class BillController {
 	@Autowired
 	@Qualifier("billService")
-	private IBillService  billIService;
+	private IBillService billIService;
+
 	@GetMapping("/bills")
-	public ResponseEntity<List<BillResponse>> getAll(){
-		return new ResponseEntity<>(billIService.getAll(),HttpStatus.OK);
+	public ResponseEntity<ApiResponse<List<BillResponse>>> getAll() {
+		return new ResponseEntity<>(new ApiResponse<>(billIService.getAll()), HttpStatus.OK);
 	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<ApiResponse<BillResponse>> getById(@PathVariable long id) {
+		return new ResponseEntity<>(new ApiResponse<>(billIService.getById(id)), HttpStatus.OK);
+	}
+
 	@GetMapping("/bills/{customerID}")
-	public ResponseEntity<List<BillResponse>> getAllByCustomerID(@PathVariable long customerID){
-		return new ResponseEntity<>(billIService.getAllByCustomerID(customerID),HttpStatus.OK);
+	public ResponseEntity<ApiResponse<List<BillResponse>>> getAllByCustomerID(@PathVariable long customerID) {
+		return new ResponseEntity<>(new ApiResponse<>(billIService.getAllByCustomerID(customerID)), HttpStatus.OK);
 	}
-	
+
 	@DeleteMapping("")
-	public ResponseEntity<BillResponse> delete(@RequestParam long id){
-		return new ResponseEntity<>(billIService.delete(id),HttpStatus.NO_CONTENT);
+	public ResponseEntity<BillResponse> delete(@RequestParam long id) {
+		return new ResponseEntity<>(billIService.delete(id), HttpStatus.NO_CONTENT);
 	}
-	
+
 	@PostMapping("")
-	public ResponseEntity<BillResponse> save(@RequestBody BillRequest bill){
-		return new ResponseEntity<>(billIService.save(bill),HttpStatus.CREATED);
+	public ResponseEntity<ApiResponse<BillResponse>> save(@Valid @RequestBody BillRequest bill) {
+		return new ResponseEntity<>(new ApiResponse<>(billIService.save(bill)), HttpStatus.CREATED);
 	}
+
 	@PutMapping("/{id}")
-	public ResponseEntity<BillResponse> update(@PathVariable long id, @RequestBody BillRequest bill){
+	public ResponseEntity<ApiResponse<BillResponse>> update(@PathVariable long id,
+			@Valid @RequestBody BillRequest bill) {
 		bill.setId(id);
-		return new ResponseEntity<>(billIService.save(bill),HttpStatus.CREATED);
+		return new ResponseEntity<>(new ApiResponse<>(billIService.save(bill)), HttpStatus.CREATED);
 	}
 }
