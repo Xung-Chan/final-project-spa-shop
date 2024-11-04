@@ -21,6 +21,8 @@ public enum ErrorCode {
 	INVALID_VOUCHER(1017,"Voucher is not exist"),
 	DUPLICATED_VOUCHER(1018,"Voucher have already used"),
 	INVALID_FEEDBACK(1019,"Feedback is not exist"),
+	INVALID_POST(1020,"Post is not exist"),
+	JWT_EXCEPTION(1021,"Error in using JWT"),
 	;
 	private int code;
 	private String message;

@@ -1,4 +1,4 @@
-package final_project_spa_shop.final_project_spa_shop.controller.customer;
+package final_project_spa_shop.final_project_spa_shop.controller.api;
 
 import java.util.List;
 

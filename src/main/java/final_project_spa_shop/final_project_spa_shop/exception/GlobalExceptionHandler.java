@@ -21,17 +21,17 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.badRequest().body(new ApiResponse<>(errorCode.getCode(), errorCode.getMessage()));
 	}
 
-	@ExceptionHandler(value = Exception.class)
-	ResponseEntity<ApiResponse> handleException(Exception ex) {
-		String errorKey = ex.getMessage();
-		System.out.println(ex.getMessage());
-		ErrorCode errorCode;
-		try {
-			errorCode = ErrorCode.valueOf(errorKey);
-		} catch (Exception e) {
-			errorCode = ErrorCode.INVALID_EXCEPTION;
-		}
-		return ResponseEntity.badRequest().body(new ApiResponse<>(errorCode.getCode(), errorCode.getMessage()));
-	}
+//	@ExceptionHandler(value = Exception.class)
+//	ResponseEntity<ApiResponse> handleException(Exception ex) {
+//		String errorKey = ex.getMessage();
+//		System.out.println(ex.getMessage());
+//		ErrorCode errorCode;
+//		try {
+//			errorCode = ErrorCode.valueOf(errorKey);
+//		} catch (Exception e) {
+//			errorCode = ErrorCode.INVALID_EXCEPTION;
+//		}
+//		return ResponseEntity.badRequest().body(new ApiResponse<>(errorCode.getCode(), errorCode.getMessage()));
+//	}
 
 }

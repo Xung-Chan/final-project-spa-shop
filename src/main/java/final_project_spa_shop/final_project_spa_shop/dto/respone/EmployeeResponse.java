@@ -18,12 +18,10 @@ import lombok.experimental.FieldDefaults;
 public class EmployeeResponse {
 	long id;
 	String username;
-	String password;
 	String phoneNumber;
 	String email;
 	Date birth;
 	String fullName;
 	Set<PermissionEntity> permissions;
-	Date created_at;
 	Date updated_at;
 }

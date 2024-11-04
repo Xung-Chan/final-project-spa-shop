@@ -3,7 +3,8 @@ package final_project_spa_shop.final_project_spa_shop.service.implementation;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import final_project_spa_shop.final_project_spa_shop.dto.request.CustomerRequest;
@@ -15,16 +16,15 @@ import final_project_spa_shop.final_project_spa_shop.repository.RoleRepository;
 import final_project_spa_shop.final_project_spa_shop.service.ICustomerService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Service
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@RequiredArgsConstructor
 public class CustomerService implements ICustomerService {
-	@Autowired
 	CustomerRepository customerRepository;
-	@Autowired
 	RoleRepository roleRepository;
-	@Autowired
 	CustomerMapper customerMapper;
 
 	@Override
@@ -53,10 +53,12 @@ public class CustomerService implements ICustomerService {
 	public CustomerResponse save(CustomerRequest object) {
 		CustomerEntity entity = customerMapper.toCustomerEntity(object);
 		long id = entity.getId();
-		if (id != 0 )
-			customerRepository.findById(id).orElseThrow(()->new EntityNotFoundException("INVALID_CUSTOMER"));
+		if (id != 0)
+			customerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("INVALID_CUSTOMER"));
 		// mặc định employee id = 2
 		entity.setRole(roleRepository.findById(2l).get());
+		PasswordEncoder encoder = new BCryptPasswordEncoder(9);
+		entity.setPassword(encoder.encode(entity.getPassword()));
 		return customerMapper.toCustomerRessponse(customerRepository.save(entity));
 	}
 

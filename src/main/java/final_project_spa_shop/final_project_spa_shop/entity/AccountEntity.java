@@ -3,7 +3,6 @@ package final_project_spa_shop.final_project_spa_shop.entity;
 
 import java.sql.Date;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
@@ -52,8 +51,6 @@ public class AccountEntity {
 	Date birth;
 	@Column(name="fullName",nullable = false)
 	String fullName;
-	@CreationTimestamp
-	Date created_at;
 	@UpdateTimestamp
 	Date updated_at;
 	@ManyToOne

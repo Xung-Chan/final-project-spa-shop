@@ -1,0 +1,12 @@
+package final_project_spa_shop.final_project_spa_shop.service;
+
+import final_project_spa_shop.final_project_spa_shop.dto.request.AuthenticationRequest;
+import final_project_spa_shop.final_project_spa_shop.dto.request.IntrospectRequest;
+import final_project_spa_shop.final_project_spa_shop.dto.respone.AuthenticationResponse;
+import final_project_spa_shop.final_project_spa_shop.dto.respone.IntrospectResponse;
+
+public interface IAuthenticationService {
+	public AuthenticationResponse authenticate(AuthenticationRequest request);
+
+	public IntrospectResponse introspect(IntrospectRequest request);
+}

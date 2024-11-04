@@ -11,7 +11,6 @@ import final_project_spa_shop.final_project_spa_shop.entity.EmployeeEntity;
 @Mapper(componentModel = "spring")
 public interface EmployeeMapper {
 	EmployeeResponse toEmployeeResponse(EmployeeEntity entity);
-	@Mapping(target = "created_at",ignore = true)
 	@Mapping(target = "updated_at",ignore = true)
 	@Mapping(target = "role",ignore = true)
 	@Mapping(target = "permissions",ignore = true)

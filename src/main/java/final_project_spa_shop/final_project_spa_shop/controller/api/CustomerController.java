@@ -1,8 +1,7 @@
-package final_project_spa_shop.final_project_spa_shop.controller.customer;
+package final_project_spa_shop.final_project_spa_shop.controller.api;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +17,16 @@ import final_project_spa_shop.final_project_spa_shop.dto.respone.ApiResponse;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.CustomerResponse;
 import final_project_spa_shop.final_project_spa_shop.service.ICustomerService;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @RestController
 @RequestMapping("customer")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CustomerController {
-	@Autowired
-	private ICustomerService customerService;
+	ICustomerService customerService;
 
 	@GetMapping("/customers")
 	public ResponseEntity<ApiResponse<List<CustomerResponse>>> getAll() {

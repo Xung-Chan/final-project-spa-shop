@@ -24,11 +24,5 @@ public class EmployeeEntity extends AccountEntity{
 	inverseJoinColumns = @JoinColumn(name="permission_id"))
 	Set<PermissionEntity> permissions;
 
-	@Override
-	public String toString() {
-		return "EmployeeEntity [permissions=" + permissions + ", id=" + id + ", username=" + username + ", password="
-				+ password + ", phoneNumber=" + phoneNumber + ", email=" + email + ", birth=" + birth + ", fullName="
-				+ fullName + ", created_at=" + created_at + ", updated_at=" + updated_at + ", role=" + role + "]";
-	}
 	
 }

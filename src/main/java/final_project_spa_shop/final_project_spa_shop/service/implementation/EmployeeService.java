@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import final_project_spa_shop.final_project_spa_shop.dto.request.EmployeeRequest;
@@ -65,6 +67,8 @@ public class EmployeeService implements IEmployeeService {
 								.map(x -> permissionRepository.findById(x)
 										.orElseThrow(() -> new EntityNotFoundException("INVALID_PERMISSION")))
 								.toList()));
+		PasswordEncoder encoder = new BCryptPasswordEncoder(9);
+		entity.setPassword(encoder.encode(entity.getPassword()));
 		// mặc định employee id = 1
 		entity.setRole(roleRepository.findById(1l).get());
 		return employeeMapper.toEmployeeResponse(employeeRepository.save(entity));
