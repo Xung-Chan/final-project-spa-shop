@@ -2,6 +2,8 @@ package final_project_spa_shop.final_project_spa_shop.dto.request;
 
 import java.sql.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -31,5 +33,7 @@ public class CustomerRequest {
 	Date birth;
 	@NotNull(message = "NULL_VALUE")
 	String fullName;
+	@NotNull(message = "NULL_VALUE")
+	MultipartFile image;
 	long points = 0;
 }

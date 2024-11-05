@@ -5,4 +5,5 @@ import final_project_spa_shop.final_project_spa_shop.dto.respone.CustomerRespons
 
 public interface ICustomerService extends IService<CustomerResponse, CustomerRequest> {
 	public CustomerResponse getById(long id);
+	
 }

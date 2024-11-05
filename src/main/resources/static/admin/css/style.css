@@ -294,3 +294,15 @@ td, th{
     transform: scale(1.05);
     
 }
+
+/***Forum***/
+.post .btn-light {
+    font-size: 0.9rem;
+}
+.post .comment-section {
+    transition: max-height 0.3s ease-in-out;
+}
+.post h6 {
+    font-weight: bold;
+    color: #333;
+}

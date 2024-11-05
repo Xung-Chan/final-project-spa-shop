@@ -23,6 +23,8 @@ public enum ErrorCode {
 	INVALID_FEEDBACK(1019,"Feedback is not exist"),
 	INVALID_POST(1020,"Post is not exist"),
 	JWT_EXCEPTION(1021,"Error in using JWT"),
+	LOGIN_FAILURE(1022,"Username or password is incorrect"),
+	RESOURCE_NOT_FOUND(1023,"404 not found"),
 	;
 	private int code;
 	private String message;

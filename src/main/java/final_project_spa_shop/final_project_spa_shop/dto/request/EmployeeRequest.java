@@ -3,6 +3,8 @@ package final_project_spa_shop.final_project_spa_shop.dto.request;
 import java.sql.Date;
 import java.util.Set;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -34,6 +36,7 @@ public class EmployeeRequest {
 	Date birth;
 	@NotNull(message = "NULL_VALUE")
 	String fullName;
-	@Email(message = "NULL_VALUE")
+	@NotNull(message = "NULL_VALUE")
+	MultipartFile image;
 	Set<Long> permissions;
 }

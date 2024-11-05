@@ -7,13 +7,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@FieldDefaults(level = AccessLevel.PROTECTED)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +24,12 @@ public class ServiceEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	long id;
-	@Column(name="name",nullable = false,unique = true)
+	@NotNull(message = "NULL_VALUE")
+	@Column(name="name",unique = true)
 	String name;
+	@Column(name="description",nullable = false)
+	String description;
+	@Column(name="imagePath")
+	String imagePath=null;
 	
 }

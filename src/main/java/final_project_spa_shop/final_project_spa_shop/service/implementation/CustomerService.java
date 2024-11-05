@@ -14,6 +14,7 @@ import final_project_spa_shop.final_project_spa_shop.mapper.CustomerMapper;
 import final_project_spa_shop.final_project_spa_shop.repository.CustomerRepository;
 import final_project_spa_shop.final_project_spa_shop.repository.RoleRepository;
 import final_project_spa_shop.final_project_spa_shop.service.ICustomerService;
+import final_project_spa_shop.final_project_spa_shop.service.IImageSerive;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class CustomerService implements ICustomerService {
 	CustomerRepository customerRepository;
 	RoleRepository roleRepository;
 	CustomerMapper customerMapper;
-
+	IImageSerive imageSerive;
 	@Override
 	public List<CustomerResponse> getAll() {
 		return customerRepository.findAll().stream().map(customerMapper::toCustomerRessponse).toList();
@@ -52,13 +53,17 @@ public class CustomerService implements ICustomerService {
 	@Override
 	public CustomerResponse save(CustomerRequest object) {
 		CustomerEntity entity = customerMapper.toCustomerEntity(object);
+		entity.setRole(roleRepository.findById(2l).get());
+		PasswordEncoder encoder = new BCryptPasswordEncoder(9);
+		entity.setPassword(encoder.encode(entity.getPassword()));
 		long id = entity.getId();
 		if (id != 0)
 			customerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("INVALID_CUSTOMER"));
 		// mặc định employee id = 2
-		entity.setRole(roleRepository.findById(2l).get());
-		PasswordEncoder encoder = new BCryptPasswordEncoder(9);
-		entity.setPassword(encoder.encode(entity.getPassword()));
+		else
+			entity = customerRepository.save(entity);
+		String imagePath = imageSerive.saveImage(object.getImage(), "/customer/img/avt-" + entity.getId());
+		entity.setImagePath(imagePath);
 		return customerMapper.toCustomerRessponse(customerRepository.save(entity));
 	}
 

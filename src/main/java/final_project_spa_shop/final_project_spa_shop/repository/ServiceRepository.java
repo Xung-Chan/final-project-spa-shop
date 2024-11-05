@@ -7,5 +7,5 @@ import final_project_spa_shop.final_project_spa_shop.entity.ServiceEntity;
 
 @Repository
 public interface ServiceRepository extends JpaRepository<ServiceEntity,Long>{
-
+	
 }

@@ -46,18 +46,21 @@ public class AuthenticationService implements IAuthenticationService {
 	public AuthenticationResponse authenticate(AuthenticationRequest request) {
 		Optional<AccountEntity> optional = accountRepository.findByUsername(request.getUsername());
 		if (!optional.isPresent())
-			return new AuthenticationResponse();
+			throw new RuntimeException(ErrorCode.LOGIN_FAILURE.name());
 		AccountEntity accountEntity = optional.get();
-//		if (!accountEntity.getPassword().equals(request.getPassword()))
-//			return new AuthenticationResponse();
 
 		PasswordEncoder encoder = new BCryptPasswordEncoder(9);
 		if(!encoder.matches(request.getPassword(), accountEntity.getPassword()))
-			return new AuthenticationResponse();
+			throw new RuntimeException(ErrorCode.LOGIN_FAILURE.name());
 		
 		
 		return AuthenticationResponse.builder()
-				.token(generateToken(accountEntity.getUsername())).authenticated(true).build();
+				.token(generateToken(accountEntity
+						.getUsername()))
+				.authenticated(true)
+				.id(accountEntity.getId())
+				.fullName(accountEntity.getFullName())
+				.build();
 	}
 	
 	public String generateToken(String username) {

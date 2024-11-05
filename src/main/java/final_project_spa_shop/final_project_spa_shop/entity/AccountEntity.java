@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -53,6 +54,9 @@ public class AccountEntity {
 	String fullName;
 	@UpdateTimestamp
 	Date updated_at;
+	@Lob
+	@Column(name="imagePath")
+	String imagePath;
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	RoleEntity role;

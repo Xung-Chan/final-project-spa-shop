@@ -24,4 +24,5 @@ public class EmployeeResponse {
 	String fullName;
 	Set<PermissionEntity> permissions;
 	Date updated_at;
+	String image;
 }

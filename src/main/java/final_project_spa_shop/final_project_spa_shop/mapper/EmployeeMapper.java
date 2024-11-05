@@ -10,10 +10,12 @@ import final_project_spa_shop.final_project_spa_shop.entity.EmployeeEntity;
 
 @Mapper(componentModel = "spring")
 public interface EmployeeMapper {
+	@Mapping(target = "image",source = "imagePath")
 	EmployeeResponse toEmployeeResponse(EmployeeEntity entity);
 	@Mapping(target = "updated_at",ignore = true)
 	@Mapping(target = "role",ignore = true)
 	@Mapping(target = "permissions",ignore = true)
+	@Mapping(target = "imagePath",ignore = true)
 	EmployeeEntity toEmployeeEntity(EmployeeRequest request);
 	
 }

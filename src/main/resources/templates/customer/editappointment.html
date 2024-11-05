@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <div th:replace="~{/customer/header}"></div>
+
+        <!-- Header Start -->
+        <div class="container-fluid bg-breadcrumb py-5">
+            <div class="container text-center py-5">
+                <h3 class="text-white display-3 mb-4">Đặt lịch hẹn</h1>
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="#">Trang</a></li>
+                    <li class="breadcrumb-item active text-white">Lịch hẹn</li>
+                </ol>    
+            </div>
+        </div>
+        <!-- Header End -->
+        
+        <!-- Edit Appointment Start -->
+        <div class="container-fluid edit-appointment py-5">
+            <div class="container pt-5">
+                <div class="row g-4 align-items-center justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="form-control rounded p-5 appointment-form">
+                            <h2 class="display-6 mb-4" style="color: var(--bs-primary); text-align: center;"><b>Sửa Đặt Lịch Hẹn</b></h2>
+                            <form>
+                                <div class="row gy-3 gx-4">
+                                    <div class="col-lg-6">
+                                        <label for="appointmentDate" class="form-label">Ngày đặt</label>
+                                        <input type="date" class="form-control" id="appointmentDate" required>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="appointmentTime" class="form-label">Thời gian</label>
+                                        <input type="time" class="form-control" id="appointmentTime" required>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label for="service" class="form-label">Dịch vụ</label>
+                                        <select class="form-select" id="service" required>
+                                            <option selected>Chọn dịch vụ</option>
+                                            <option value="1">Chăm sóc da</option>
+                                            <option value="2">Gội đầu & massage</option>
+                                            <!-- Thêm các dịch vụ khác nếu cần -->
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label for="status" class="form-label">Trạng thái</label>
+                                        <select class="form-select" id="status" required>
+                                            <option selected>Chọn trạng thái</option>
+                                            <option value="confirmed">Đã xác nhận</option>
+                                            <option value="pending">Chưa xác nhận</option>
+                                            <!-- Thêm các trạng thái khác nếu cần -->
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <button type="submit" class="btn btn-primary btn-primary-outline-0 w-100 py-3">Cập nhật đặt lịch</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="d-flex justify-content-between mt-3">
+                                <a href="index.html" class="btn btn-danger rounded-pill"><i class="fa fa-angle-left"></i>&nbsp Đăng xuất</a>
+                                <a href="appointment-history.html" class="btn btn-secondary btn-outline-0 rounded-pill"><i class="fa fa-history"></i>&nbsp Quay lại lịch sử</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Appointment End -->
+        <div th:replace="~{/customer/footer}"></div>
+    </body>
+
+</html>

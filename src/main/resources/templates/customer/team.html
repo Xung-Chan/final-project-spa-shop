@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<div th:replace="~{/customer/header}"></div>
+
+
+
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb py-5">
+    <div class="container text-center py-5">
+        <h3 class="text-white display-3 mb-4">Thông Tin Đội Ngũ</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                <li class="breadcrumb-item active text-white">Thông tin đội ngũ</li>
+            </ol>
+    </div>
+</div>
+<!-- Header End -->
+
+
+
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-0">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Youtube Trailer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 16:9 aspect ratio -->
+                <div class="ratio ratio-16x9">
+                    <iframe class="embed-responsive-item" src="" id="video" allowfullscreen allowscriptaccess="always"
+                        allow="autoplay"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About End -->
+
+<div class="container-fluid team py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto mb-5" style="max-width: 800px;">
+            <p class="fs-4 text-uppercase text-primary">Các Chuyên Viên</p>
+            <h4 class="display-4 mb-4">Chuyên gia Beauty & Spa</h4>
+        </div>
+        <div class="row g-4" id="employees">
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="team-item">
+                    <div class="team-img rounded-top">
+                        <img src="/customer/img/avt1.png" class="img-fluid w-100 rounded-top bg-light" alt="">
+                    </div>
+                    <div class="team-text rounded-bottom text-center p-4">
+                        <h3 class="text-white">Oliva Mia</h3>
+                        <p class="mb-0 text-white">Spa & Beauty Expert</p>
+                    </div>
+                    <div class="team-social">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="team-item">
+                    <div class="team-img rounded-top">
+                        <img src="/customer/img/avt2.png" class="img-fluid w-100 rounded-top bg-light" alt="">
+                    </div>
+                    <div class="team-text rounded-bottom text-center p-4">
+                        <h3 class="text-white">Charlotte Ross</h3>
+                        <p class="mb-0 text-white">Chuyên Gia Spa & Làm Đẹp</p>
+                    </div>
+                    <div class="team-social">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="team-item">
+                    <div class="team-img rounded-top">
+                        <img src="/customer/img/avt3.png" class="img-fluid w-100 rounded-top bg-light" alt="">
+                    </div>
+                    <div class="team-text rounded-bottom text-center p-4">
+                        <h3 class="text-white">Amelia Luna</h3>
+                        <p class="mb-0 text-white ">Chuyên Gia Spa & Làm Đẹp</p>
+                    </div>
+                    <div class="team-social">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="team-item">
+                    <div class="team-img rounded-top">
+                        <img src="/customer/img/avt4.png" class="img-fluid w-100 rounded-top bg-light" alt="">
+                    </div>
+                    <div class="team-text rounded-bottom text-center p-4">
+                        <h3 class="text-white">Isabella Evelyn</h3>
+                        <p class="mb-0 text-white">Chuyên Gia Spa & Làm Đẹp</p>
+                    </div>
+                    <div class="team-social">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{/customer/footer}"></div>
+<script src="/fetchData.js"></script>
+<script>
+    fetchData('/employee/employees', (employees) => {
+        employeeContainer = $("#employees")
+        htmlInner = ''
+        employees.forEach((employee, index) => {
+            htmlInner += ` <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="team-item">
+                    <div class="team-img rounded-top">
+                        <img src="/customer/img/${employee.image}" class="img-fluid w-100 rounded-top bg-light" alt="">
+                    </div>
+                    <div class="team-text rounded-bottom text-center p-4">
+                        <h3 class="text-white">${employee.fullName}</h3>
+                        <p class="mb-0 text-white">Spa & Beauty Expert</p>
+                    </div>
+                    <div class="team-social">
+                    </div>
+                </div>
+            </div>
+            `;
+        });
+        employeeContainer.html(htmlInner);
+    });
+
+</script>
+</body>
+
+</html>

@@ -23,4 +23,5 @@ public class CustomerResponse {
 	String fullName;
 	long points;
 	Date updated_at;
+	String image;
 }
