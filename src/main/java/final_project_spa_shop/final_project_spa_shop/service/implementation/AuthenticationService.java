@@ -3,9 +3,13 @@ package final_project_spa_shop.final_project_spa_shop.service.implementation;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,22 +59,20 @@ public class AuthenticationService implements IAuthenticationService {
 		
 		
 		return AuthenticationResponse.builder()
-				.token(generateToken(accountEntity
-						.getUsername()))
+				.token(generateToken(accountEntity))
 				.authenticated(true)
-				.id(accountEntity.getId())
-				.fullName(accountEntity.getFullName())
 				.build();
 	}
 	
-	public String generateToken(String username) {
+	public String generateToken(AccountEntity entity) {
 		JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 		JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-				.subject(username)
+				.subject(entity.getUsername())
 				.issuer("spa-shop")
 				.issueTime(new Date())
 				.expirationTime(new Date(Instant.now().plus(1,ChronoUnit.HOURS).toEpochMilli()))
-				.claim("role","customer")
+				.claim("test","test1 test2")
+				.claim("scope",entity.getRole().getName())
 				.build();
 		Payload payload = new Payload(claimsSet.toJSONObject());
 		JWSObject jwsObject = new JWSObject(header, payload);
@@ -81,7 +83,37 @@ public class AuthenticationService implements IAuthenticationService {
 			throw new RuntimeException();
 		}
 	}
+	
+	public Authentication authenticateWithToken(String token) {
+	    try {
+	        // Xác thực và giải mã token JWT
+	        JWSVerifier jwsVerifier = new MACVerifier(key.getBytes());
+	        SignedJWT signedJWT = SignedJWT.parse(token);
+	        
+	        // Kiểm tra token hợp lệ
+	        Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+	        if (expiryTime.before(new Date())) {
+	            throw new RuntimeException("Token đã hết hạn");
+	        }
 
+	        // Kiểm tra tính hợp lệ của token
+	        if (!signedJWT.verify(jwsVerifier)) {
+	            throw new RuntimeException("Token không hợp lệ");
+	        }
+
+	        // Lấy thông tin từ claims trong JWT
+	        String username = signedJWT.getJWTClaimsSet().getSubject();
+	        String role = signedJWT.getJWTClaimsSet().getStringClaim("scope"); // Giả sử "scope" lưu trữ vai trò của người dùng
+
+	        // Tạo danh sách quyền từ token
+	        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+
+	        // Tạo đối tượng Authentication với thông tin người dùng và quyền
+	        return new UsernamePasswordAuthenticationToken(username, null, authorities);
+	    } catch (Exception e) {
+	        throw new RuntimeException("Không thể xác thực token: " + e.getMessage());
+	    }
+	}
 	@Override
 	public IntrospectResponse introspect(IntrospectRequest request) {
 		String token = request.getToken();

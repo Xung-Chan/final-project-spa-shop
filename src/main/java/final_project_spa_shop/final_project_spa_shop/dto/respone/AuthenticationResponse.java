@@ -16,6 +16,4 @@ public class AuthenticationResponse {
 	String token;
 	@Builder.Default
 	boolean authenticated = false;
-	long id;
-	String fullName;
 }

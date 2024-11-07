@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
@@ -35,7 +34,6 @@ public class FeedbackEntity {
 	@Min(value = 0)
 	@Max(value = 5)
 	int rate;
-	@Column(name="description")
-	@Lob
+	@Column(name="description", columnDefinition = "TEXT")
 	String description;
 }

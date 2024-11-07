@@ -32,7 +32,6 @@ public class ServiceController {
 	public ResponseEntity<ApiResponse<List<ServiceEntity>>> getAll() {
 		return new ResponseEntity<>(new ApiResponse<>(serviceSer.getAll()), HttpStatus.OK);
 	}
-
 	@GetMapping("/limit")
 	public ResponseEntity<ApiResponse<List<ServiceEntity>>> getAllLimit(@RequestParam int limit) {
 		return new ResponseEntity<>(new ApiResponse<>(serviceSer.getAllLimit(limit)), HttpStatus.OK);

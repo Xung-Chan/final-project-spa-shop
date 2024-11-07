@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import final_project_spa_shop.final_project_spa_shop.dto.request.ServiceRequest;
@@ -35,6 +36,8 @@ public class ServiceSerice implements IServiceSerice {
 
 	@Override
 	public List<ServiceEntity> getAllLimit(int limit) {
+		System.out.println("---Authorities---");
+		SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().forEach(System.out::println);
 		Pageable pages = PageRequest.of(0, limit);
 		return serviceRepo.findAll(pages).getContent();
 	}
