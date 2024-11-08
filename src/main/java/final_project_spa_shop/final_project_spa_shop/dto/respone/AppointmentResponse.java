@@ -17,4 +17,5 @@ public class AppointmentResponse {
 	long customerID;
 	String customerName;
 	Date date;
+	boolean status;
 }

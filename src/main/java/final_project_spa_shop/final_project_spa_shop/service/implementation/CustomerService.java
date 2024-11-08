@@ -3,6 +3,7 @@ package final_project_spa_shop.final_project_spa_shop.service.implementation;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,17 @@ public class CustomerService implements ICustomerService {
 		String imagePath = imageSerive.saveImage(object.getImage(), "/customer/img/avt-" + entity.getId());
 		entity.setImagePath(imagePath);
 		return customerMapper.toCustomerRessponse(customerRepository.save(entity));
+	}
+	@Override
+	public CustomerResponse loadUserByUsername(String username) {
+		Optional<CustomerEntity> result = customerRepository.findByUsername(username);
+		if (!result.isPresent())
+			throw new EntityNotFoundException("INVALID_CUSTOMER");
+		return customerMapper.toCustomerRessponse(result.get());
+	}
+	public CustomerResponse loadMyInformation() {
+		String username=SecurityContextHolder.getContext().getAuthentication().getName();
+		return loadUserByUsername(username);
 	}
 
 }

@@ -33,4 +33,6 @@ public class AppointmentEntity {
 	@Future
 	@Column(name="date")
 	Date date;
+	@Column(name="status")
+	boolean status;
 }

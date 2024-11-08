@@ -1,5 +1,6 @@
 package final_project_spa_shop.final_project_spa_shop.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import final_project_spa_shop.final_project_spa_shop.dto.request.AppointmentRequest;
@@ -7,4 +8,6 @@ import final_project_spa_shop.final_project_spa_shop.dto.respone.AppointmentResp
 
 public interface IAppointmentSevice extends IService<AppointmentResponse, AppointmentRequest> {
 	public List<AppointmentResponse> getAllByCustomerID(long id) ;
+
+	public AppointmentResponse save(Date date) ;
 }

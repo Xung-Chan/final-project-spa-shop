@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <div th:replace="~{/customer/header}"></div>
 
 <!-- Carousel Start -->
@@ -106,7 +104,7 @@
             <p class="fs-4 text-uppercase text-center text-primary">Dịch vụ của chúng tôi</p>
             <h1 class="display-3">Dịch vụ Spa và Làm đẹp</h1>
         </div>
-        <div class="row g-4">
+        <div id="serviceContainer" class="row g-4">
             <div class="col-lg-6">
                 <div class="services-item bg-light border-4 border-end border-primary rounded p-4">
                     <div class="row align-items-center">
@@ -283,6 +281,13 @@
                 </div>
             </div>
         </div>
+        <div class="d-flex justify-content-center">
+            <div>
+                <a href="/customer/service" class="btn btn-primary btn-primary-outline-0 rounded-pill py-3 px-5">Khám
+                    phá nhiều
+                    hơn</a>
+            </div>
+        </div>
     </div>
 </div>
 <!-- Services End -->
@@ -317,40 +322,8 @@
                     giãn sang trọng, nơi bạn có thể chăm sóc bản thân và tìm lại sự tươi trẻ, tự tin tỏa sáng trong
                     cuộc sống!
                 </p>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="d-flex align-items-center">
-                            <i class="fab fa-gitkraken fa-3x text-primary"></i>
-                            <div class="ms-4">
-                                <h5 class="mb-2">Cung cấp dịch vụ đặc biệt</h5>
-                                <p class="mb-0">Tại trung tâm Beauty & Spa của chúng tôi, chúng tôi tự hào cung cấp
-                                    những dịch vụ đặc biệt, được thiết kế riêng để mang lại trải nghiệm hoàn hảo cho
-                                    từng khách hàng.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-gift fa-3x text-primary"></i>
-                            <div class="ms-4">
-                                <h5 class="mb-2">Quà tặng hấp dẫn</h5>
-                                <p class="mb-0">
-                                    Chúng tôi luôn mong muốn mang đến những trải nghiệm đặc biệt cho khách hàng, vì
-                                    vậy trung tâm Beauty & Spa của chúng tôi thường xuyên tổ chức các chương trình
-                                    quà tặng hấp dẫn.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p class="my-4">Trung tâm Beauty & Spa của chúng tôi tự hào là điểm đến lý tưởng cho những ai tìm
-                    kiếm sự thư giãn và làm đẹp trong một không gian sang trọng và thân thiện. Được thiết kế với
-                    phong cách hiện đại nhưng vẫn giữ được sự ấm cúng, mỗi góc nhỏ trong trung tâm đều mang đến cảm
-                    giác dễ chịu, giúp bạn dễ dàng thư giãn ngay từ khi bước chân vào. Chúng tôi cung cấp một loạt
-                    dịch vụ đa dạng, bao gồm massage toàn thân, chăm sóc da mặt chuyên sâu, liệu pháp aromatherapy,
-                    và nhiều liệu trình độc đáo khác, được cá nhân hóa để phù hợp với nhu cầu và sở thích riêng của
-                    bạn.
-                </p>
-                <a href="#" class="btn btn-primary btn-primary-outline-0 rounded-pill py-3 px-5">Khám phá nhiều
+                <a href="/customer/about" class="btn btn-primary btn-primary-outline-0 rounded-pill py-3 px-5">Khám phá
+                    nhiều
                     hơn</a>
             </div>
         </div>
@@ -389,124 +362,6 @@
 </script>
 <!-- About End -->
 
-<!-- Appointment Start -->
-<div class="container-fluid appointment py-5">
-    <div class="container py-5">
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-6">
-                <div class="appointment-form p-5">
-                    <p class="fs-4 text-uppercase text-primary">Liên hệ với chúng tôi</p>
-                    <h1 class="display-4 mb-4 text-white">Đặt lịch hẹn</h1>
-                    <form>
-                        <div class="row gy-3 gx-4">
-                            <div class="col-lg-12">
-                                <input type="date" class="form-control py-3 border-white bg-transparent">
-                            </div>
-                            <div class="col-lg-12">
-                                <button type="button" class="btn btn-primary btn-primary-outline-0 w-100 py-3 px-5">ĐĂNG
-                                    KÝ</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="appointment-time p-5">
-                    <h1 class="display-5 mb-4">Giờ mở cửa</h1>
-                    <div class="d-flex justify-content-between fs-5 text-white">
-                        <p>Thứ 7:</p>
-                        <p>09:00 – 10:00 </p>
-                    </div>
-                    <div class="d-flex justify-content-between fs-5 text-white">
-                        <p>Chủ nhật:</p>
-                        <p>09:00 – 10:00 </p>
-                    </div>
-                    <div class="d-flex justify-content-between fs-5 text-white">
-                        <p>Thứ 2:</p>
-                        <p>09:00 – 10:00 </p>
-                    </div>
-                    <div class="d-flex justify-content-between fs-5 text-white">
-                        <p>Thứ 3:</p>
-                        <p>09:00 – 10:00 </p>
-                    </div>
-                    <div class="d-flex justify-content-between fs-5 text-white">
-                        <p>Thứ 4:</p>
-                        <p>09:00 – 08:00 </p>
-                    </div>
-                    <div class="d-flex justify-content-between fs-5 text-white mb-4">
-                        <p>Thứ 5:</p>
-                        <p>09:00 – 05:00 </p>
-                    </div>
-                    <div class="d-flex justify-content-between fs-5 text-white mb-4">
-                        <p>Thứ 6:</p>
-                        <p>Đóng cửa</p>
-                    </div>
-                    <p class="text-dark">Kiểm tra các chương trình giảm giá theo mùa để có được ưu đãi tốt nhất.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Counter Start -->
-    <div class="container-fluid counter-section">
-        <div class="container py-5">
-            <div class="row g-5 justify-content-center">
-                <div class="col-md-6 col-lg-4 col-xl-4">
-                    <div class="counter-item p-5">
-                        <div class="counter-content bg-white p-4">
-                            <i class="fas fa-globe fa-5x text-primary mb-3"></i>
-                            <h5 class="text-primary">Khách hàng trên thế giới</h5>
-                            <div class="svg-img">
-                                <svg width="100" height="50">
-                                    <polygon points="55, 10 85, 55 25, 55 25," style="fill: #AA6544;" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="counter-quantity">
-                            <span class="text-white fs-2 fw-bold" data-toggle="counter-up">453</span>
-                            <span class="h1 fw-bold text-white">+</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 col-xl-4">
-                    <div class="counter-item p-5">
-                        <div class="counter-content bg-white p-4">
-                            <i class="fas fa-spa fa-5x text-primary mb-3"></i>
-                            <h5 class="text-primary">Sức khỏe & Spa</h5>
-                            <div class="svg-img">
-                                <svg width="100" height="50">
-                                    <polygon points="55, 10 85, 55 25, 55 25," style="fill: #AA6544;" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="counter-quantity">
-                            <span class="text-white fs-2 fw-bold" data-toggle="counter-up">829</span>
-                            <span class="h1 fw-bold text-white">+</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 col-xl-4">
-                    <div class="counter-item p-5">
-                        <div class="counter-content bg-white p-4">
-                            <i class="fas fa-users fa-5x text-primary mb-3"></i>
-                            <h5 class="text-primary">Khách hàng hài lòng</h5>
-                            <div class="svg-img">
-                                <svg width="100" height="50">
-                                    <polygon points="55, 10 85, 55 25, 55 25," style="fill: #AA6544;" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="counter-quantity">
-                            <span class="text-white fs-2 fw-bold" data-toggle="counter-up">649</span>
-                            <span class="h1 fw-bold text-white">+</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Counter End -->
-</div>
-<!-- Appointment End -->
 
 
 <!-- Gallery Start -->
@@ -943,7 +798,7 @@
             <p class="fs-4 text-uppercase text-primary">Các Chuyên Viên</p>
             <h1 class="display-4 mb-4">Chuyên gia Beauty & Spa</h1>
         </div>
-        <div class="row g-4">
+        <div id="employeeContainer" class="row g-4">
             <div class="col-md-6 col-lg-6 col-xl-3">
                 <div class="team-item">
                     <div class="team-img rounded-top">
@@ -963,6 +818,7 @@
                         <a class="btn btn-light btn-light-outline-0 btn-square rounded-circle" href="#"><i
                                 class="fab fa-instagram"></i></a>
                     </div>
+
                 </div>
             </div>
             <div class="col-md-6 col-lg-6 col-xl-3">
@@ -1029,6 +885,13 @@
                 </div>
             </div>
         </div>
+        <div class="d-flex justify-content-center my-4">
+            <div>
+                <a href="/customer/team" class="btn btn-primary btn-primary-outline-0 rounded-pill py-3 px-5">Khám
+                    phá nhiều
+                    hơn</a>
+            </div>
+        </div>
     </div>
 </div>
 <!-- Team End -->
@@ -1041,7 +904,7 @@
             <p class="fs-4 text-uppercase text-primary">Chứng thực</p>
             <h1 class="display-4 mb-4 text-white">Đánh giá của khách hàng!</h1>
         </div>
-        <div class="owl-carousel testimonial-carousel">
+        <div id="feedbackContainer" class="owl-carousel testimonial-carousel">
             <div class="testimonial-item rounded p-4">
                 <div class="row">
                     <div class="col-4">
@@ -1231,43 +1094,20 @@
     </div>
 </div>
 <div th:replace="~{/customer/footer}"></div>
-<script src="/fetchData.js"></script>
+<script src="/customer/js/renderFeedback.js"></script>
+<script src="/customer/js/renderService.js"></script>
+<script src="/customer/js/renderEmployee.js"></script>
 <script>
-    fetchData('/service/limit?limit=6', (services) => {
-        serviceElement = $("body > div.container-fluid.services.py-5 > div > div.row.g-4")
-        htmlContainer = ''
-        services.forEach((service, index) => {
-            htmlContainer += ` <div class="col-lg-6">
-                <div class="services-item bg-light border-4 border-end border-primary rounded p-4">
-                    <div class="row align-items-center">
-                        <div class="col-8">
-                            <div class="services-content text-end">
-                                <h3>${service.name}</h3>
-                                <p>${service.description}</p>
-                                <a href="/customer/login"
-                                    class="btn btn-primary btn-primary-outline-0 rounded-pill py-2 px-4">Đặt
-                                    Ngay</a>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="services-img d-flex align-items-center justify-content-center rounded">
-                                <img src="/customer/img/${service.imagePath}" class="img-fluid rounded" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            `;
-        });
-        serviceElement.html(htmlContainer);
-    });
-
-    fetchData('/service/limit?limit=3', (services) => {
+    //render slide
+    fetchData(ApiEndpoints.servicesLimit(3), (apiResponse) => {
+        if (!apiResponse.success) {
+            throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
+        }
+        services = apiResponse.result
         carouselElement = $("#carouselId > div")
         htmlCarousel = ''
         services.forEach((service, index) => {
             if (index == 0) {
-
                 htmlCarousel += `<div class="carousel-item active">
                     <img src="/customer/img/carousel-${index + 1}.jpg" class="img-fluid" alt="Image">
                     <div class="carousel-caption">
@@ -1309,35 +1149,30 @@
         });
         carouselElement.html(htmlCarousel);
     });
-    fetchData('/employee/limit?limit=4', (datas) => {
-        container = $("body > div.container-fluid.team.py-5 > div > div.row.g-4")
-        htmlInner = ''
-        datas.forEach((data, index) => {
-            htmlInner += ` <div class="col-md-6 col-lg-6 col-xl-3">
-                <div class="team-item">
-                    <div class="team-img rounded-top">
-                        <img src="/customer/img/${data.image}" class="img-fluid w-100 rounded-top bg-light" alt="">
-                    </div>
-                    <div class="team-text rounded-bottom text-center p-4">
-                        <h3 class="text-white">${data.fullName}</h3>
-                        <p class="mb-0 text-white">Chuyên gia Spa &amp; Beauty</p>
-                    </div>
-                    <div class="team-social">
-                        <a class="btn btn-light btn-light-outline-0 btn-square rounded-circle mb-2" href="#"><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-light btn-light-outline-0 btn-square rounded-circle mb-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-light btn-light-outline-0 btn-square rounded-circle mb-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a class="btn btn-light btn-light-outline-0 btn-square rounded-circle" href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            `;
-        });
-        container.html(htmlInner);
-    });
+    //render service
+    fetchData(ApiEndpoints.servicesLimit(6), (apiResponse) => {
+        if (!apiResponse.success) {
+            throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
+        }
+        services = apiResponse.result
+        renderService(services);
+    })
+    //render feedback
+    fetchData(ApiEndpoints.allFeedbacks, (apiResponse) => {
+        if (!apiResponse.success) {
+            throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
+        }
+        feedbacks = apiResponse.result
+        renderFeedback(feedbacks);
+    })
+    //render employee
+    fetchData(ApiEndpoints.employeesLimit(4), (apiResponse) => {
+        if (!apiResponse.success) {
+            throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
+        }
+        employees = apiResponse.result
+        renderEmployee(employees);
+    })
+
 </script>
 <!-- <script src="chatbot.js"></script> -->
-
-
-</body>
-
-</html>

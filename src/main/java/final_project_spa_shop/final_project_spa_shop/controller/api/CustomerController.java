@@ -49,4 +49,8 @@ public class CustomerController {
 		request.setId(id);
 		return new ResponseEntity<>(new ApiResponse<>(customerService.save(request)), HttpStatus.CREATED);
 	}
+	@GetMapping("/myInformation")
+	public ResponseEntity<ApiResponse<CustomerResponse>> getMyInformation() {
+		return new ResponseEntity<>(new ApiResponse<>(customerService.loadMyInformation()), HttpStatus.OK);
+	}
 }

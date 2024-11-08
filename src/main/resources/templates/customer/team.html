@@ -43,7 +43,7 @@
             <p class="fs-4 text-uppercase text-primary">Các Chuyên Viên</p>
             <h4 class="display-4 mb-4">Chuyên gia Beauty & Spa</h4>
         </div>
-        <div class="row g-4" id="employees">
+        <div class="row g-4" id="employeeContainer">
             <div class="col-md-6 col-lg-6 col-xl-3">
                 <div class="team-item">
                     <div class="team-img rounded-top">
@@ -100,30 +100,15 @@
     </div>
 </div>
 <div th:replace="~{/customer/footer}"></div>
-<script src="/fetchData.js"></script>
+<script src="/customer/js/renderEmployee.js"></script>
 <script>
-    fetchData('/employee/employees', (employees) => {
-        employeeContainer = $("#employees")
-        htmlInner = ''
-        employees.forEach((employee, index) => {
-            htmlInner += ` <div class="col-md-6 col-lg-6 col-xl-3">
-                <div class="team-item">
-                    <div class="team-img rounded-top">
-                        <img src="/customer/img/${employee.image}" class="img-fluid w-100 rounded-top bg-light" alt="">
-                    </div>
-                    <div class="team-text rounded-bottom text-center p-4">
-                        <h3 class="text-white">${employee.fullName}</h3>
-                        <p class="mb-0 text-white">Spa & Beauty Expert</p>
-                    </div>
-                    <div class="team-social">
-                    </div>
-                </div>
-            </div>
-            `;
-        });
-        employeeContainer.html(htmlInner);
-    });
-
+    fetchData(ApiEndpoints.allEmployees, (apiResponse) => {
+        if (!apiResponse.success) {
+            throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
+        }
+        employees = apiResponse.result;
+        renderEmployee(employees);
+    })
 </script>
 </body>
 

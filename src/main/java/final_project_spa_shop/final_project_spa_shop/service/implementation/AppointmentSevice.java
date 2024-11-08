@@ -1,30 +1,34 @@
 package final_project_spa_shop.final_project_spa_shop.service.implementation;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import final_project_spa_shop.final_project_spa_shop.dto.request.AppointmentRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.AppointmentResponse;
 import final_project_spa_shop.final_project_spa_shop.entity.AppointmentEntity;
 import final_project_spa_shop.final_project_spa_shop.entity.CustomerEntity;
+import final_project_spa_shop.final_project_spa_shop.exception.ErrorCode;
 import final_project_spa_shop.final_project_spa_shop.mapper.AppointmentMapper;
 import final_project_spa_shop.final_project_spa_shop.repository.AppointmentRepository;
 import final_project_spa_shop.final_project_spa_shop.repository.CustomerRepository;
 import final_project_spa_shop.final_project_spa_shop.service.IAppointmentSevice;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 public class AppointmentSevice implements IAppointmentSevice {
-	@Autowired
-	private AppointmentRepository appointmentRepo;
-	@Autowired
-	private CustomerRepository customerRepo;
-	@Autowired
-	private AppointmentMapper appointmentMapper;
-
+	AppointmentRepository appointmentRepo;
+	CustomerRepository customerRepo;
+	AppointmentMapper appointmentMapper;
+	
 	@Override
 	public List<AppointmentResponse> getAll() {
 		return appointmentRepo.findAll().stream().map(appointmentMapper::toAppointmentResponse).toList();
@@ -55,6 +59,16 @@ public class AppointmentSevice implements IAppointmentSevice {
 			throw new EntityNotFoundException("INVALID_CUSTOMER");
 		entity.setCustomer(customerOptional.get());
 		return appointmentMapper.toAppointmentResponse(appointmentRepo.save(entity));
+	}
+
+	@Override
+	public AppointmentResponse save(Date date) {
+		String username =SecurityContextHolder.getContext().getAuthentication().getName();
+		CustomerEntity customerEntity= customerRepo.findByUsername(username).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_CUSTOMER.name()));
+		AppointmentRequest request= new AppointmentRequest();
+		request.setDate(date);
+		request.setCustomerID(customerEntity.getId());
+		return save(request);
 	}
 
 }

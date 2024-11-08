@@ -11,8 +11,10 @@ import final_project_spa_shop.final_project_spa_shop.entity.PostEntity;
 public interface PostMapper {
 	@Mapping(target = "customer",ignore = true)
 	@Mapping(target = "createdAt",ignore = true)
+	@Mapping(target = "likeNumber",ignore = true)
 	PostEntity toPostEntity(PostRequest request);
 	@Mapping(target = "customerID",source = "customer.id")
 	@Mapping(target = "customerName",source = "customer.fullName")
+	@Mapping(target = "imagePath",source = "customer.imagePath")
 	PostResponse toPostResponse(PostEntity entity);
 }

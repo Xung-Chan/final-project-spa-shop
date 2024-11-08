@@ -21,4 +21,5 @@ public class AppointmentRequest {
 	long customerID;
 	@Future(message = "INVALID_TIME")
 	Date date;
+	boolean status;
 }

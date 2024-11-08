@@ -25,26 +25,37 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
-
+	@NonFinal
 	@Value("${spa-shop.signer-key}")
 	String key;
+	JwtCookieToHeaderFilter cookieToHeaderFilter;
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-		String[] publicPostEndpoints= {"/auth/**"}; 
-		String[] publicGetEndpoints= {"/service/services","/customer/login","/customer/css/**"
-				,"/customer/js/**","/customer/img/**","/customer/lib/**","/fetchData.js"}; 
-		 httpSecurity.addFilterBefore(new JwtCookieToHeaderFilter(), UsernamePasswordAuthenticationFilter.class);
+		String[] publicPostEndpoints= {"/auth/**","/customer"}; 
+		String[] publicGetEndpoints= {"/customer/home","/service/limit","/employee/limit","/feedback/feedbacks","/customer/login","/customer/css/**"
+				,"/customer/js/**","/customer/img/**","/customer/lib/**","/customer/registry"}; 
+		httpSecurity.addFilterBefore(cookieToHeaderFilter, UsernamePasswordAuthenticationFilter.class);
 		httpSecurity.authorizeHttpRequests(
-				request -> request.requestMatchers(HttpMethod.POST, publicPostEndpoints)
+				request -> request
+				.requestMatchers(HttpMethod.POST, publicPostEndpoints)
 				.permitAll()
 				.requestMatchers(HttpMethod.GET,publicGetEndpoints)
 				.permitAll()
-				.anyRequest().authenticated());
+				.anyRequest()
+				.authenticated()
+//				.permitAll()
+				);
 		httpSecurity.oauth2ResourceServer(oauth2->
 				oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()).jwtAuthenticationConverter(authenticationConverter())));
 		httpSecurity.exceptionHandling().authenticationEntryPoint(new AuthenticationEntryPoint() {

@@ -11,6 +11,7 @@ import final_project_spa_shop.final_project_spa_shop.entity.FeedbackEntity;
 public interface FeedbackMapper {
 	@Mapping(target = "customerID",source = "customer.id")
 	@Mapping(target = "name",source = "customer.fullName")
+	@Mapping(target = "imagePath",source = "customer.imagePath")
 	FeedbackResponse toFeedbackResponse(FeedbackEntity entity);
 	@Mapping (target = "customer",ignore = true)
 	FeedbackEntity toFeedbackEntity(FeedbackRequest request);

@@ -16,4 +16,5 @@ public class FeedbackResponse {
 	String name;
 	int rate;
 	String description;
+	String imagePath;
 }

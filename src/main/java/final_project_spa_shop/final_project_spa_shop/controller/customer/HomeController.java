@@ -70,4 +70,16 @@ public class HomeController {
 	public String login() {
 		return "customer/login";
 	}
+	@GetMapping("/profile")
+	public String profile() {
+		return "customer/profile";
+	}
+	@GetMapping("/editprofile")
+	public String editprofile() {
+		return "customer/editprofile";
+	}
+	@GetMapping("/changepassword")
+	public String changepassword() {
+		return "customer/changepassword";
+	}
 }

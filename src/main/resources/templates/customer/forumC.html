@@ -1,40 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-    <div th:replace="~{/customer/header}"></div>
-        <!-- Header Start -->
-        <div class="container-fluid bg-breadcrumb py-5">
-            <div class="container text-center py-5">
-                <h3 class="text-white display-3 mb-4">Diễn đàn</h1>
-                <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-                    <li class="breadcrumb-item"><a href="#">Trang</a></li>
-                    <li class="breadcrumb-item active text-white">Diễn đàn</li>
-                </ol>    
+<div th:replace="~{/customer/header}"></div>
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb py-5">
+    <div class="container text-center py-5">
+        <h3 class="text-white display-3 mb-4">Diễn đàn</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="#">Trang</a></li>
+                <li class="breadcrumb-item active text-white">Diễn đàn</li>
+            </ol>
+    </div>
+</div>
+<!-- Header End -->
+
+<!-- Forum Feed Start -->
+<div class="container my-4">
+    <!-- Create New Post -->
+    <div class="bg-white rounded p-4 shadow-sm mb-4">
+        <h6>Đăng bài mới</h6>
+        <textarea id="newPostContent" class="form-control mb-2" rows="3"
+            placeholder="Hãy chia sẻ ý kiến của bạn..."></textarea>
+        <button type="button" class="btn btn-primary" onclick="createPost()"><i class="fa fa-paper-plane"></i>
+            Đăng</button>
+    </div>
+
+    <!-- Posts Container -->
+    <div id="postContainer">
+        <!-- Example Post Start -->
+        <div class="post bg-white rounded p-4 shadow-sm mb-4" id="post1">
+            <div class="d-flex align-items-center mb-3">
+                <img src="/customer/img/user1.jpg" class="rounded-circle me-3" style="width: 50px; height: 50px;"
+                    alt="User">
+                <div>
+                    <h6 class="mb-0">Minh Anh</h6>
+                    <small class="text-muted">Ngày đăng: 2024-10-20 | Chủ đề: Làm đẹp</small>
+                </div>
             </div>
-        </div>
-        <!-- Header End -->
-        
-        <!-- Forum Feed Start -->
-        <div class="container my-4">
-            <!-- Create New Post -->
-            <div class="bg-white rounded p-4 shadow-sm mb-4">
-                <h6>Đăng bài mới</h6>
-                <textarea id="newPostContent" class="form-control mb-2" rows="3" placeholder="Hãy chia sẻ ý kiến của bạn..."></textarea>
-                <button type="button" class="btn btn-primary" onclick="createPost()"><i class="fa fa-paper-plane"></i> Đăng</button>
+            <p>Chăm sóc da mùa đông là điều cần thiết để giữ cho làn da của bạn không bị khô và mất nước.</p>
+
+            <div class="d-flex justify-content-around mt-3">
+                <button class="btn btn-light like-btn" onclick="toggleLike('post1')">
+                    <i class="fa fa-thumbs-up"></i> Thích <span class="like-count">(0)</span>
+                </button>
+                <!-- <button class="btn btn-light" onclick="toggleCommentSection('commentSection1')">
+                    <i class="fa fa-comment"></i> Bình luận <span class="comment-count">(0)</span>
+                </button>
+                <button class="btn btn-light"><i class="fa fa-share"></i> Chia sẻ</button> -->
             </div>
 
-            <!-- Posts Container -->
-            <div id="postsContainer">
-                <!-- Example Post Start -->
-                <div class="post bg-white rounded p-4 shadow-sm mb-4" id="post1">
-                    <div class="d-flex align-items-center mb-3">
-                        <img src="/customer/img/user1.jpg" class="rounded-circle me-3" style="width: 50px; height: 50px;" alt="User">
+            <!-- Comments Section -->
+            <!-- <div class="comment-section bg-light rounded mt-3 p-3 d-none" id="commentSection1">
+                <h6 class="text-secondary">Bình luận</h6>
+                <div id="commentList1" class="comment-list">
+                    <div class="d-flex align-items-start mb-3">
+                        <img src="/customer/img/user2.jpg" class="rounded-circle me-2"
+                            style="width: 40px; height: 40px;" alt="User">
                         <div>
-                            <h6 class="mb-0">Minh Anh</h6>
-                            <small class="text-muted">Ngày đăng: 2024-10-20 | Chủ đề: Làm đẹp</small>
+                            <small class="text-muted">Huyền Trang</small>
+                            <p>Rất hữu ích, cảm ơn bạn đã chia sẻ!</p>
                         </div>
                     </div>
-                    <p>Chăm sóc da mùa đông là điều cần thiết để giữ cho làn da của bạn không bị khô và mất nước.</p>
+                </div>
+                <textarea id="commentInput1" class="form-control mb-2" rows="2"
+                    placeholder="Viết bình luận..."></textarea>
+                <button class="btn btn-primary btn-sm"
+                    onclick="addComment('commentList1', 'commentInput1', 'post1')">Bình luận</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Forum Feed End -->
+<div th:replace="~{/customer/footer}"></div>
+<script src="/customer/js/renderPost.js"></script>
+<script>
+    fetchData(ApiEndpoints.allPosts, (apiResponse) => {
+        if (!apiResponse.success) {
+            throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
+        }
+        posts = apiResponse.result;
+        renderPost(posts);
+    })
+</script>
+<!-- <script src="chatbot.js"></script> -->
+<!-- <script src="scripts.js"></script> -->
+<!-- <script src="/fetchData.js"></script>
+<script>
+    fetchData('/post/posts', {
+        header: {
+            Authorization: `Bearer ${document.cookie.split("; ").filter(x => x.startsWith("token")).map(x => x.split("=")[1])[0]}`,
+        }
+    }, (posts) => {
+        container = $("#postsContainer");
+        html = '';
+        posts.forEach((post) => {
+            html += `<div class="post bg-white rounded p-4 shadow-sm mb-4" id="post1">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="/customer/img/${post.imagePath}" class="rounded-circle me-3" style="width: 50px; height: 50px;" alt="User">
+                        <div>
+                            <h6 class="mb-0">${post.customerName}</h6>
+                            <small class="text-muted">Ngày đăng: ${post.createdAt} | Chủ đề: Làm đẹp</small>
+                        </div>
+                    </div>
+                    <p>${post.content}</p>
                     
                     <div class="d-flex justify-content-around mt-3">
                         <button class="btn btn-light like-btn" onclick="toggleLike('post1')">
@@ -46,29 +114,12 @@
                         <button class="btn btn-light"><i class="fa fa-share"></i> Chia sẻ</button>
                     </div>
                 
-                    <!-- Comments Section -->
-                    <div class="comment-section bg-light rounded mt-3 p-3 d-none" id="commentSection1">
-                        <h6 class="text-secondary">Bình luận</h6>
-                        <div id="commentList1" class="comment-list">
-                            <div class="d-flex align-items-start mb-3">
-                                <img src="/customer/img/user2.jpg" class="rounded-circle me-2" style="width: 40px; height: 40px;" alt="User">
-                                <div>
-                                    <small class="text-muted">Huyền Trang</small>
-                                    <p>Rất hữu ích, cảm ơn bạn đã chia sẻ!</p>
-                                </div>
-                            </div>
-                        </div>
-                        <textarea id="commentInput1" class="form-control mb-2" rows="2" placeholder="Viết bình luận..."></textarea>
-                        <button class="btn btn-primary btn-sm" onclick="addComment('commentList1', 'commentInput1', 'post1')">Bình luận</button>
-                    </div>                
                 </div>
-            </div>
-        </div>
-        <!-- Forum Feed End -->
-        <div th:replace="~{/customer/footer}"></div>
-        <script src="chatbot.js"></script>
-        <script src="scripts.js"></script>
-
-        </body>
+            `;
+        });
+        container.html(html);
+    });
+</script> -->
+</body>
 
 </html>

@@ -1,130 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
-    <div th:replace="~{/customer/header}"></div>
+<div th:replace="~{/customer/header}"></div>
 
 
-        <!-- Header Start -->
-        <div class="container-fluid bg-breadcrumb py-5">
-            <div class="container text-center py-5">
-                <h3 class="text-white display-3 mb-4">Chứng thực của chúng tôi</h1>
-                <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-                    <li class="breadcrumb-item"><a href="#">Trang</a></li>
-                    <li class="breadcrumb-item active text-white">Chứng thực</li>
-                </ol>    
-            </div>
+<!-- Header Start -->
+<div class="container-fluid bg-breadcrumb py-5">
+    <div class="container text-center py-5">
+        <h3 class="text-white display-3 mb-4">Chứng thực của chúng tôi</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="#">Trang</a></li>
+                <li class="breadcrumb-item active text-white">Chứng thực</li>
+            </ol>
+    </div>
+</div>
+<!-- Header End -->
+
+
+<!-- Testimonial Start -->
+<div class="container-fluid testimonial py-5" style="background: var(--bs-secondary);">
+    <div class="container py-5">
+        <div class="text-center mx-auto mb-5" style="max-width: 800px;">
+            <p class="fs-4 text-uppercase text-primary">Chứng thực</p>
+            <h1 class="display-4 mb-4 text-white">Đánh giá của khách hàng!</h1>
         </div>
-        <!-- Header End -->
-
-        
-        <!-- Testimonial Start -->
-        <div class="container-fluid testimonial py-5" style="background: var(--bs-secondary);">
-            <div class="container py-5">
-                <div class="text-center mx-auto mb-5" style="max-width: 800px;">
-                    <p class="fs-4 text-uppercase text-primary">Chứng thực</p>
-                    <h1 class="display-4 mb-4 text-white">Đánh giá của khách hàng!</h1>
-                </div>
-                <div class="owl-carousel testimonial-carousel">
-                    <div class="testimonial-item rounded p-4">
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="d-flex flex-column mx-auto">
-                                    <div class="rounded-circle mb-4" style="border: dashed; border-color: var(--bs-white);">
-                                        <img src="/customer/img/testimonial-1.jpg" class="img-fluid rounded-circle" alt="">
-                                    </div>
-                                    <div class="text-center">
-                                        <h4 class="mb-2 text-primary">Maria</h4>
-                                        <p class="m-0 text-white">Khách hàng</p>
-                                    </div>
-                                </div>
+        <div id="feedbackContainer" class="owl-carousel testimonial-carousel owl-loaded owl-drag">
+            <div class="testimonial-item rounded p-4">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="d-flex flex-column mx-auto">
+                            <div class="rounded-circle mb-4" style="border: dashed; border-color: var(--bs-white);">
+                                <img src="/customer/img/avt-552.jpg" class="img-fluid rounded-circle" alt="">
                             </div>
-                            <div class="col-8">
-                                <div class="position-absolute" style="top: 20px; right: 25px;">
-                                    <i class="fa fa-quote-right fa-2x text-secondary"></i>
-                                </div>
-                                <div class="testimonial-content">
-                                    <div class="d-flex mb-4">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <p class="fs-5 mb-0 text-white">Tôi đã có trải nghiệm tuyệt vời tại trung tâm Beauty & Spa này! Không gian ở đây rất sang trọng và thoải mái, khiến tôi cảm thấy như được lạc vào một thiên đường thư giãn. Đội ngũ nhân viên rất chuyên nghiệp và thân thiện, họ đã tư vấn cho tôi dịch vụ chăm sóc da mặt phù hợp nhất. Sau khi hoàn thành liệu trình, làn da của tôi trở nên sáng khỏe và mịn màng hơn hẳn. Tôi chắc chắn sẽ quay lại đây thường xuyên!
-                                    </p>
-                                </div>
+                            <div class="text-center">
+                                <h4 class="mb-2 text-primary">Aliaba</h4>
+                                <p class="m-0 text-white">Khách hàng</p>
                             </div>
                         </div>
                     </div>
-                    <div class="testimonial-item rounded p-4">
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="d-flex flex-column mx-auto">
-                                    <div class="rounded-circle mb-4" style="border: dashed; border-color: var(--bs-white);">
-                                        <img src="/customer/img/testimonial-2.jpg" class="img-fluid rounded-circle" alt="">
-                                    </div>
-                                    <div class="text-center">
-                                        <h4 class="mb-2 text-primary">Juila</h4>
-                                        <p class="m-0 text-white">Khách hàng</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-8">
-                                <div class="position-absolute" style="top: 20px; right: 25px;">
-                                    <i class="fa fa-quote-right fa-2x text-secondary"></i>
-                                </div>
-                                <div class="testimonial-content">
-                                    <div class="d-flex mb-4">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <p class="fs-5 mb-0 text-white">Trung tâm Beauty & Spa là nơi tôi tìm thấy sự thư giãn thực sự! Tôi đã thử dịch vụ massage toàn thân và thật sự rất ấn tượng. Các kỹ thuật viên rất am hiểu và biết cách tạo áp lực vừa đủ để xoa dịu căng thẳng. Tôi cảm thấy như mọi mệt mỏi tan biến chỉ sau một giờ. Không chỉ vậy, họ cũng rất chu đáo và nhiệt tình, làm cho tôi cảm thấy được chăm sóc tận tình. Đây là địa điểm tôi sẽ giới thiệu cho bạn bè và người thân.
-                                    </p>
-                                </div>
-                            </div>
+                    <div class="col-8">
+                        <div class="position-absolute" style="top: 20px; right: 25px;">
+                            <i class="fa fa-quote-right fa-2x text-secondary"></i>
                         </div>
-                    </div>
-                    <div class="testimonial-item rounded p-4">
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="d-flex flex-column mx-auto">
-                                    <div class="rounded-circle mb-4" style="border: dashed; border-color: var(--bs-white);">
-                                        <img src="/customer/img/testimonial-3.jpg" class="img-fluid rounded-circle" alt="">
-                                    </div>
-                                    <div class="text-center">
-                                        <h4 class="mb-2 text-primary">Sherry</h4>
-                                        <p class="m-0 text-white">Khách hàng</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-8">
-                                <div class="position-absolute" style="top: 20px; right: 25px;">
-                                    <i class="fa fa-quote-right fa-2x text-secondary"></i>
-                                </div>
-                                <div class="testimonial-content">
-                                    <div class="d-flex mb-4">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <p class="fs-5 mb-0 text-white">Vừa qua, tôi đã trải nghiệm dịch vụ tắm khoáng tại trung tâm Beauty & Spa và tôi hoàn toàn hài lòng! Nước khoáng ở đây rất trong và ấm, tạo cảm giác dễ chịu tuyệt đối. Không gian tắm rất sạch sẽ và được trang trí đẹp mắt, mang lại cảm giác thư giãn tối đa. Tôi cảm nhận rõ ràng sự khác biệt sau khi ngâm mình trong nước khoáng, cơ thể tôi nhẹ nhàng và tinh thần thì thoải mái hơn rất nhiều. Đây chắc chắn sẽ là nơi tôi quay lại mỗi khi cần nạp lại năng lượng!
-                                    </p>
-                                </div>
-                            </div>
+                        <div class="testimonial-content">
+                            <div class="d-flex mb-4"><i class="fas fa-star text-primary"></i><i
+                                    class="fas fa-star text-primary"></i><i class="fas fa-star text-primary"></i><i
+                                    class="fas fa-star text-primary"></i><i class="fas fa-star"></i></div>
+                            <p class="fs-5 mb-0 text-white">Tôi đã có trải nghiệm tuyệt vời tại trung tâm Beauty &amp;
+                                Spa này! Không gian ở đây rất sang trọng và thoải mái, khiến tôi cảm thấy như được lạc
+                                vào một thiên đường thư giãn. Đội ngũ nhân viên rất chuyên nghiệp và thân thiện, họ đã
+                                tư vấn cho tôi dịch vụ chăm sóc da mặt phù hợp nhất. Sau khi hoàn thành liệu trình, làn
+                                da của tôi trở nên sáng khỏe và mịn màng hơn hẳn. Tôi chắc chắn sẽ quay lại đây thường
+                                xuyên!
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="testimonial-item rounded p-4">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="d-flex flex-column mx-auto">
+                            <div class="rounded-circle mb-4" style="border: dashed; border-color: var(--bs-white);">
+                                <img src="/customer/img/avt-652.jpg" class="img-fluid rounded-circle" alt="">
+                            </div>
+                            <div class="text-center">
+                                <h4 class="mb-2 text-primary">Aliaba</h4>
+                                <p class="m-0 text-white">Khách hàng</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="position-absolute" style="top: 20px; right: 25px;">
+                            <i class="fa fa-quote-right fa-2x text-secondary"></i>
+                        </div>
+                        <div class="testimonial-content">
+                            <div class="d-flex mb-4"><i class="fas fa-star text-primary"></i><i
+                                    class="fas fa-star text-primary"></i><i class="fas fa-star text-primary"></i><i
+                                    class="fas fa-star text-primary"></i><i class="fas fa-star"></i></div>
+                            <p class="fs-5 mb-0 text-white">Trung tâm Beauty &amp; Spa là nơi tôi tìm thấy sự thư giãn
+                                thực sự! Tôi đã thử dịch vụ massage toàn thân và thật sự rất ấn tượng. Các kỹ thuật viên
+                                rất am hiểu và biết cách tạo áp lực vừa đủ để xoa dịu căng thẳng. Tôi cảm thấy như mọi
+                                mệt mỏi tan biến chỉ sau một giờ. Không chỉ vậy, họ cũng rất chu đáo và nhiệt tình, làm
+                                cho tôi cảm thấy được chăm sóc tận tình. Đây là địa điểm tôi sẽ giới thiệu cho bạn bè và
+                                người thân.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item rounded p-4">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="d-flex flex-column mx-auto">
+                            <div class="rounded-circle mb-4" style="border: dashed; border-color: var(--bs-white);">
+                                <img src="/customer/img/null" class="img-fluid rounded-circle" alt="">
+                            </div>
+                            <div class="text-center">
+                                <h4 class="mb-2 text-primary">Sherry</h4>
+                                <p class="m-0 text-white">Khách hàng</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="position-absolute" style="top: 20px; right: 25px;">
+                            <i class="fa fa-quote-right fa-2x text-secondary"></i>
+                        </div>
+                        <div class="testimonial-content">
+                            <div class="d-flex mb-4"><i class="fas fa-star text-primary"></i><i
+                                    class="fas fa-star text-primary"></i><i class="fas fa-star text-primary"></i><i
+                                    class="fas fa-star text-primary"></i><i class="fas fa-star text-primary"></i></div>
+                            <p class="fs-5 mb-0 text-white">Vừa qua, tôi đã trải nghiệm dịch vụ tắm khoáng tại trung tâm
+                                Beauty &amp; Spa và tôi hoàn toàn hài lòng! Nước khoáng ở đây rất trong và ấm, tạo cảm
+                                giác dễ chịu tuyệt đối. Không gian tắm rất sạch sẽ và được trang trí đẹp mắt, mang lại
+                                cảm giác thư giãn tối đa. Tôi cảm nhận rõ ràng sự khác biệt sau khi ngâm mình trong nước
+                                khoáng, cơ thể tôi nhẹ nhàng và tinh thần thì thoải mái hơn rất nhiều. Đây chắc chắn sẽ
+                                là nơi tôi quay lại mỗi khi cần nạp lại năng lượng!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- Testimonial End -->
+        <!-- <div id="feedbackContainer" class="owl-carousel testimonial-carousel">
+            <div class="testimonial-item rounded p-4">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="d-flex flex-column mx-auto">
+                            <div class="rounded-circle mb-4" style="border: dashed; border-color: var(--bs-white);">
+                                <img src="/customer/img/testimonial-1.jpg" class="img-fluid rounded-circle" alt="">
+                            </div>
+                            <div class="text-center">
+                                <h4 class="mb-2 text-primary">Maria</h4>
+                                <p class="m-0 text-white">Khách hàng</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="position-absolute" style="top: 20px; right: 25px;">
+                            <i class="fa fa-quote-right fa-2x text-secondary"></i>
+                        </div>
+                        <div class="testimonial-content">
+                            <div class="d-flex mb-4">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="fs-5 mb-0 text-white">Tôi đã có trải nghiệm tuyệt vời tại trung tâm Beauty & Spa
+                                này! Không gian ở đây rất sang trọng và thoải mái, khiến tôi cảm thấy như được lạc vào
+                                một thiên đường thư giãn. Đội ngũ nhân viên rất chuyên nghiệp và thân thiện, họ đã tư
+                                vấn cho tôi dịch vụ chăm sóc da mặt phù hợp nhất. Sau khi hoàn thành liệu trình, làn da
+                                của tôi trở nên sáng khỏe và mịn màng hơn hẳn. Tôi chắc chắn sẽ quay lại đây thường
+                                xuyên!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item rounded p-4">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="d-flex flex-column mx-auto">
+                            <div class="rounded-circle mb-4" style="border: dashed; border-color: var(--bs-white);">
+                                <img src="/customer/img/testimonial-2.jpg" class="img-fluid rounded-circle" alt="">
+                            </div>
+                            <div class="text-center">
+                                <h4 class="mb-2 text-primary">Juila</h4>
+                                <p class="m-0 text-white">Khách hàng</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="position-absolute" style="top: 20px; right: 25px;">
+                            <i class="fa fa-quote-right fa-2x text-secondary"></i>
+                        </div>
+                        <div class="testimonial-content">
+                            <div class="d-flex mb-4">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="fs-5 mb-0 text-white">Trung tâm Beauty & Spa là nơi tôi tìm thấy sự thư giãn thực
+                                sự! Tôi đã thử dịch vụ massage toàn thân và thật sự rất ấn tượng. Các kỹ thuật viên rất
+                                am hiểu và biết cách tạo áp lực vừa đủ để xoa dịu căng thẳng. Tôi cảm thấy như mọi mệt
+                                mỏi tan biến chỉ sau một giờ. Không chỉ vậy, họ cũng rất chu đáo và nhiệt tình, làm cho
+                                tôi cảm thấy được chăm sóc tận tình. Đây là địa điểm tôi sẽ giới thiệu cho bạn bè và
+                                người thân.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item rounded p-4">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="d-flex flex-column mx-auto">
+                            <div class="rounded-circle mb-4" style="border: dashed; border-color: var(--bs-white);">
+                                <img src="/customer/img/testimonial-3.jpg" class="img-fluid rounded-circle" alt="">
+                            </div>
+                            <div class="text-center">
+                                <h4 class="mb-2 text-primary">Sherry</h4>
+                                <p class="m-0 text-white">Khách hàng</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="position-absolute" style="top: 20px; right: 25px;">
+                            <i class="fa fa-quote-right fa-2x text-secondary"></i>
+                        </div>
+                        <div class="testimonial-content">
+                            <div class="d-flex mb-4">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="fs-5 mb-0 text-white">Vừa qua, tôi đã trải nghiệm dịch vụ tắm khoáng tại trung tâm
+                                Beauty & Spa và tôi hoàn toàn hài lòng! Nước khoáng ở đây rất trong và ấm, tạo cảm giác
+                                dễ chịu tuyệt đối. Không gian tắm rất sạch sẽ và được trang trí đẹp mắt, mang lại cảm
+                                giác thư giãn tối đa. Tôi cảm nhận rõ ràng sự khác biệt sau khi ngâm mình trong nước
+                                khoáng, cơ thể tôi nhẹ nhàng và tinh thần thì thoải mái hơn rất nhiều. Đây chắc chắn sẽ
+                                là nơi tôi quay lại mỗi khi cần nạp lại năng lượng!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
 
-
-        <div th:replace="~{/customer/footer}"></div>
-    </body>
+<div th:replace="~{/customer/footer}"></div>
+<script src="/customer/js/renderFeedback.js"></script>
+<script>
+    fetchData(ApiEndpoints.allFeedbacks, (apiResponse) => {
+        if (!apiResponse.success) {
+            throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
+        }
+        feedbacks = apiResponse.result
+        renderFeedback(feedbacks);
+    })
+</script>
+</body>
 
 </html>

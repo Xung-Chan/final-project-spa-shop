@@ -17,4 +17,6 @@ public class PostResponse {
 	String customerName;
 	String content;
 	Date createdAt;
+	String imagePath;
+	int likeNumber;
 }

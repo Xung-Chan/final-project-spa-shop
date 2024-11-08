@@ -44,7 +44,6 @@
   <!-- Contact End -->
 
   <div th:replace="~{/customer/footer}"></div>
-  <script type="text/javascript" src="/fetchData.js"></script>
   <script>
     $(document).ready(function () {
       async function loginUser() {
@@ -58,15 +57,18 @@
           body: JSON.stringify({ username, password })
         };
 
-        await fetchData("/auth/login", requestOptions, (data) => {
-          document.cookie = `token=${data.token}; path=/; `;
+        await fetchData("/auth/login", (apiResponse) => {
+          if (!apiResponse.success) {
+            throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
+          }
+          data = apiResponse.result;
+          console.log(document.cookie)
+          document.cookie = `token=${data.token}; path=/;`;
+          console.log(document.cookie)
           window.location.href = "/customer/home";
           console.log(data.token)
-        });
+        }, requestOptions);
       }
-
-
-
       $("form").submit(function (event) {
         event.preventDefault();
         loginUser().catch((error) => alert("Đăng nhập thất bại!"));

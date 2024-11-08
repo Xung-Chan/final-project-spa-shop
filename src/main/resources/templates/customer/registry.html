@@ -1,62 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-    <div th:replace="~{/customer/header}"></div>
+<div th:replace="~{/customer/header}"></div>
 
 
 
-        <!-- Contact Start -->
-        <div class="container-fluid contact py-5">
-            <div class="container pt-5">
-                <div class="row g-4 align-items-center justify-content-center">
-                    <div class="col-lg-6 d-flex justify-content-center">
-                        <div class="form-control rounded p-5 user-form" >
-                            <form>
-                                <div class="display-6 mb-4" style="color: var(--bs-primary); text-align: center;"><b>ĐĂNG KÝ TÀI KHOẢN</b></div>
-                                <div class="row gx-4 gy-3">
-                                    <div class="col-xl-12">
-                                        <input type="text" class="form-control bg-white border-0 py-3 px-4" placeholder="Họ tên">
-                                    </div>
-                                    <div class="col-xl-12">
-                                        <input type="text"  class="form-control bg-white border-0 py-3 px-4" placeholder="Ngày sinh" onfocus="(this.type='date')", onblur="(this.type='text')">
-                                    </div>
-                                    <div class="col-xl-12">
-                                        <input type="email" class="form-control bg-white border-0 py-3 px-4" placeholder="Email">
-                                    </div>
-                                    <div class="col-xl-12">
-                                        <input type="text" class="form-control bg-white border-0 py-3 px-4" placeholder="Số điện thoại">
-                                    </div>
-                                    <div class="col-12">
-                                       <div class="form-check">
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            value=""
-                                            id=""
-                                        />
-                                        <label class="form-check-label" for="">Tôi đồng ý với các<a href="" class="under-hover">Điều khoản và Điều kiện</a>  của Sephire</label>
+<!-- Contact Start -->
+<div class="container-fluid contact py-5">
+    <div class="container pt-5">
+        <div class="row g-4 align-items-center justify-content-center">
+            <div class="col-lg-6 d-flex justify-content-center">
+                <div class="form-control rounded p-5 user-form">
+                    <form>
+                        <div class="display-6 mb-4" style="color: var(--bs-primary); text-align: center;"><b>ĐĂNG KÝ TÀI
+                                KHOẢN</b></div>
+                        <div class="row gx-4 gy-3">
+                            <div class="col-xl-12">
+                                <input name="fullName" type="text" class="form-control bg-white border-0 py-3 px-4"
+                                    placeholder="Họ tên" required>
+                            </div>
+                            <div class="col-xl-12">
+                                <input name="birth" required type="text"
+                                    class="form-control bg-white border-0 py-3 px-4" placeholder="Ngày sinh"
+                                    onfocus="(this.type='date')" , onblur="(this.type='text')">
+                            </div>
+                            <div class="col-xl-12">
+                                <input name="email" required type="email"
+                                    class="form-control bg-white border-0 py-3 px-4" placeholder="Email">
+                            </div>
+                            <div class="col-xl-12">
+                                <input name="phoneNumber" required type="text"
+                                    class="form-control bg-white border-0 py-3 px-4" placeholder="Số điện thoại">
+                            </div>
+                            <div class="col-xl-12">
+                                <input name="username" required type="text"
+                                    class="form-control bg-white border-0 py-3 px-4" placeholder="Username">
+                            </div>
+                            <div class="col-xl-12">
+                                <input name="password" required type="password"
+                                    class="form-control bg-white border-0 py-3 px-4" placeholder="Password">
+                            </div>
+                            <div class="col-xl-12">
+                                <input name="image" required type="file"
+                                    class="form-control bg-white border-0 py-3 px-4" placeholder="Ảnh đại diện">
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="" required />
+                                    <label class="form-check-label" for="">Tôi đồng ý với các<a href=""
+                                            class="under-hover">Điều khoản và Điều kiện</a> của Sephire</label>
 
-                                       </div>
-                                       
-                                    </div>
-                                    <div class="col-12">
-                                        <button class="rounded-pill btn btn-primary btn-primary-outline-0 w-100 py-3 px-5" type="submit">Đăng ký</button>
-                                    </div>
-                                    <div class="col-xl-12 hover-underline" style="text-align: center;">
-                                        <a href="login.html"><i class="fa fa-angle-left"></i><b>&nbsp Trở về trang Đăng Nhập</b></a>
-                                    </div>
                                 </div>
-                            </form>
+
+                            </div>
+                            <div class="col-12">
+                                <button class="rounded-pill btn btn-primary btn-primary-outline-0 w-100 py-3 px-5"
+                                    type="submit">Đăng ký</button>
+                            </div>
+                            <div class="col-xl-12 hover-underline" style="text-align: center;">
+                                <a href="/customer/login"><i class="fa fa-angle-left"></i><b>&nbsp Trở về trang Đăng
+                                        Nhập</b></a>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <!-- Contact End -->
+    </div>
+</div>
+<!-- Contact End -->
 
 
-        <div th:replace="~{/customer/footer}"></div>
-
-
-    </body>
-
-</html>
+<div th:replace="~{/customer/footer}"></div>
+<script>
+    $("form").submit(async function (event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        await fetchData(postEndpoints.customer, (apiResponse) => {
+            if (!apiResponse.success) {
+                alert("Tạo tài khoản thất bại!")
+            }
+            alert(`Tạo tài khoản thành công\nWelcome, ${apiResponse.result.username}`);
+            window.location.href = "/customer/login"
+        }, {
+            method: "POST",
+            body: formData
+        })
+    })
+</script>
