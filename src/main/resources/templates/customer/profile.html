@@ -1,53 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
-    <div th:replace="~{/customer/header}"></div>
+<div th:replace="~{/customer/header}"></div>
 
-        <!-- Contact Start -->
-        <div class="container-fluid contact py-5">
-            <div class="container pt-5">
-                <div class="row g-4 align-items-center justify-content-center">
-                    <div class="col-lg-8 d-flex justify-content-center">
-                        <div class="form-control rounded p-5 user-form">
-                            <form>
-                                <div class="display-6 mb-4" style="color: var(--bs-primary); text-align: center;"><b>Thông tin người dùng</b></div>
-                                <div class="row gx-4 gy-3">
-                                    <div class="col-xl-12">
-                                        <input type="text" class="form-control bg-white border-0 py-3 px-4" placeholder="Tên đăng nhập" readonly>
-                                    </div>
-                                    <div class="col-xl-12">
-                                        <input type="password" class="form-control bg-white border-0 py-3 px-4" placeholder="Mật khẩu" readonly>
-                                    </div>
-                                    <div class="col-xl-12">
-                                        <input type="text" class="form-control bg-white border-0 py-3 px-4" placeholder="Họ tên" readonly>
-                                    </div>
-                                    <div class="col-xl-12">
-                                        <input type="email" class="form-control bg-white border-0 py-3 px-4" placeholder="Email" readonly>
-                                    </div>
-                                    <div class="col-xl-12">
-                                        <input type="text" class="form-control bg-white border-0 py-3 px-4" placeholder="Số điện thoại" readonly>
-                                    </div>
-                                    <div class="col-xl-12">
-                                        <input type="date" class="form-control bg-white border-0 py-3 px-4" placeholder="Ngày sinh" readonly>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between mt-3">
-                                        <a href="index.html" class="btn btn-danger  rounded-pill"><i class="fa fa-angle-left"></i>&nbsp Đăng xuất</a>
-                                        <div>
-                                            <a href="changepassword.html" class="btn btn-primary btn-primary-outline-0 rounded-pill me-2"><i class="fa fa-code"></i>&nbsp Đổi mật khẩu</a>
-                                            <a href="editprofile.html" class="btn btn-primary btn-primary-outline-0 rounded-pill"><i class="fa fa-edit"></i>&nbsp Sửa thông tin</a>
-                                        </div>
-                                    </div>
+<!-- Contact Start -->
+<div class="container-fluid contact py-5">
+    <div class="container pt-5">
+        <div class="row g-4 align-items-center justify-content-center">
+            <div class="col-lg-8 d-flex justify-content-center">
+                <div class="form-control rounded p-5 user-form">
+                    <form>
+                        <div class="display-6 mb-4" style="color: var(--bs-primary); text-align: center;"><b>Thông tin
+                                người dùng</b></div>
+                        <div class="row gx-4 gy-3">
+                            <div id="profileContainer" class="row gx-4 gy-3">
+                                <div class="services-img d-flex align-items-center justify-content-center rounded">
+                                    <img src="/customer/img/services-1153.jpg" class="img-fluid rounded" alt="">
                                 </div>
-                            </form>
+
+                                <div class="col-xl-12">
+                                    <input type="text" class="form-control bg-white border-0 py-3 px-4"
+                                        placeholder="Mã người dùng" readonly>
+                                </div>
+                                <div class="col-xl-12">
+                                    <input type="text" class="form-control bg-white border-0 py-3 px-4"
+                                        placeholder="Tên đăng nhập" readonly>
+                                </div>
+                                <div class="col-xl-12">
+                                    <input type="password" class="form-control bg-white border-0 py-3 px-4"
+                                        placeholder="Mật khẩu" readonly>
+                                </div>
+                                <div class="col-xl-12">
+                                    <input type="text" class="form-control bg-white border-0 py-3 px-4"
+                                        placeholder="Họ tên" readonly>
+                                </div>
+                                <div class="col-xl-12">
+                                    <input type="email" class="form-control bg-white border-0 py-3 px-4"
+                                        placeholder="Email" readonly>
+                                </div>
+                                <div class="col-xl-12">
+                                    <input type="text" class="form-control bg-white border-0 py-3 px-4"
+                                        placeholder="Số điện thoại" readonly>
+                                </div>
+                                <div class="col-xl-12">
+                                    <input type="date" class="form-control bg-white border-0 py-3 px-4"
+                                        placeholder="Ngày sinh" readonly>
+                                </div>
+                                <div class="col-xl-12">
+                                    <input type="text" class="form-control bg-white border-0 py-3 px-4"
+                                        placeholder="Điểm tích lũy" readonly>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex justify-content-between mt-3">
+                                <a id="logout" class="btn btn-danger  rounded-pill"><i
+                                        class="fa fa-angle-left"></i>&nbsp Đăng xuất</a>
+                                <div>
+                                    <a href="/customer/changepassword"
+                                        class="btn btn-primary btn-primary-outline-0 rounded-pill me-2"><i
+                                            class="fa fa-code"></i>&nbsp Đổi mật khẩu</a>
+                                    <a href="/customer/editprofile"
+                                        class="btn btn-primary btn-primary-outline-0 rounded-pill"><i
+                                            class="fa fa-edit"></i>&nbsp Sửa thông tin</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <!-- Contact End -->
-
-
-        <div th:replace="~{/customer/footer}"></div>
-
-    </body>
-
-</html>
+    </div>
+</div>
+<!-- Contact End -->
+<div th:replace="~{/customer/footer}"></div>
+<script src="/customer/js/renderProfile.js"></script>
+<script>
+    async function render() {
+        await fetchData(ApiEndpoints.myInformation, (apiResponse) => {
+            if (!apiResponse.success) {
+                throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
+            }
+            profile = apiResponse.result;
+            renderProfile(profile);
+        })
+        document.querySelectorAll("input").forEach(x => {
+            x.setAttribute("readonly", true);
+        })
+    }
+    render();
+    $("#logout").click(() => {
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = "/customer/home"
+    })
+</script>

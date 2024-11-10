@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +41,7 @@ import lombok.experimental.NonFinal;
 @RequiredArgsConstructor
 public class AuthenticationService implements IAuthenticationService {
 	AccountRepository accountRepository;
+	PasswordEncoder encoder;
 	@NonFinal
 	@Value("${spa-shop.signer-key}")
 	String key ;
@@ -53,11 +53,8 @@ public class AuthenticationService implements IAuthenticationService {
 			throw new RuntimeException(ErrorCode.LOGIN_FAILURE.name());
 		AccountEntity accountEntity = optional.get();
 
-		PasswordEncoder encoder = new BCryptPasswordEncoder(9);
 		if(!encoder.matches(request.getPassword(), accountEntity.getPassword()))
 			throw new RuntimeException(ErrorCode.LOGIN_FAILURE.name());
-		
-		
 		return AuthenticationResponse.builder()
 				.token(generateToken(accountEntity))
 				.authenticated(true)
@@ -71,7 +68,6 @@ public class AuthenticationService implements IAuthenticationService {
 				.issuer("spa-shop")
 				.issueTime(new Date())
 				.expirationTime(new Date(Instant.now().plus(1,ChronoUnit.HOURS).toEpochMilli()))
-				.claim("test","test1 test2")
 				.claim("scope",entity.getRole().getName())
 				.build();
 		Payload payload = new Payload(claimsSet.toJSONObject());

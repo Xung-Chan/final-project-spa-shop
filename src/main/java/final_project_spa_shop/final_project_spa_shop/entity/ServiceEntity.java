@@ -29,6 +29,8 @@ public class ServiceEntity {
 	String name;
 	@Column(name="description",nullable = false)
 	String description;
+	@Column(name="price",nullable = false)
+	long price;
 	@Column(name="imagePath")
 	String imagePath=null;
 	

@@ -36,6 +36,7 @@ public class AuthenticationController {
 //		attributes.getResponse().addCookie(cookie);
 		return new ResponseEntity<>(new ApiResponse<>(authenticationResponse), HttpStatus.ACCEPTED);
 	}
+	
 
 	@PostMapping("/introspect")
 	public ResponseEntity<ApiResponse<IntrospectResponse>> introspect(@Valid @RequestBody IntrospectRequest request) {

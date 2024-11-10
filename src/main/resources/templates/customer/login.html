@@ -59,7 +59,7 @@
 
         await fetchData("/auth/login", (apiResponse) => {
           if (!apiResponse.success) {
-            throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
+            alert(apiResponse.message)
           }
           data = apiResponse.result;
           console.log(document.cookie)

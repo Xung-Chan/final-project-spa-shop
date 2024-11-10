@@ -28,6 +28,9 @@
                             <div class="col-lg-12">
                                 <input type="date" class="form-control py-3 border-white bg-transparent">
                             </div>
+                            <div id="listService">
+
+                            </div>
                             <div class="col-lg-12">
                                 <input type="submit" class="btn btn-primary btn-primary-outline-0 w-100 py-3 px-5"
                                     value="ĐĂNG KÝ">
@@ -76,11 +79,25 @@
 <!-- Appointment End -->
 
 <div th:replace="~{/customer/footer}"></div>
+<script src="/customer/js/renderAppointment.js"></script>
 <script>
+    async function render() {
+        await fetchData("/service/services", (apiResponse) => {
+            if (!apiResponse.success) {
+                throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
+            }
+            renderListServices(apiResponse.result)
+        });
+    }
+    render()
     $(document).ready(function () {
         $("form").submit(async function (event) {
             event.preventDefault();
             const date = $("input[type='date']").val();
+            let serviceIDs = []
+            document.querySelectorAll("input[name='serviceIDs']:checked").forEach((x) => {
+                serviceIDs.push(x.getAttribute('value'))
+            })
             let customerID;
             const fetchMyInfor = async function () {
                 await fetchData(ApiEndpoints.myInformation, (apiResponse) => {
@@ -96,12 +113,13 @@
                         throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
                     }
                     alert(`Thành công, mã lịch hẹn của bạn là ${apiResponse.result.id}`)
+                    window.location.href = "/customer/history"
                 }, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ date, customerID })
+                    body: JSON.stringify({ date, customerID, serviceIDs })
                 });
             }
             await fetchMyInfor()

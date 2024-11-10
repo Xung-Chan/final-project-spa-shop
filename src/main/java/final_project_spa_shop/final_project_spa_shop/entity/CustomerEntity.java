@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Table(name ="customer")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerEntity extends AccountEntity {
+public class CustomerEntity extends ProfileEntity {
 	@Column(name="bonusPoint")
 	long points;
 }

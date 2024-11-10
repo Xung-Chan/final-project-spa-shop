@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import final_project_spa_shop.final_project_spa_shop.entity.AccountEntity;
 
 @Repository
-public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
+public interface AccountRepository extends JpaRepository<AccountEntity, String> {
 	public Optional<AccountEntity> findByUsername(String username);
 }

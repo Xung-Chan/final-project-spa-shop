@@ -1,7 +1,6 @@
 package final_project_spa_shop.final_project_spa_shop.dto.request;
 
 import java.sql.Date;
-import java.util.Set;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +36,8 @@ public class EmployeeRequest {
 	@NotNull(message = "NULL_VALUE")
 	String fullName;
 	@NotNull(message = "NULL_VALUE")
+	long roleID;
+	@NotNull(message = "NULL_VALUE")
 	MultipartFile image;
-	Set<Long> permissions;
+	
 }

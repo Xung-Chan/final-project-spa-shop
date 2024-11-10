@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Future;
@@ -33,7 +32,6 @@ public class VoucherEntity {
 	@Future(message = "INVALID_TIME")
 	@Column(name="expired_at")
 	Date expired_at;
-	@OneToOne
-	@JoinColumn(name="bill_id")
-	BillEntity bill;
+	@OneToOne(mappedBy = "voucher")
+	AppointmentEntity bill;
 }

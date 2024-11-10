@@ -9,5 +9,5 @@ import final_project_spa_shop.final_project_spa_shop.entity.CustomerEntity;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
-	public Optional<CustomerEntity> findByUsername(String username);
+	public Optional<CustomerEntity> findByAccountUsername(String username);
 }

@@ -1,5 +1,6 @@
 package final_project_spa_shop.final_project_spa_shop.controller.api;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import final_project_spa_shop.final_project_spa_shop.dto.request.AccountRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.request.EmployeeRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.ApiResponse;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.EmployeeResponse;
@@ -40,14 +42,15 @@ public class EmployeeController {
 	}
 
 	@PostMapping("")
-	public ResponseEntity<ApiResponse<EmployeeResponse>> save(@Valid @ModelAttribute EmployeeRequest request) {
-		return new ResponseEntity<>(new ApiResponse<>(employeeService.save(request)), HttpStatus.CREATED);
+	public ResponseEntity<ApiResponse<EmployeeResponse>> save(@Valid @ModelAttribute AccountRequest accountRequest,
+			@Valid @ModelAttribute EmployeeRequest employeeRequest) {
+		return new ResponseEntity<>(new ApiResponse<>(employeeService.create(accountRequest,employeeRequest)), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<EmployeeResponse>> save(@PathVariable long id,
 			@Valid @ModelAttribute EmployeeRequest request) {
 		request.setId(id);
-		return new ResponseEntity<>(new ApiResponse<>(employeeService.save(request)), HttpStatus.CREATED);
+		return new ResponseEntity<>(new ApiResponse<>(employeeService.update(request)), HttpStatus.CREATED);
 	}
 }

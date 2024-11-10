@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import final_project_spa_shop.final_project_spa_shop.dto.request.AccountRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.request.CustomerRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.ApiResponse;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.CustomerResponse;
@@ -39,16 +40,19 @@ public class CustomerController {
 	}
 
 	@PostMapping("")
-	public ResponseEntity<ApiResponse<CustomerResponse>> save(@Valid @ModelAttribute CustomerRequest request) {
-		return new ResponseEntity<>(new ApiResponse<>(customerService.save(request)), HttpStatus.CREATED);
+	public ResponseEntity<ApiResponse<CustomerResponse>> save(@Valid @ModelAttribute AccountRequest accountRequest,
+			@Valid @ModelAttribute CustomerRequest customerRequest) {
+		return new ResponseEntity<>(new ApiResponse<>(customerService.create(accountRequest, customerRequest)),
+				HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<CustomerResponse>> save(@PathVariable long id,
 			@Valid @ModelAttribute CustomerRequest request) {
 		request.setId(id);
-		return new ResponseEntity<>(new ApiResponse<>(customerService.save(request)), HttpStatus.CREATED);
+		return new ResponseEntity<>(new ApiResponse<>(customerService.update(request)), HttpStatus.CREATED);
 	}
+
 	@GetMapping("/myInformation")
 	public ResponseEntity<ApiResponse<CustomerResponse>> getMyInformation() {
 		return new ResponseEntity<>(new ApiResponse<>(customerService.loadMyInformation()), HttpStatus.OK);

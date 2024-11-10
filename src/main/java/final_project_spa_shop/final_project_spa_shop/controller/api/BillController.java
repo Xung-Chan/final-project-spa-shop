@@ -49,15 +49,15 @@ public class BillController {
 		return new ResponseEntity<>(billIService.delete(id), HttpStatus.NO_CONTENT);
 	}
 
-	@PostMapping("")
-	public ResponseEntity<ApiResponse<BillResponse>> save(@Valid @RequestBody BillRequest bill) {
-		return new ResponseEntity<>(new ApiResponse<>(billIService.save(bill)), HttpStatus.CREATED);
-	}
-
-	@PutMapping("/{id}")
-	public ResponseEntity<ApiResponse<BillResponse>> update(@PathVariable long id,
-			@Valid @RequestBody BillRequest bill) {
-		bill.setId(id);
-		return new ResponseEntity<>(new ApiResponse<>(billIService.save(bill)), HttpStatus.CREATED);
-	}
+//	@PostMapping("")
+//	public ResponseEntity<ApiResponse<BillResponse>> save(@Valid @RequestBody BillRequest bill) {
+//		return new ResponseEntity<>(new ApiResponse<>(billIService.save(bill)), HttpStatus.CREATED);
+//	}
+//
+//	@PutMapping("/{id}")
+//	public ResponseEntity<ApiResponse<BillResponse>> update(@PathVariable long id,
+//			@Valid @RequestBody BillRequest bill) {
+//		bill.setId(id);
+//		return new ResponseEntity<>(new ApiResponse<>(billIService.save(bill)), HttpStatus.CREATED);
+//	}
 }

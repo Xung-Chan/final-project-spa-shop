@@ -33,6 +33,10 @@ public class AppointmentController {
 	public ResponseEntity<ApiResponse<List<AppointmentResponse>>> getAll() {
 		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.getAll()), HttpStatus.OK);
 	}
+	@GetMapping("/myAppointment")
+	public ResponseEntity<ApiResponse<List<AppointmentResponse>>> myAppointment() {
+		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.myAppointment()), HttpStatus.OK);
+	}
 
 	@GetMapping("/appointments/{customerID}")
 	public ResponseEntity<ApiResponse<List<AppointmentResponse>>> getByCustomerId(@PathVariable long customerID) {
@@ -48,13 +52,21 @@ public class AppointmentController {
 	public ResponseEntity<ApiResponse<AppointmentResponse>> save(@Valid @RequestBody AppointmentRequest appoint) {
 		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.save(appoint)), HttpStatus.CREATED);
 	}
+	
 
-
+	@GetMapping("/{id}")
+	public ResponseEntity<ApiResponse<AppointmentResponse>> getSingle(@PathVariable long id) {
+		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.findById(id)), HttpStatus.OK);
+	}
 	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<AppointmentResponse>> save(@PathVariable long id,
 			@Valid @RequestBody AppointmentRequest appoint) {
 		appoint.setId(id);
 		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.save(appoint)), HttpStatus.CREATED);
+	}
+	@PutMapping("/payment/{id}")
+	public ResponseEntity<ApiResponse<AppointmentResponse>> pay(@PathVariable long id) {
+		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.pay(id)), HttpStatus.OK);
 	}
 
 }

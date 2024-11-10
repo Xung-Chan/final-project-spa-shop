@@ -1,6 +1,7 @@
 package final_project_spa_shop.final_project_spa_shop.dto.request;
 
 import java.sql.Date;
+import java.util.Set;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
@@ -21,5 +22,7 @@ public class AppointmentRequest {
 	long customerID;
 	@Future(message = "INVALID_TIME")
 	Date date;
+	Set<Long> serviceIDs;
+	Long voucherID;
 	boolean status;
 }

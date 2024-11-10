@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import final_project_spa_shop.final_project_spa_shop.dto.request.ServiceRequest;
@@ -29,6 +28,7 @@ public class ServiceSerice implements IServiceSerice {
 	ServiceRepository serviceRepo;
 	IImageSerive imageSerive;
 	ServiceMapper serviceMapper;
+
 	@Override
 	public List<ServiceEntity> getAll() {
 		return serviceRepo.findAll();
@@ -36,8 +36,6 @@ public class ServiceSerice implements IServiceSerice {
 
 	@Override
 	public List<ServiceEntity> getAllLimit(int limit) {
-		System.out.println("---Authorities---");
-		SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().forEach(System.out::println);
 		Pageable pages = PageRequest.of(0, limit);
 		return serviceRepo.findAll(pages).getContent();
 	}
@@ -53,18 +51,25 @@ public class ServiceSerice implements IServiceSerice {
 
 	@Override
 	public ServiceEntity save(ServiceRequest request) {
+		long id = 0;
 		try {
 			ServiceEntity serviceEntity = serviceMapper.toServiceEntity(request);
-			long id = serviceEntity.getId();
-			if(id == 0)
+			id = serviceEntity.getId();
+			if (id == 0) {
 				serviceEntity = serviceRepo.save(serviceEntity);
-			else 
-				serviceRepo.findById(id).orElseThrow(()-> new RuntimeException(ErrorCode.INVALID_SERVICE.name()));
-			String imagePath = imageSerive.saveImage(request.getImage(), "/customer/img/services-" + serviceEntity.getId());
+				id=serviceEntity.getId();
+			}
+			else
+				serviceRepo.findById(id).orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_SERVICE.name()));
+			String imagePath = imageSerive.saveImage(request.getImage(),
+					"/customer/img/services-" + serviceEntity.getId());
 			serviceEntity.setImagePath(imagePath);
 			return serviceRepo.save(serviceEntity);
 		} catch (DataIntegrityViolationException e) {
 			throw new EntityExistsException("DUPLICATED_SERVICE");
+		} catch (RuntimeException e) {
+			serviceRepo.deleteById(id);
+			throw e;
 		}
 	}
 

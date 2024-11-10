@@ -1,8 +1,9 @@
 package final_project_spa_shop.final_project_spa_shop.service.implementation;
 
-import java.sql.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -10,11 +11,14 @@ import org.springframework.stereotype.Service;
 import final_project_spa_shop.final_project_spa_shop.dto.request.AppointmentRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.AppointmentResponse;
 import final_project_spa_shop.final_project_spa_shop.entity.AppointmentEntity;
-import final_project_spa_shop.final_project_spa_shop.entity.CustomerEntity;
+import final_project_spa_shop.final_project_spa_shop.entity.ServiceEntity;
+import final_project_spa_shop.final_project_spa_shop.entity.VoucherEntity;
 import final_project_spa_shop.final_project_spa_shop.exception.ErrorCode;
 import final_project_spa_shop.final_project_spa_shop.mapper.AppointmentMapper;
 import final_project_spa_shop.final_project_spa_shop.repository.AppointmentRepository;
 import final_project_spa_shop.final_project_spa_shop.repository.CustomerRepository;
+import final_project_spa_shop.final_project_spa_shop.repository.ServiceRepository;
+import final_project_spa_shop.final_project_spa_shop.repository.VoucherRepository;
 import final_project_spa_shop.final_project_spa_shop.service.IAppointmentSevice;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
@@ -27,11 +31,18 @@ import lombok.experimental.FieldDefaults;
 public class AppointmentSevice implements IAppointmentSevice {
 	AppointmentRepository appointmentRepo;
 	CustomerRepository customerRepo;
+	VoucherRepository voucherRepository;
+	ServiceRepository serviceRepository;
 	AppointmentMapper appointmentMapper;
-	
+
 	@Override
 	public List<AppointmentResponse> getAll() {
-		return appointmentRepo.findAll().stream().map(appointmentMapper::toAppointmentResponse).toList();
+		return appointmentRepo.findAll().stream().map((x) -> {
+			Set<String> services = new HashSet<>(x.getServices().stream().map(ServiceEntity::getName).toList());
+			AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(x);
+			appointmentResponse.setServices(services);
+			return appointmentResponse;
+		}).toList();
 	}
 
 	@Override
@@ -49,26 +60,73 @@ public class AppointmentSevice implements IAppointmentSevice {
 	}
 
 	@Override
-	public AppointmentResponse save(AppointmentRequest object) {
-		AppointmentEntity entity = appointmentMapper.toAppointmentEntity(object);
-		long id = entity.getId();
-		if (id != 0)
-			appointmentRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("INVALID_APPOINTMENT"));
-		Optional<CustomerEntity> customerOptional = customerRepo.findById(object.getCustomerID());
-		if (!customerOptional.isPresent())
-			throw new EntityNotFoundException("INVALID_CUSTOMER");
-		entity.setCustomer(customerOptional.get());
-		return appointmentMapper.toAppointmentResponse(appointmentRepo.save(entity));
+	public List<AppointmentResponse> myAppointment() {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		return appointmentRepo.findByCustomerAccountUsername(username).stream()
+				.map((x) -> {
+					Set<String> services = new HashSet<>(x.getServices().stream().map(ServiceEntity::getName).toList());
+					AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(x);
+					appointmentResponse.setServices(services);
+					return appointmentResponse;
+				}).toList();
 	}
 
 	@Override
-	public AppointmentResponse save(Date date) {
-		String username =SecurityContextHolder.getContext().getAuthentication().getName();
-		CustomerEntity customerEntity= customerRepo.findByUsername(username).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_CUSTOMER.name()));
-		AppointmentRequest request= new AppointmentRequest();
-		request.setDate(date);
-		request.setCustomerID(customerEntity.getId());
-		return save(request);
+	public AppointmentResponse save(AppointmentRequest request) {
+		AppointmentEntity entity = appointmentMapper.toAppointmentEntity(request);
+		long id = entity.getId();
+		if (id != 0)
+			appointmentRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("INVALID_APPOINTMENT"));
+		entity.setCustomer(customerRepo.findById(request.getCustomerID())
+				.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_CUSTOMER.getMessage())));
+		entity.setServices(new HashSet<ServiceEntity>(request.getServiceIDs().stream().map((x) -> {
+			return serviceRepository.findById(x)
+					.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_SERVICE.name()));
+		}).toList()));
+		double tolalCost = calculateTotalCost(entity.getServices());
+		double discount=5.0;
+		if(request.getVoucherID() != null) {
+			VoucherEntity voucherEntity=voucherRepository.findById(request.getVoucherID()).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_VOUCHER.name()));
+			entity.setVoucher(voucherEntity);
+			discount += voucherEntity.getPercent();
+		}
+		entity.setCost(tolalCost);
+		AppointmentResponse appointmentResponse=appointmentMapper.toAppointmentResponse(appointmentRepo.save(entity));
+		appointmentResponse.setServices(new HashSet<String>( entity.getServices().stream().map(ServiceEntity::getName).toList()));
+		appointmentResponse.setDiscount(discount);
+		return appointmentResponse;
 	}
+	private double calculateTotalCost(Set<ServiceEntity> services) {
+		return services.stream().mapToDouble(ServiceEntity::getPrice).sum();
+	}
+	@Override
+	public AppointmentResponse pay(long id) {
+		AppointmentEntity appointmentEntity= appointmentRepo.findById(id).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_APPOINTMENT.name()));
+		appointmentEntity.setStatus(true);
+		appointmentEntity = appointmentRepo.save(appointmentEntity);
+		return appointmentMapper.toAppointmentResponse(appointmentEntity);
+	}
+	@Override
+	public AppointmentResponse findById(long id) {
+		AppointmentEntity appointmentEntity = appointmentRepo.findById(id).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_APPOINTMENT.name()));
+		AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointmentEntity);
+		appointmentResponse.setServices(new HashSet<>( appointmentEntity.getServices().stream().map(ServiceEntity::getName).toList()));
+		VoucherEntity voucherEntity=appointmentEntity.getVoucher();
+		double discount = 5.0;
+		if(voucherEntity!= null)
+			discount+= voucherEntity.getPercent();
+		appointmentResponse.setDiscount(discount);
+		return appointmentResponse;
+	}
+//	@Override
+//	public AppointmentResponse save(Date date) {
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		CustomerEntity customerEntity = customerRepo.findByAccountUsername(username)
+//				.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_CUSTOMER.name()));
+//		AppointmentRequest request = new AppointmentRequest();
+//		request.setDate(date);
+//		request.setCustomerID(customerEntity.getId());
+//		return save(request);
+//	}
 
 }

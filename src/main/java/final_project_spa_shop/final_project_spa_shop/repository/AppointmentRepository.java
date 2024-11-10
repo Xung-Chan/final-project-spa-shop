@@ -10,4 +10,5 @@ import final_project_spa_shop.final_project_spa_shop.entity.AppointmentEntity;
 @Repository
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity,Long>{
 	public List<AppointmentEntity> findByCustomerId(long id);
+	public List<AppointmentEntity> findByCustomerAccountUsername(String username);
 }

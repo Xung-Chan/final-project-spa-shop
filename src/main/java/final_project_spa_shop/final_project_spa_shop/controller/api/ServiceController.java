@@ -17,6 +17,7 @@ import final_project_spa_shop.final_project_spa_shop.dto.request.ServiceRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.ApiResponse;
 import final_project_spa_shop.final_project_spa_shop.entity.ServiceEntity;
 import final_project_spa_shop.final_project_spa_shop.service.IServiceSerice;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -38,7 +39,7 @@ public class ServiceController {
 	}
 
 	@PostMapping("")
-	public ResponseEntity<ApiResponse<ServiceEntity>> save(@ModelAttribute ServiceRequest request) {
+	public ResponseEntity<ApiResponse<ServiceEntity>> save(@Valid @ModelAttribute ServiceRequest request) {
 		return new ResponseEntity<>(new ApiResponse<>(serviceSer.save(request)), HttpStatus.CREATED);
 	}
 

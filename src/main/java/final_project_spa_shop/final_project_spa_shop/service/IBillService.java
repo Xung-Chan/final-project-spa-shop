@@ -5,8 +5,15 @@ import java.util.List;
 import final_project_spa_shop.final_project_spa_shop.dto.request.BillRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.BillResponse;
 
-public interface IBillService extends IService<BillResponse, BillRequest> {
-	// Lịch sử giao dịch
+public interface IBillService  {
+	
+	public List<BillResponse> getAll() ;
+
+	public BillResponse delete(long id) ;
+	public BillResponse pay(long id) ;
+	public BillResponse create(BillRequest billRequest) ;
+//	public BillResponse save(BillRequest object) ;
+
 	public List<BillResponse> getAllByCustomerID(long id);
 
 	// thanh toán

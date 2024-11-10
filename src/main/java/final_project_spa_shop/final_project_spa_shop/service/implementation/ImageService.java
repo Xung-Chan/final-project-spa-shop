@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import final_project_spa_shop.final_project_spa_shop.exception.ErrorCode;
 import final_project_spa_shop.final_project_spa_shop.service.IImageSerive;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -25,6 +26,8 @@ public class ImageService implements IImageSerive {
 	@Override
 	public String saveImage(MultipartFile file, String savedFileName) {
 		try {
+			if(file == null)
+				throw new RuntimeException(ErrorCode.INVALID_IMAGE.name());
 			String originalFile = file.getOriginalFilename();
 			String extension = originalFile.substring(originalFile.lastIndexOf("."));
 			Path destination = Paths.get(pathUpload + savedFileName + extension);
@@ -33,8 +36,7 @@ public class ImageService implements IImageSerive {
 			}
 			return destination.getFileName().toString();
 		} catch (Exception e) {
-			e.printStackTrace();
-			return "false";
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 }

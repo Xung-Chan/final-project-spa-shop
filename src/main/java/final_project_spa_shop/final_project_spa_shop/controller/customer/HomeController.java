@@ -82,4 +82,16 @@ public class HomeController {
 	public String changepassword() {
 		return "customer/changepassword";
 	}
+	@GetMapping("/history")
+	public String history() {
+		return "customer/history";
+	}
+	@GetMapping("/cancelappointment")
+	public String cancelappointment() {
+		return "customer/cancelappointment";
+	}
+	@GetMapping("/payment")
+	public String payment() {
+		return "customer/payment";
+	}
 }

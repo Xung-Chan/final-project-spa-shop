@@ -25,6 +25,11 @@ public enum ErrorCode {
 	JWT_EXCEPTION(1021,"Error in using JWT"),
 	LOGIN_FAILURE(1022,"Username or password is incorrect"),
 	RESOURCE_NOT_FOUND(1023,"404 not found"),
+	INVALID_ROLE(1024,"Role is not exist"),
+	INVALID_PROFILE(1025,"Profile is not exist"),
+	INVALID_PRICE(1026,"Price is not valid"),
+	INVALID_IMAGE(1027,"Image is not valid"),
+	WRONG_PASSWORD(1028,"Password is wrong"),
 	;
 	private int code;
 	private String message;

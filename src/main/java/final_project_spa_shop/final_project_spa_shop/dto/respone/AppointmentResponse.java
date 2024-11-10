@@ -1,6 +1,7 @@
 package final_project_spa_shop.final_project_spa_shop.dto.respone;
 
 import java.sql.Date;
+import java.util.Set;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,4 +19,7 @@ public class AppointmentResponse {
 	String customerName;
 	Date date;
 	boolean status;
+	Set<String> services;
+	double discount;
+	double cost;
 }
