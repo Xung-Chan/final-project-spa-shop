@@ -10,5 +10,4 @@ import final_project_spa_shop.final_project_spa_shop.entity.EmployeeEntity;
 @Repository
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> {
 	public Optional<EmployeeEntity> findByAccountUsername(String username);
-
 }

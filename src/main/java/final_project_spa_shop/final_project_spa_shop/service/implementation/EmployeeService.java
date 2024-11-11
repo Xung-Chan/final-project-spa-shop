@@ -13,6 +13,7 @@ import final_project_spa_shop.final_project_spa_shop.dto.request.AccountRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.request.EmployeeRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.AccountResponse;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.EmployeeResponse;
+import final_project_spa_shop.final_project_spa_shop.dto.respone.PaginationResponse;
 import final_project_spa_shop.final_project_spa_shop.entity.EmployeeEntity;
 import final_project_spa_shop.final_project_spa_shop.exception.ErrorCode;
 import final_project_spa_shop.final_project_spa_shop.mapper.EmployeeMapper;
@@ -42,7 +43,22 @@ public class EmployeeService implements IEmployeeService {
 	public List<EmployeeResponse> getAll() {
 		return employeeRepository.findAll().stream().map(employeeMapper::toEmployeeResponse).toList();
 	}
-
+	@Override
+	public EmployeeResponse myInformation() {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		return employeeMapper.toEmployeeResponse(employeeRepository.findByAccountUsername(username).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_EMPLOYEE.name())));
+	}
+	@Override	
+	public List<EmployeeResponse> getAllByPage(int page) {
+		Pageable pages = PageRequest.of(page-1, 5);
+		return employeeRepository.findAll(pages).getContent().stream().map(employeeMapper::toEmployeeResponse).toList();
+	}
+	
+	@Override
+	public PaginationResponse getTotalPage() {
+		return new PaginationResponse((int)Math.ceil(1.0*employeeRepository.count()/5));
+	}
+	
 	@Override
 	public List<EmployeeResponse> getAllLimit(int limit) {
 		Pageable pages = PageRequest.of(0, limit);

@@ -4,79 +4,83 @@
 <head> </head>
 
 <body>
-  <div th:replace="~{/customer/header}"></div>
+	<div th:replace="~{/customer/header}"></div>
 
-  <!-- Contact Start -->
-  <div class="container-fluid contact py-5">
-    <div class="container pt-5">
-      <div class="row g-4 align-items-center justify-content-center">
-        <div class="col-lg-6 d-flex justify-content-center">
-          <div class="form-control rounded p-5 user-form">
-            <form>
-              <div class="display-6 mb-4" style="color: var(--bs-primary); text-align: center">
-                <b>ĐĂNG NHẬP</b>
-              </div>
-              <div class="row gx-4 gy-3">
-                <div class="col-xl-12">
-                  <input type="text" class="form-control bg-white border-0 py-3 px-4" placeholder="Tên đăng nhập" />
-                </div>
-                <div class="col-xl-12">
-                  <input type="password" class="form-control bg-white border-0 py-3 px-4" placeholder="Mật khẩu" />
-                </div>
-                <div class="col-xl-6 under-hover">
-                  <a href="forgot.html">Quên mật khẩu?</a>
-                </div>
-                <div class="col-12">
-                  <button class="rounded-pill btn btn-primary btn-primary-outline-0 w-100 py-3 px-5" type="submit">
-                    Đăng nhập
-                  </button>
-                </div>
-                <div class="col-xl-12 hover-underline" style="text-align: center">
-                  <a href="/customer/registry"><b>Tôi chưa có tài khoản &nbsp</b><i class="fa fa-angle-right"></i></a>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Contact End -->
+	<!-- Contact Start -->
+	<div class="container-fluid contact py-5">
+		<div class="container pt-5">
+			<div class="row g-4 align-items-center justify-content-center">
+				<div class="col-lg-6 d-flex justify-content-center">
+					<div class="form-control rounded p-5 user-form">
+						<form>
+							<div class="display-6 mb-4" style="color: var(--bs-primary); text-align: center">
+								<b>ĐĂNG NHẬP</b>
+							</div>
+							<div class="row gx-4 gy-3">
+								<div class="col-xl-12">
+									<input type="text" class="form-control bg-white border-0 py-3 px-4"
+										placeholder="Tên đăng nhập" />
+								</div>
+								<div class="col-xl-12">
+									<input type="password" class="form-control bg-white border-0 py-3 px-4"
+										placeholder="Mật khẩu" />
+								</div>
+								<div class="col-xl-6 under-hover">
+									<a href="forgot.html">Quên mật khẩu?</a>
+								</div>
+								<div class="col-12">
+									<button class="rounded-pill btn btn-primary btn-primary-outline-0 w-100 py-3 px-5"
+										type="submit">
+										Đăng nhập
+									</button>
+								</div>
+								<div class="col-xl-12 hover-underline" style="text-align: center">
+									<a href="/customer/registry"><b>Tôi chưa có tài khoản &nbsp</b><i
+											class="fa fa-angle-right"></i></a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Contact End -->
 
-  <div th:replace="~{/customer/footer}"></div>
-  <script>
-    $(document).ready(function () {
-      async function loginUser() {
-        const username = $("input[type='text']").val();
-        const password = $("input[type='password']").val();
-        const requestOptions = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ username, password })
-        };
+	<div th:replace="~{/customer/footer}"></div>
+	<script>
+		$(document).ready(function () {
+			async function loginUser() {
+				const username = $("input[type='text']").val();
+				const password = $("input[type='password']").val();
+				const requestOptions = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({ username, password })
+				};
 
-        await fetchData("/auth/login", (apiResponse) => {
-          if (!apiResponse.success) {
-            alert(apiResponse.message)
-          }
-          data = apiResponse.result;
-          console.log(document.cookie)
-          document.cookie = `token=${data.token}; path=/;`;
-          console.log(document.cookie)
-          window.location.href = "/customer/home";
-          console.log(data.token)
-        }, requestOptions);
-      }
-      $("form").submit(function (event) {
-        event.preventDefault();
-        loginUser().catch((error) => alert("Đăng nhập thất bại!"));
-      });
+				await fetchData("/auth/login", (apiResponse) => {
+					if (!apiResponse.success) {
+						alert(apiResponse.message)
+					}
+					data = apiResponse.result;
+					console.log(document.cookie)
+					document.cookie = `token=${data.token}; path=/;`;
+					console.log(document.cookie)
+					window.location.href = "/customer/home";
+					console.log(data.token)
+				}, requestOptions);
+			}
+			$("form").submit(function (event) {
+				event.preventDefault();
+				loginUser().catch((error) => alert("Đăng nhập thất bại!"));
+			});
 
-    });
+		});
 
-  </script>
+	</script>
 </body>
 
 </html>

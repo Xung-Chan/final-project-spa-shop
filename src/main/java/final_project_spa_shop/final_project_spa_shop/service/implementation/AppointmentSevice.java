@@ -1,15 +1,19 @@
 package final_project_spa_shop.final_project_spa_shop.service.implementation;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import final_project_spa_shop.final_project_spa_shop.dto.request.AppointmentRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.AppointmentResponse;
+import final_project_spa_shop.final_project_spa_shop.dto.respone.PaginationResponse;
 import final_project_spa_shop.final_project_spa_shop.entity.AppointmentEntity;
 import final_project_spa_shop.final_project_spa_shop.entity.ServiceEntity;
 import final_project_spa_shop.final_project_spa_shop.entity.VoucherEntity;
@@ -62,13 +66,12 @@ public class AppointmentSevice implements IAppointmentSevice {
 	@Override
 	public List<AppointmentResponse> myAppointment() {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		return appointmentRepo.findByCustomerAccountUsername(username).stream()
-				.map((x) -> {
-					Set<String> services = new HashSet<>(x.getServices().stream().map(ServiceEntity::getName).toList());
-					AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(x);
-					appointmentResponse.setServices(services);
-					return appointmentResponse;
-				}).toList();
+		return appointmentRepo.findByCustomerAccountUsername(username).stream().map((x) -> {
+			Set<String> services = new HashSet<>(x.getServices().stream().map(ServiceEntity::getName).toList());
+			AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(x);
+			appointmentResponse.setServices(services);
+			return appointmentResponse;
+		}).toList();
 	}
 
 	@Override
@@ -84,40 +87,122 @@ public class AppointmentSevice implements IAppointmentSevice {
 					.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_SERVICE.name()));
 		}).toList()));
 		double tolalCost = calculateTotalCost(entity.getServices());
-		double discount=5.0;
-		if(request.getVoucherID() != null) {
-			VoucherEntity voucherEntity=voucherRepository.findById(request.getVoucherID()).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_VOUCHER.name()));
+		double discount = 5.0;
+		if (request.getVoucherID() != null) {
+			VoucherEntity voucherEntity = voucherRepository.findById(request.getVoucherID())
+					.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_VOUCHER.name()));
 			entity.setVoucher(voucherEntity);
 			discount += voucherEntity.getPercent();
 		}
 		entity.setCost(tolalCost);
-		AppointmentResponse appointmentResponse=appointmentMapper.toAppointmentResponse(appointmentRepo.save(entity));
-		appointmentResponse.setServices(new HashSet<String>( entity.getServices().stream().map(ServiceEntity::getName).toList()));
+		AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointmentRepo.save(entity));
+		appointmentResponse
+				.setServices(new HashSet<String>(entity.getServices().stream().map(ServiceEntity::getName).toList()));
 		appointmentResponse.setDiscount(discount);
 		return appointmentResponse;
 	}
+
 	private double calculateTotalCost(Set<ServiceEntity> services) {
 		return services.stream().mapToDouble(ServiceEntity::getPrice).sum();
 	}
+
 	@Override
 	public AppointmentResponse pay(long id) {
-		AppointmentEntity appointmentEntity= appointmentRepo.findById(id).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_APPOINTMENT.name()));
+		AppointmentEntity appointmentEntity = appointmentRepo.findById(id)
+				.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_APPOINTMENT.name()));
 		appointmentEntity.setStatus(true);
 		appointmentEntity = appointmentRepo.save(appointmentEntity);
 		return appointmentMapper.toAppointmentResponse(appointmentEntity);
 	}
+
 	@Override
 	public AppointmentResponse findById(long id) {
-		AppointmentEntity appointmentEntity = appointmentRepo.findById(id).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_APPOINTMENT.name()));
+		AppointmentEntity appointmentEntity = appointmentRepo.findById(id)
+				.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_APPOINTMENT.name()));
 		AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointmentEntity);
-		appointmentResponse.setServices(new HashSet<>( appointmentEntity.getServices().stream().map(ServiceEntity::getName).toList()));
-		VoucherEntity voucherEntity=appointmentEntity.getVoucher();
+		appointmentResponse.setServices(
+				new HashSet<>(appointmentEntity.getServices().stream().map(ServiceEntity::getName).toList()));
+		VoucherEntity voucherEntity = appointmentEntity.getVoucher();
 		double discount = 5.0;
-		if(voucherEntity!= null)
-			discount+= voucherEntity.getPercent();
+		if (voucherEntity != null)
+			discount += voucherEntity.getPercent();
 		appointmentResponse.setDiscount(discount);
 		return appointmentResponse;
 	}
+
+	@Override
+	public List<AppointmentResponse> getToday() {
+		List<AppointmentEntity> responses = appointmentRepo.findByDate(LocalDate.now());
+		return responses.stream().map((x) -> {
+			AppointmentResponse response = appointmentMapper.toAppointmentResponse(x);
+			double discount = 5.0;
+			if (x.getVoucher() != null) {
+				discount += x.getVoucher().getPercent();
+			}
+			response.setDiscount(discount);
+			response.setServices(new HashSet<String>(x.getServices().stream().map(ServiceEntity::getName).toList()));
+			return response;
+		}).toList();
+	}
+
+	@Override
+	public List<AppointmentResponse> getTomorow() {
+		List<AppointmentEntity> responses = appointmentRepo.findByDate(LocalDate.now().plusDays(1));
+		return responses.stream().map((x) -> {
+			AppointmentResponse response = appointmentMapper.toAppointmentResponse(x);
+			double discount = 5.0;
+			if (x.getVoucher() != null) {
+				discount += x.getVoucher().getPercent();
+			}
+			response.setDiscount(discount);
+			response.setServices(new HashSet<String>(x.getServices().stream().map(ServiceEntity::getName).toList()));
+			return response;
+		}).toList();
+	}
+
+	@Override
+	public PaginationResponse getTotalPage() {
+		return new PaginationResponse((int)Math.ceil(1.0*appointmentRepo.count()/5));
+	}
+	@Override
+	public PaginationResponse getTotalPageToday() {
+		return new PaginationResponse((int)Math.ceil(1.0*appointmentRepo.countByDate(LocalDate.now())/5));
+	}
+	@Override
+	public PaginationResponse getTotalPageTomorow() {
+		return new PaginationResponse((int)Math.ceil(1.0*appointmentRepo.countByDate(LocalDate.now().plusDays(1))/5));
+	}
+	
+	@Override
+	public List<AppointmentResponse> searchByFullName(String fullName) {
+		return appointmentRepo.findByCustomerFullNameIgnoreCaseContaining(fullName).stream().map((x) -> {
+			AppointmentResponse response = appointmentMapper.toAppointmentResponse(x);
+			double discount = 5.0;
+			if (x.getVoucher() != null) {
+				discount += x.getVoucher().getPercent();
+			}
+			response.setDiscount(discount);
+			response.setServices(new HashSet<String>(x.getServices().stream().map(ServiceEntity::getName).toList()));
+			return response;
+		}).toList();
+	}
+	@Override
+	public List<AppointmentResponse> getAll(int page) {
+		Pageable pages = PageRequest.of(page-1, 5);
+		return appointmentRepo.findAll(pages).getContent().stream().map((x) -> {
+			AppointmentResponse response = appointmentMapper.toAppointmentResponse(x);
+			double discount = 5.0;
+			if (x.getVoucher() != null) {
+				discount += x.getVoucher().getPercent();
+			}
+			response.setDiscount(discount);
+			response.setServices(new HashSet<String>(x.getServices().stream().map(ServiceEntity::getName).toList()));
+			return response;
+		}).toList();
+	}
+
+}
+
 //	@Override
 //	public AppointmentResponse save(Date date) {
 //		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -128,5 +213,3 @@ public class AppointmentSevice implements IAppointmentSevice {
 //		request.setCustomerID(customerEntity.getId());
 //		return save(request);
 //	}
-
-}

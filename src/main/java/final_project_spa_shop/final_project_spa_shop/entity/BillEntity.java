@@ -32,9 +32,6 @@ public class BillEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	long id;
-	@ManyToOne
-	@JoinColumn(name="customer_id")
-	CustomerEntity customer;
 	@ManyToMany
 	@JoinTable(name="bill_service",
 	joinColumns =@JoinColumn(name= "bill_id"),

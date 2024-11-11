@@ -3,7 +3,6 @@ package final_project_spa_shop.final_project_spa_shop.controller.api;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,18 +18,35 @@ import final_project_spa_shop.final_project_spa_shop.dto.request.AccountRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.request.EmployeeRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.ApiResponse;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.EmployeeResponse;
+import final_project_spa_shop.final_project_spa_shop.dto.respone.PaginationResponse;
 import final_project_spa_shop.final_project_spa_shop.service.IEmployeeService;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @RestController
 @RequestMapping("employee")
+@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@RequiredArgsConstructor
 public class EmployeeController {
-	@Autowired
-	private IEmployeeService employeeService;
+	 IEmployeeService employeeService;
 
 	@GetMapping("/employees")
 	public ResponseEntity<ApiResponse<List<EmployeeResponse>>> getAll() {
 		return new ResponseEntity<>(new ApiResponse<>(employeeService.getAll()), HttpStatus.OK);
+	}
+	@GetMapping("/myInformation")
+	public ResponseEntity<ApiResponse<EmployeeResponse>> myInformation() {
+		return new ResponseEntity<>(new ApiResponse<>(employeeService.myInformation()), HttpStatus.OK);
+	}
+	@GetMapping("/totalPage")
+	public ResponseEntity<ApiResponse<PaginationResponse>> getTotalPage() {
+		return new ResponseEntity<>(new ApiResponse<>(employeeService.getTotalPage()), HttpStatus.OK);
+	}
+	@GetMapping("/all/{page}")
+	public ResponseEntity<ApiResponse<List<EmployeeResponse>>> getAllByPage(@PathVariable int page) {
+		return new ResponseEntity<>(new ApiResponse<>(employeeService.getAllByPage(page)), HttpStatus.OK);
 	}
 	@GetMapping("/limit")
 	public ResponseEntity<ApiResponse<List<EmployeeResponse>>> getAllLimit(@RequestParam int limit) {

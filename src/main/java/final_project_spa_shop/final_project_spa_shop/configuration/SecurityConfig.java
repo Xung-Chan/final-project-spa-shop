@@ -55,8 +55,8 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.GET,publicGetEndpoints)
 				.permitAll()
 				.anyRequest()
-				.authenticated()
-//				.permitAll()
+//				.authenticated()
+				.permitAll()
 				);
 		httpSecurity.oauth2ResourceServer(oauth2->
 				oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()).jwtAuthenticationConverter(authenticationConverter())));

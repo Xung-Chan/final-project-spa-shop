@@ -23,22 +23,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Service(value = "billService")
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal =  true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class BillService implements IBillService {
 	BillRepository billRepo;
 	CustomerRepository customerRepository;
 	ServiceRepository serviceRepository;
 	BillMapper billMapper;
-	//thống kê theo thời gian
+
+	// thống kê theo thời gian
 	@Override
 	public List<BillResponse> getAll() {
 		return billRepo.findAll().stream().map(billMapper::toBillResponse).toList();
-	}
-
-	@Override
-	public List<BillResponse> getAllByCustomerID(long id) {
-		return billRepo.findByCustomerId(id).stream().map(billMapper::toBillResponse).toList();
 	}
 
 	@Override
@@ -90,25 +86,27 @@ public class BillService implements IBillService {
 //	}
 	@Override
 	public BillResponse create(BillRequest billRequest) {
-		BillEntity  billEntity = billMapper.toBillEntity(billRequest);
-		billEntity.setCustomer(customerRepository.findById(billRequest.getCustomerID()).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_CUSTOMER.name())));
-		Set<ServiceEntity> services = new HashSet<ServiceEntity>(billRequest.getServices()
-				.stream()
-				.map((x)->{
-					return serviceRepository.findById(x).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_SERVICE.name()));
-				}).toList());
+		BillEntity billEntity = billMapper.toBillEntity(billRequest);
+		Set<ServiceEntity> services = new HashSet<ServiceEntity>(billRequest.getServices().stream().map((x) -> {
+			return serviceRepository.findById(x)
+					.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_SERVICE.name()));
+		}).toList());
 		billEntity.setServices(services);
 		BillResponse billResponse = billMapper.toBillResponse(billRepo.save(billEntity));
-		billResponse.setServices(new HashSet<String>( billEntity.getServices().stream().map(ServiceEntity::getName).toList()));
+		billResponse.setServices(
+				new HashSet<String>(billEntity.getServices().stream().map(ServiceEntity::getName).toList()));
 		return billResponse;
 	}
+
 	@Override
 	public BillResponse pay(long id) {
-		BillEntity billEntity = billRepo.findById(id).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_BILL.name()));
+		BillEntity billEntity = billRepo.findById(id)
+				.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_BILL.name()));
 		billEntity.setStatus(true);
 		billEntity = billRepo.save(billEntity);
 		BillResponse billResponse = billMapper.toBillResponse(billEntity);
-		billResponse.setServices(new HashSet<String>( billEntity.getServices().stream().map(ServiceEntity::getName).toList()));
+		billResponse.setServices(
+				new HashSet<String>(billEntity.getServices().stream().map(ServiceEntity::getName).toList()));
 		return billResponse;
 	}
 

@@ -14,7 +14,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public class BillResponse {
 	long id;
-	String customerName;
 	Set<String> services;
 	boolean status = false;
 	double cost;

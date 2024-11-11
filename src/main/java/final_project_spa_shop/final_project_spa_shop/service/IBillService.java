@@ -14,7 +14,6 @@ public interface IBillService  {
 	public BillResponse create(BillRequest billRequest) ;
 //	public BillResponse save(BillRequest object) ;
 
-	public List<BillResponse> getAllByCustomerID(long id);
 
 	// thanh toán
 	public BillResponse getById(long id);

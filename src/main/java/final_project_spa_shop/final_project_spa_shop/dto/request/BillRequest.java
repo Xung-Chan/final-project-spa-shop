@@ -16,7 +16,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public class BillRequest {
 	long id;
-	long customerID;
 	@NotNull(message = "NULL_VALUE")
 	Set<Long> services;
 	boolean status = false;

@@ -7,12 +7,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-	@GetMapping("/dashboard")
+	@GetMapping("/home")
 	public String getIndex() {
 		return "admin/index";
 	}
-	@GetMapping("/payment")
+	@GetMapping("/booking")
 	public String payment() {
-		return "customer/payment";
+		return "admin/booking";
+	}
+	@GetMapping("/clerk")
+	public String clerk() {
+		return "admin/clerk";
+	}
+	@GetMapping("/addEmployee")
+	public String addEmployee() {
+		return "admin/addEmployee";
+	}
+	@GetMapping("/profile")
+	public String profile() {
+		return "admin/profile";
 	}
 }

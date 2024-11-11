@@ -1,0 +1,99 @@
+<div th:replace="~{/admin/header}"></div>
+
+<div class="container-fluid pt-4 px-4">
+    <h3 class="mb-0 text-primary" style="text-align: center;">QUẢN LÝ NHÂN VIÊN</h3>
+    <div class="bg-light text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Danh sách nhân viên</h6>
+            <a href="/admin/addEmployee" type="button" class="btn btn-primary"><i class="fa fa-plus "></i>&nbsp Thêm
+                nhân viên</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Họ và tên</th>
+                        <th scope="col">Số điện thoại</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Ngày sinh</th>
+                        <th scope="col">Cập nhật gần nhất</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody id="employeeContainer">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>username</td>
+                        <td>fullname</td>
+                        <td>phonNumber</td>
+                        <td>jhon@email.com</td>
+                        <td>date</td>
+                        <td>update</td>
+                        <td>
+                            <button type="button" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                            <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end">
+                <div id="pagination-page"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{/admin/footer}"></div>
+<script>
+    const initPage = async function () {
+        await fetchData("/employee/totalPage", (apiResponse) => {
+            if (!apiResponse.sucess) {
+                console.error(apiResponse.message)
+            }
+            const totalPage = apiResponse.result.totalPage
+            $('#pagination-page').twbsPagination({
+                totalPages: totalPage,
+                visiblePages: 5,
+                onPageClick: async function (event, page) {
+                    let endpoint = "/employee/all/" + page
+                    renderEmployee(endpoint)
+                }
+            });
+        })
+    }
+    const renderEmployee = async function (endpoint) {
+        await fetchData(endpoint, (apiResponse) => {
+            if (!apiResponse.success) {
+                console.error(apiResponse.message)
+            }
+            const employees = apiResponse.result
+            let container = $("#employeeContainer")
+            let html = ""
+            employees.forEach((employee, index) => {
+                html += `
+                <tr>
+                        <th scope="row">${index + 1}</th>
+                        <td>${employee.username}</td>
+                        <td>${employee.fullName}</td>
+                        <td>${employee.phoneNumber}</td>
+                        <td>${employee.email}</td>
+                        <td>${employee.birth}</td>
+                        <td>${employee.updated_at}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `
+            })
+            container.html(html)
+        })
+    }
+    const renderAll = async function () {
+        $('#pagination-page').show()
+        renderEmployee("/appointment/all/1")
+        $('#pagination-page').twbsPagination('show', 1);
+    }
+    initPage()
+</script>

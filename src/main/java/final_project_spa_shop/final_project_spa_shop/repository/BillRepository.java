@@ -9,5 +9,4 @@ import final_project_spa_shop.final_project_spa_shop.entity.BillEntity;
 
 @Repository
 public interface BillRepository extends JpaRepository<BillEntity,Long>{
-	public List<BillEntity> findByCustomerId(long id);
 }

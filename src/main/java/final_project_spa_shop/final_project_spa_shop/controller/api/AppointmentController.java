@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import final_project_spa_shop.final_project_spa_shop.dto.request.AppointmentRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.ApiResponse;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.AppointmentResponse;
+import final_project_spa_shop.final_project_spa_shop.dto.respone.PaginationResponse;
 import final_project_spa_shop.final_project_spa_shop.service.IAppointmentSevice;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -29,10 +30,41 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 public class AppointmentController {
 	IAppointmentSevice appointmentSer;
+
+	@GetMapping("/totalPage")
+	public ResponseEntity<ApiResponse<PaginationResponse>> getTotalPage() {
+		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.getTotalPage()), HttpStatus.OK);
+	}
+	@GetMapping("/totalPage/today")
+	public ResponseEntity<ApiResponse<PaginationResponse>> getTotalPageToday() {
+		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.getTotalPageToday()), HttpStatus.OK);
+	}
+	@GetMapping("/totalPage/tomorow")
+	public ResponseEntity<ApiResponse<PaginationResponse>> getTotalPageTomorow() {
+		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.getTotalPageTomorow()), HttpStatus.OK);
+	}
+	@GetMapping("/today")
+	public ResponseEntity<ApiResponse<List<AppointmentResponse>>> getToday() {
+		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.getToday()), HttpStatus.OK);
+	}
+	@GetMapping("/tomorow")
+	public ResponseEntity<ApiResponse<List<AppointmentResponse>>> getTomorow() {
+		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.getTomorow()), HttpStatus.OK);
+	}
+	
+	@GetMapping("/search")
+	public ResponseEntity<ApiResponse<List<AppointmentResponse>>> searchByFullName(@RequestParam String fullName) {
+		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.searchByFullName(fullName)), HttpStatus.OK);
+	}
+	@GetMapping("/all/{page}")
+	public ResponseEntity<ApiResponse<List<AppointmentResponse>>> getAllByPage(@PathVariable int page) {
+		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.getAll(page)), HttpStatus.OK);
+	}
 	@GetMapping("/appointments")
 	public ResponseEntity<ApiResponse<List<AppointmentResponse>>> getAll() {
 		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.getAll()), HttpStatus.OK);
 	}
+
 	@GetMapping("/myAppointment")
 	public ResponseEntity<ApiResponse<List<AppointmentResponse>>> myAppointment() {
 		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.myAppointment()), HttpStatus.OK);
@@ -52,18 +84,19 @@ public class AppointmentController {
 	public ResponseEntity<ApiResponse<AppointmentResponse>> save(@Valid @RequestBody AppointmentRequest appoint) {
 		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.save(appoint)), HttpStatus.CREATED);
 	}
-	
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<AppointmentResponse>> getSingle(@PathVariable long id) {
 		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.findById(id)), HttpStatus.OK);
 	}
+
 	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<AppointmentResponse>> save(@PathVariable long id,
 			@Valid @RequestBody AppointmentRequest appoint) {
 		appoint.setId(id);
 		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.save(appoint)), HttpStatus.CREATED);
 	}
+
 	@PutMapping("/payment/{id}")
 	public ResponseEntity<ApiResponse<AppointmentResponse>> pay(@PathVariable long id) {
 		return new ResponseEntity<>(new ApiResponse<>(appointmentSer.pay(id)), HttpStatus.OK);
