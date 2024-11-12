@@ -1,0 +1,95 @@
+<div th:replace="~{/admin/header}"></div>
+
+
+
+<div class="container-fluid pt-4 px-4">
+    <h3 class="mb-0 text-primary" style="text-align: center;">QUẢN LÝ DỊCH VỤ</h3>
+    <div class="bg-light text-center rounded p-4">
+
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Danh sách dịch vụ</h6>
+            <a href="/admin/addService" type="button" class="btn btn-primary"><i class="fa fa-plus "></i>&nbsp Thêm dịch
+                vụ</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Ảnh</th>
+                        <th scope="col">Tên dịch vụ</th>
+                        <th scope="col">Mô tả</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody id="serviceContainer">
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>jacob@email.com</td>
+                        <td>AU</td>
+                        <td>
+                            <button type="button" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                            <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end">
+                <div id="pagination-page"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{/admin/footer}"></div>
+<script>
+    const initPage = async function () {
+        await fetchData("/service/totalPage", (apiResponse) => {
+            if (!apiResponse.sucess) {
+                console.error(apiResponse.message)
+            }
+            const totalPage = apiResponse.result.totalPage
+            $('#pagination-page').twbsPagination({
+                totalPages: totalPage,
+                visiblePages: 5,
+                onPageClick: async function (event, page) {
+                    let endpoint = "/service/all/" + page
+                    renderService(endpoint)
+                }
+            });
+        })
+    }
+    const renderService = async function (endpoint) {
+        await fetchData(endpoint, (apiResponse) => {
+            if (!apiResponse.success) {
+                console.error(apiResponse.message)
+            }
+            const services = apiResponse.result
+            let container = $("#serviceContainer")
+            let html = ""
+            services.forEach((service, index) => {
+                let status = "Ngừng cung cấp"
+                if (service.status)
+                    status = "Đang cung cấp"
+                html += `
+                    <tr>
+                        <td scope="row">${index + 1}</td>
+                        <td scope="col"><img class="rounded-circle me-lg-2" id="account-avatar" src="/customer/img/${service.imagePath}" alt="" style="width:   40px; height: 40px;"></td>
+                        <td scope="col">${service.name}</td>
+                        <td scope="col">${service.description}</td>
+                        <td scope="col">${service.price}</td>
+                        <td scope="col">${status}</td>
+                        <td scope="col">
+                            <a href="/admin/editService?id=${service.id}" class="btn btn-success mx-2 my-2"><i class="fa fa-edit"></i></a>
+                        </td>
+                    </tr>
+                `
+            })
+            container.html(html)
+        })
+    }
+    initPage()
+</script>

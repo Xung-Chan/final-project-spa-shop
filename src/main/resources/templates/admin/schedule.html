@@ -1,0 +1,93 @@
+<div th:replace="~{/admin/header}"></div>
+
+
+
+<div class="container-fluid pt-4 px-4">
+    <h3 class="mb-0 text-primary" style="text-align: center;">QUẢN LÝ LỊCH TRỰC</h3>
+    <div class="bg-light text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Danh sách lịch trực</h6>
+            <div>
+                <button type="button" class="btn btn-success" onclick="renderToday()">Hôm nay</button>
+                <button type="button" class="btn btn-warning" onclick="renderTomorow()">Ngày mai</button>
+                <a href="/admin/addSchedule" type="button" class="btn btn-primary"><i class="fa fa-plus "></i>&nbsp Thêm
+                    lịch
+                    trực</a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Ngày</th>
+                        <th scope="col">Tên nhân viên</th>
+                        <th scope="col">Điểm danh</th>
+                        <th scope="col">Xóa</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleContainer">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>John</td>
+                        <td>Doe</td>
+                        <td>
+                            <button type="button" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div th:replace="~{/admin/footer}"></div>
+<script>
+    const renderSchedule = async function (endpoint) {
+        await fetchData(endpoint, (apiResponse) => {
+            if (!apiResponse.success) {
+                console.error(apiResponse.message)
+            }
+            const schedules = apiResponse.result
+            const container = $("#scheduleContainer")
+            let html = ""
+            schedules.forEach((schedule, index) => {
+                let check = "Đã điểm danh"
+                if (!schedule.status) {
+                    check = ` <button type="button" class="btn btn-success" onclick="check(${schedule.id})"><i class="fa fa-edit"></i></button>`
+                }
+                html += ` <tr>
+                        <th scope="row">${index + 1}</th>
+                        <td>${schedule.date}</td>
+                        <td>${schedule.employeeName}</td>
+                        <td>
+                           ${check}
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `
+            })
+            container.html(html)
+        })
+    }
+    const renderToday = async function () {
+        await renderSchedule("/schedule/today")
+    }
+    const renderTomorow = async function () {
+        await renderSchedule("/schedule/tomorow")
+    }
+    const check = async function (id) {
+        await fetchData("/schedule/check?id=" + id, (apiResponse) => {
+            if (!apiResponse.success) {
+                console.error(apiResponse.message)
+            }
+            alert("Đã điểm danh")
+            renderToday();
+        })
+    }
+    renderToday()
+</script>

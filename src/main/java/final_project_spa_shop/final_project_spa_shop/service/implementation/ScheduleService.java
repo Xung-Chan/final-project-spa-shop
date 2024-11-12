@@ -1,5 +1,6 @@
 package final_project_spa_shop.final_project_spa_shop.service.implementation;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import final_project_spa_shop.final_project_spa_shop.dto.request.ScheduleRequest
 import final_project_spa_shop.final_project_spa_shop.dto.respone.ScheduleResponse;
 import final_project_spa_shop.final_project_spa_shop.entity.EmployeeEntity;
 import final_project_spa_shop.final_project_spa_shop.entity.ScheduleEntity;
+import final_project_spa_shop.final_project_spa_shop.exception.ErrorCode;
 import final_project_spa_shop.final_project_spa_shop.mapper.ScheduleMapper;
 import final_project_spa_shop.final_project_spa_shop.repository.EmployeeRepository;
 import final_project_spa_shop.final_project_spa_shop.repository.ScheduleRepository;
@@ -28,6 +30,14 @@ public class ScheduleService implements IScheduleService {
 	@Override
 	public List<ScheduleResponse> getAll() {
 		return scheduleRepo.findAll().stream().map(scheduleMapper::toScheduleResponse).toList();
+	}
+	@Override
+	public List<ScheduleResponse> getToday() {
+		return scheduleRepo.findByDate(LocalDate.now()).stream().map(scheduleMapper::toScheduleResponse).toList();
+	}
+	@Override
+	public List<ScheduleResponse> getTomorow() {
+		return scheduleRepo.findByDate(LocalDate.now().plusDays(1)).stream().map(scheduleMapper::toScheduleResponse).toList();
 	}
 
 	@Override
@@ -50,6 +60,13 @@ public class ScheduleService implements IScheduleService {
 			throw new EntityNotFoundException("INVALID_EMPLOYEE");
 		entity.setEmployee(emOptional.get());
 		return scheduleMapper.toScheduleResponse(scheduleRepo.save(entity));
+	}
+	@Override
+	public ScheduleResponse check(long id) {
+		ScheduleEntity scheduleEntity = scheduleRepo.findById(id).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_SCHEDULE.name()));
+		scheduleEntity.setStatus(true);
+		return scheduleMapper.toScheduleResponse( scheduleRepo.save(scheduleEntity));
+		
 	}
 
 }

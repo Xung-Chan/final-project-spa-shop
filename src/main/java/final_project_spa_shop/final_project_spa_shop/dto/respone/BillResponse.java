@@ -1,5 +1,6 @@
 package final_project_spa_shop.final_project_spa_shop.dto.respone;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import lombok.AccessLevel;
@@ -17,4 +18,5 @@ public class BillResponse {
 	Set<String> services;
 	boolean status = false;
 	double cost;
+	LocalDate updated_at;
 }

@@ -20,6 +20,10 @@ const renderEditProfile = function (profile) {
             <div class="col-xl-12">
             <input type="date" name="birth" value="${profile.birth}" class="form-control bg-white border-0 py-3 px-4"
             placeholder="Ngày sinh" >
+            <div>Avatar</div>
+            <div class="col-xl-12">
+                <input type="file" name="image" class="form-control bg-white border-0 py-3 px-4"
+                placeholder="Avatar" >
             </div>
             
         `;

@@ -1,0 +1,57 @@
+<div th:replace="~{/admin/header}"></div>
+<div class="container-fluid contact py-5">
+    <div class="container pt-5">
+        <div class="row g-4 align-items-center justify-content-center">
+            <div class="col-lg-6 d-flex justify-content-center">
+                <div style="background-color: #e9ecef;" class="form-control rounded p-5 user-form">
+                    <form>
+                        <div class="display-6 mb-4" style="color: var(--bs-primary); text-align: center;"><b>THÊM DỊCH
+                                VỤ</b></div>
+                        <div class="row gx-4 gy-3">
+                            <div class="col-xl-12">
+                                <input name="name" type="text" class="form-control bg-white border-0 py-3 px-4"
+                                    placeholder="Tên dịch vụ" required>
+                            </div>
+                            <div class="col-xl-12">
+                                <input name="description" type="text" class="form-control bg-white border-0 py-3 px-4"
+                                    placeholder="Mô tả dịch vụ" required>
+                            </div>
+                            <div class="col-xl-12">
+                                <input name="price" type="number" class="form-control bg-white border-0 py-3 px-4"
+                                    placeholder="Giá" required>
+                            </div>
+
+                            <div class="col-xl-12">
+                                <input name="image" required type="file" accept="image/*"
+                                    class="form-control bg-white border-0 py-3 px-4" placeholder="Ảnh đại diện">
+                            </div>
+                            <div class="col-12">
+                                <button class="rounded-pill btn btn-primary btn-primary-outline-0 w-100 py-3 px-5"
+                                    type="submit">Thêm</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{/admin/footer}"></div>
+<script>
+    $("form").submit(async function (e) {
+        e.preventDefault()
+        const form = e.target
+        const formData = new FormData(form)
+        await fetchData("/service", (apiResponse) => {
+            if (!apiResponse.success) {
+                alert("Thêm dịch vụ thất bại!\nReason:" + apiResponse.message)
+                return
+            }
+            alert(`Thêm dịch vụ thành công`);
+            window.location.href = "/admin/service"
+        }, {
+            method: "POST",
+            body: formData
+        })
+    })
+</script>

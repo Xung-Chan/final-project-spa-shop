@@ -1,5 +1,6 @@
 package final_project_spa_shop.final_project_spa_shop.service.implementation;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +15,6 @@ import final_project_spa_shop.final_project_spa_shop.entity.ServiceEntity;
 import final_project_spa_shop.final_project_spa_shop.exception.ErrorCode;
 import final_project_spa_shop.final_project_spa_shop.mapper.BillMapper;
 import final_project_spa_shop.final_project_spa_shop.repository.BillRepository;
-import final_project_spa_shop.final_project_spa_shop.repository.CustomerRepository;
 import final_project_spa_shop.final_project_spa_shop.repository.ServiceRepository;
 import final_project_spa_shop.final_project_spa_shop.service.IBillService;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,7 +27,6 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 public class BillService implements IBillService {
 	BillRepository billRepo;
-	CustomerRepository customerRepository;
 	ServiceRepository serviceRepository;
 	BillMapper billMapper;
 
@@ -35,6 +34,22 @@ public class BillService implements IBillService {
 	@Override
 	public List<BillResponse> getAll() {
 		return billRepo.findAll().stream().map(billMapper::toBillResponse).toList();
+	}
+
+	@Override
+	public List<BillResponse> getAllThisYear() {
+		return billRepo.findPaidBillsByYear(LocalDate.now().getYear()).stream().map((x) -> {
+			BillResponse billResponse = billMapper.toBillResponse(x);
+			billResponse
+					.setServices(new HashSet<String>(x.getServices().stream().map(ServiceEntity::getName).toList()));
+			return billResponse;
+		}).toList();
+	}
+
+	@Override
+	public List<BillResponse> getAllThisMonth() {
+		return billRepo.findPaidBillsByYearAndMonth(LocalDate.now().getYear(), LocalDate.now().getMonthValue()).stream()
+				.map(billMapper::toBillResponse).toList();
 	}
 
 	@Override
@@ -54,36 +69,6 @@ public class BillService implements IBillService {
 		return billMapper.toBillResponse(result.get());
 	}
 
-//	@Override
-//	public BillResponse save(BillRequest object) {
-//		BillEntity entity = billMapper.toBillEntity(object);
-//		long id = entity.getId();
-//		if (id != 0)
-//			billRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("INVALID_BILL"));
-//		Optional<CustomerEntity> customerEntity = customerRepository.findById(object.getCustomerID());
-//		Optional<EmployeeEntity> employeeEntity = employeeRepository.findById(object.getEmployeeID());
-//		Optional<VoucherEntity> voucherOptional = voucherRepository.findById(object.getVoucherID());
-//		if (!customerEntity.isPresent())
-//			throw new EntityNotFoundException("INVALID_CUSTOMER");
-//		if (!employeeEntity.isPresent())
-//			throw new EntityNotFoundException("INVALID_EMPLOYEE");
-//		if (voucherOptional.isPresent()) {
-//			VoucherEntity voucherEntity = voucherOptional.get();
-//			if (voucherEntity.getExpired_at().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-//					.isBefore(LocalDate.now())) {
-//				throw new EntityNotFoundException("INVALID_VOUCHER");
-//			}
-//			if (voucherEntity.getBill().getId() != entity.getId())
-//				throw new EntityExistsException("DUPLICATED_VOUCHER");
-//			entity.setVoucher(voucherOptional.get());
-//		}
-//		entity.setCustomer(customerEntity.get());
-//		entity.setEmployee(employeeEntity.get());
-//		entity.setServices(new HashSet<>(object.getServices().stream().map(
-//				x -> serviceRepository.findById(x).orElseThrow(() -> new EntityNotFoundException("INVALID_SERVICE")))
-//				.toList()));
-//		return billMapper.toBillResponse(billRepo.save(entity));
-//	}
 	@Override
 	public BillResponse create(BillRequest billRequest) {
 		BillEntity billEntity = billMapper.toBillEntity(billRequest);

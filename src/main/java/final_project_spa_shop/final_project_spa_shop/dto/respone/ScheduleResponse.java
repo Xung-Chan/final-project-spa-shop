@@ -16,4 +16,5 @@ public class ScheduleResponse {
 	long employeeID;
 	String employeeName;
 	Date date;
+	boolean status;
 }

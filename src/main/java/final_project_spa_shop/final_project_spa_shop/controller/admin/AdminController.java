@@ -27,4 +27,40 @@ public class AdminController {
 	public String profile() {
 		return "admin/profile";
 	}
+	@GetMapping("/changePassword")
+	public String changePassword() {
+		return "admin/changePassword";
+	}
+	@GetMapping("/editProfile")
+	public String editProfile() {
+		return "admin/editProfile";
+	}
+	@GetMapping("/schedule")
+	public String schedule() {
+		return "admin/schedule";
+	}
+	@GetMapping("/addSchedule")
+	public String addSchedule() {
+		return "admin/addSchedule";
+	}
+	@GetMapping("/customer")
+	public String customer() {
+		return "admin/customer";
+	}
+	@GetMapping("/service")
+	public String service() {
+		return "admin/service";
+	}
+	@GetMapping("/addService")
+	public String addService() {
+		return "admin/addService";
+	}
+	@GetMapping("/editService")
+	public String editService() {
+		return "admin/editService";
+	}
+	@GetMapping("/revenue")
+	public String revenue() {
+		return "admin/revenue";
+	}
 }

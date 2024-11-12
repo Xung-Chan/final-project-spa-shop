@@ -1,0 +1,66 @@
+<div th:replace="~{/admin/header}"></div>
+<div class="container-fluid contact py-5">
+    <div class="container pt-5">
+        <div class="row g-4 align-items-center justify-content-center">
+            <div class="col-lg-6 d-flex justify-content-center">
+                <div style="background-color: #e9ecef;" class="form-control rounded p-5 user-form">
+                    <form>
+                        <div class="display-6 mb-4" style="color: var(--bs-primary); text-align: center;"><b>THÊM LỊCH
+                                TRỰC</b></div>
+                        <div class="row gx-4 gy-3">
+                            <div class="col-xl-12">
+                                <input name="date" required type="text" class="form-control bg-white border-0 py-3 px-4"
+                                    placeholder="Ngày làm việc" onfocus="(this.type='date')" ,
+                                    onblur="(this.type='text')">
+                            </div>
+                            <div class="col-xl-12">
+                                <select class="form-select bg-white border-0 py-3 px-4" id="employee" name="employeeID"
+                                    required>
+                                </select>
+                            </div>
+
+                            <div class="col-12">
+                                <button class="rounded-pill btn btn-primary btn-primary-outline-0 w-100 py-3 px-5"
+                                    type="submit">Thêm</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{/admin/footer}"></div>
+<script>
+    const renderEmployee = async function () {
+        await fetchData("/employee/employees", (apiResponse) => {
+            if (!apiResponse.success) {
+                console.error(apiResponse.message);
+            }
+            let html = "<option selected>Chọn nhân viên</option>"
+            const employees = apiResponse.result
+            employees.forEach((employee) => {
+                html += `<option value="${employee.id}">${employee.fullName}</option>
+                `
+            })
+            $("#employee").html(html);
+        })
+    }
+    renderEmployee();
+    $("form").submit(async function (e) {
+        e.preventDefault()
+        const form = e.target
+        const formData = new FormData(form)
+        await fetchData("/schedule", (apiResponse) => {
+            if (!apiResponse.success) {
+                alert(apiResponse.message)
+                return
+            }
+            alert(`Thêm lịch trực thành công`);
+            window.location.href = "/admin/schedule"
+        }, {
+            method: "POST",
+            body: formData
+        })
+    })
+</script>

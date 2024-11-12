@@ -1,7 +1,10 @@
 package final_project_spa_shop.final_project_spa_shop.entity;
 
 
+import java.time.LocalDate;
 import java.util.Set;
+
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,4 +44,6 @@ public class BillEntity {
 	boolean status = false;
 	@Column(name="cost")
 	double cost;
+	@UpdateTimestamp
+	LocalDate updated_at;
 }

@@ -3,6 +3,8 @@ package final_project_spa_shop.final_project_spa_shop.service.implementation;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,8 @@ import final_project_spa_shop.final_project_spa_shop.dto.request.AccountRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.request.CustomerRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.AccountResponse;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.CustomerResponse;
+import final_project_spa_shop.final_project_spa_shop.dto.respone.EmployeeResponse;
+import final_project_spa_shop.final_project_spa_shop.dto.respone.PaginationResponse;
 import final_project_spa_shop.final_project_spa_shop.entity.CustomerEntity;
 import final_project_spa_shop.final_project_spa_shop.exception.ErrorCode;
 import final_project_spa_shop.final_project_spa_shop.mapper.CustomerMapper;
@@ -51,11 +55,10 @@ public class CustomerService implements ICustomerService {
 
 	@Override
 	public CustomerResponse delete(long id) {
-		Optional<CustomerEntity> result = customerRepository.findById(id);
-		if (!result.isPresent())
-			throw new EntityNotFoundException("INVALID_CUSTOMER");
+		CustomerEntity customerEntity = customerRepository.findById(id).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_CUSTOMER.name()));
+		
 		customerRepository.deleteById(id);
-		return customerMapper.toCustomerRessponse(result.get());
+		return null;
 	}
 
 	@Override
@@ -105,11 +108,21 @@ public class CustomerService implements ICustomerService {
 		return customerMapper.toCustomerRessponse(result.get());
 	}
 
+	@Override
 	public CustomerResponse loadMyInformation() {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		return loadUserByUsername(username);
 	}
+	@Override
+	public List<CustomerResponse> getAllByPage(int page) {
+		Pageable pages = PageRequest.of(page - 1, 5);
+		return customerRepository.findAll(pages).getContent().stream().map(customerMapper::toCustomerRessponse).toList();
+	}
 
+	@Override
+	public PaginationResponse getTotalPage() {
+		return new PaginationResponse((int) Math.ceil(1.0 * customerRepository.count() / 5));
+	}
 	
 
 }

@@ -43,22 +43,25 @@ public class EmployeeService implements IEmployeeService {
 	public List<EmployeeResponse> getAll() {
 		return employeeRepository.findAll().stream().map(employeeMapper::toEmployeeResponse).toList();
 	}
+
 	@Override
 	public EmployeeResponse myInformation() {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		return employeeMapper.toEmployeeResponse(employeeRepository.findByAccountUsername(username).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_EMPLOYEE.name())));
+		return employeeMapper.toEmployeeResponse(employeeRepository.findByAccountUsername(username)
+				.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_EMPLOYEE.name())));
 	}
-	@Override	
+
+	@Override
 	public List<EmployeeResponse> getAllByPage(int page) {
-		Pageable pages = PageRequest.of(page-1, 5);
+		Pageable pages = PageRequest.of(page - 1, 5);
 		return employeeRepository.findAll(pages).getContent().stream().map(employeeMapper::toEmployeeResponse).toList();
 	}
-	
+
 	@Override
 	public PaginationResponse getTotalPage() {
-		return new PaginationResponse((int)Math.ceil(1.0*employeeRepository.count()/5));
+		return new PaginationResponse((int) Math.ceil(1.0 * employeeRepository.count() / 5));
 	}
-	
+
 	@Override
 	public List<EmployeeResponse> getAllLimit(int limit) {
 		Pageable pages = PageRequest.of(0, limit);
@@ -89,7 +92,7 @@ public class EmployeeService implements IEmployeeService {
 		entity.setImagePath(imagePath);
 		entity.setAccount(accountRepository.findByUsername(accountRequest.getUsername())
 				.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_USERNAME.getMessage())));
-		EmployeeResponse employeeResponse= employeeMapper.toEmployeeResponse(employeeRepository.save(entity));
+		EmployeeResponse employeeResponse = employeeMapper.toEmployeeResponse(employeeRepository.save(entity));
 		employeeResponse.setUsername(accountResponse.getUsername());
 		employeeResponse.setPassword(accountResponse.getPassword());
 		return employeeResponse;
@@ -101,9 +104,14 @@ public class EmployeeService implements IEmployeeService {
 		EmployeeEntity oldEmployeeEntity = employeeRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_EMPLOYEE.getMessage()));
 		EmployeeEntity customerEntity = employeeMapper.toEmployeeEntity(employeeRequest);
-		String imagePath = imageSerive.saveImage(employeeRequest.getImage(),
-				"/customer/img/avt-" + customerEntity.getId());
-		customerEntity.setImagePath(imagePath);
+		if (employeeRequest.getImage() != null) {
+			String imagePath = imageSerive.saveImage(employeeRequest.getImage(),
+					"/customer/img/avt-" + customerEntity.getId());
+			customerEntity.setImagePath(imagePath);
+		}
+		else {
+			customerEntity.setImagePath(oldEmployeeEntity.getImagePath());
+		}
 		customerEntity.setAccount(oldEmployeeEntity.getAccount());
 		String username = oldEmployeeEntity.getAccount().getUsername();
 		String password = oldEmployeeEntity.getAccount().getPassword();
@@ -115,7 +123,8 @@ public class EmployeeService implements IEmployeeService {
 
 	@Override
 	public EmployeeResponse loadUserByUsername(String username) {
-		return employeeMapper.toEmployeeResponse(employeeRepository.findByAccountUsername(username).orElseThrow(()->new RuntimeException(ErrorCode.INVALID_EMPLOYEE.getMessage())));
+		return employeeMapper.toEmployeeResponse(employeeRepository.findByAccountUsername(username)
+				.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_EMPLOYEE.getMessage())));
 	}
 
 	@Override
@@ -123,5 +132,5 @@ public class EmployeeService implements IEmployeeService {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		return loadUserByUsername(username);
 	}
-	
+
 }

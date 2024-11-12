@@ -19,4 +19,5 @@ public class ScheduleRequest {
 	long employeeID;
 	@Future(message = "INVALID_TIME")
 	Date date;
+	boolean status=false;
 }

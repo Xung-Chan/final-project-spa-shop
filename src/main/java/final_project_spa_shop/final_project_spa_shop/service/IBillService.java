@@ -12,9 +12,7 @@ public interface IBillService  {
 	public BillResponse delete(long id) ;
 	public BillResponse pay(long id) ;
 	public BillResponse create(BillRequest billRequest) ;
-//	public BillResponse save(BillRequest object) ;
-
-
-	// thanh toán
+	public List<BillResponse> getAllThisMonth() ;
+	public List<BillResponse> getAllThisYear() ;
 	public BillResponse getById(long id);
 }

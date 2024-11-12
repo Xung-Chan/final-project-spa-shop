@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,14 +32,28 @@ public class ScheduleController {
 	public ResponseEntity<ApiResponse<List<ScheduleResponse>>> getAll() {
 		return new ResponseEntity<>(new ApiResponse<>(scheduleSer.getAll()), HttpStatus.OK);
 	}
-
+	
+	@GetMapping("/today")
+	public ResponseEntity<ApiResponse<List<ScheduleResponse>>> getToday() {
+		return new ResponseEntity<>(new ApiResponse<>(scheduleSer.getToday()), HttpStatus.OK);
+	}
+	@GetMapping("/tomorow")
+	public ResponseEntity<ApiResponse<List<ScheduleResponse>>> getTomorow() {
+		return new ResponseEntity<>(new ApiResponse<>(scheduleSer.getTomorow()), HttpStatus.OK);
+	}
+	
+	@GetMapping("/check")
+	public ResponseEntity<ApiResponse<ScheduleResponse>> check(@RequestParam long id) {
+		return new ResponseEntity<>(new ApiResponse<>(scheduleSer.check(id)), HttpStatus.OK);
+	}
+	
 	@DeleteMapping("")
 	public ResponseEntity<ScheduleResponse> delete(@RequestParam long id) {
 		return new ResponseEntity<>(scheduleSer.delete(id), HttpStatus.NO_CONTENT);
 	}
-
+	
 	@PostMapping("")
-	public ResponseEntity<ApiResponse<ScheduleResponse>> save(@Valid @RequestBody ScheduleRequest request) {
+	public ResponseEntity<ApiResponse<ScheduleResponse>> save(@Valid @ModelAttribute ScheduleRequest request) {
 		return new ResponseEntity<>(new ApiResponse<>(scheduleSer.save(request)), HttpStatus.CREATED);
 	}
 

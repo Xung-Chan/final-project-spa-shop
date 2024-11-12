@@ -13,5 +13,6 @@ public interface BillMapper {
 	public BillResponse toBillResponse(BillEntity entity);
 	@Mapping(target = "services",ignore = true)
 	@Mapping(target = "cost",ignore = true)
+	@Mapping(target = "updated_at",ignore = true)
 	public BillEntity toBillEntity(BillRequest request);
 }

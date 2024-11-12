@@ -33,5 +33,7 @@ public class ServiceEntity {
 	long price;
 	@Column(name="imagePath")
 	String imagePath=null;
+	@Column(name="status")
+	boolean status;
 	
 }

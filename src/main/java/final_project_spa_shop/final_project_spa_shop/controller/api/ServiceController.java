@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import final_project_spa_shop.final_project_spa_shop.dto.request.ServiceRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.ApiResponse;
+import final_project_spa_shop.final_project_spa_shop.dto.respone.PaginationResponse;
 import final_project_spa_shop.final_project_spa_shop.entity.ServiceEntity;
 import final_project_spa_shop.final_project_spa_shop.service.IServiceSerice;
 import jakarta.validation.Valid;
@@ -33,6 +35,18 @@ public class ServiceController {
 	public ResponseEntity<ApiResponse<List<ServiceEntity>>> getAll() {
 		return new ResponseEntity<>(new ApiResponse<>(serviceSer.getAll()), HttpStatus.OK);
 	}
+	@GetMapping("")
+	public ResponseEntity<ApiResponse<ServiceEntity>> getById(@RequestParam long id) {
+		return new ResponseEntity<>(new ApiResponse<>(serviceSer.getById(id)), HttpStatus.OK);
+	}
+	@GetMapping("/all/{page}")
+	public ResponseEntity<ApiResponse<List<ServiceEntity>>> getAllByPage(@PathVariable int page) {
+		return new ResponseEntity<>(new ApiResponse<>(serviceSer.getAll(page)), HttpStatus.OK);
+	}
+	@GetMapping("/totalPage")
+	public ResponseEntity<ApiResponse<PaginationResponse>> getTotalPage() {
+		return new ResponseEntity<>(new ApiResponse<>(serviceSer.getTotalPage()), HttpStatus.OK);
+	}
 	@GetMapping("/limit")
 	public ResponseEntity<ApiResponse<List<ServiceEntity>>> getAllLimit(@RequestParam int limit) {
 		return new ResponseEntity<>(new ApiResponse<>(serviceSer.getAllLimit(limit)), HttpStatus.OK);
@@ -46,7 +60,7 @@ public class ServiceController {
 	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<ServiceEntity>> save(@PathVariable long id,@ModelAttribute ServiceRequest request) {
 		request.setId(id);
-		return new ResponseEntity<>(new ApiResponse<>(serviceSer.save(request)), HttpStatus.CREATED);
+		return new ResponseEntity<>(new ApiResponse<>(serviceSer.update(request)), HttpStatus.CREATED);
 	}
 
 }

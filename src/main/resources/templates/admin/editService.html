@@ -1,15 +1,14 @@
-<div th:replace="~{/customer/header}"></div>
-<!-- Contact Start -->
+<div th:replace="~{/admin/header}"></div>
 <div class="container-fluid contact py-5">
     <div class="container pt-5">
         <div class="row g-4 align-items-center justify-content-center">
-            <div class="col-lg-8 d-flex justify-content-center">
-                <div class="form-control rounded p-5 user-form">
+            <div class="col-lg-6 d-flex justify-content-center">
+                <div style="background-color: #e9ecef;" class="form-control rounded p-5 user-form">
                     <form>
                         <div class="display-6 mb-4" style="color: var(--bs-primary); text-align: center;"><b>Thông tin
-                                người dùng</b></div>
+                                dịch vụ</b></div>
                         <div class="row gx-4 gy-3">
-                            <div id="profileContainer" class="row gx-4 gy-3">
+                            <div id="serviceContainer" class="row gx-4 gy-3">
                                 <div class="services-img d-flex align-items-center justify-content-center rounded">
                                     <img id="imageReview" src="/customer/img/services-1153.jpg"
                                         class="img-fluid rounded" alt="">
@@ -49,7 +48,7 @@
                                 </div>
                             </div>
                             <div class="col-12 d-flex justify-content-between mt-3">
-                                <a href="/customer/profile" class="btn btn-danger  rounded-pill"><i
+                                <a href="/admin/service" class="btn btn-danger  rounded-pill"><i
                                         class="fa fa-angle-left"></i>&nbsp Trở lại</a>
                                 <div>
 
@@ -64,41 +63,72 @@
         </div>
     </div>
 </div>
-<!-- Contact End -->
-<div th:replace="~{/customer/footer}"></div>
-<script src="/customer/js/renderEditProfile.js"></script>
+<div th:replace="~{/admin/footer}"></div>
 <script>
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const serviceID = urlParams.get('id');
     async function render() {
-        await fetchData(ApiEndpoints.myInformation, (apiResponse) => {
+        await fetchData("/service?id=" + serviceID, (apiResponse) => {
             if (!apiResponse.success) {
                 throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
             }
-            profile = apiResponse.result;
-            renderEditProfile(profile);
+            const service = apiResponse.result;
+
+            html = `   
+                    <div>Tên dịch vụ</div>
+                    <div class="col-xl-12">
+                        <input name="name" type="text" class="form-control bg-white border-0 py-3 px-4"
+                        value="${service.name}" required>
+                    </div>
+                    <div>Mô tả dịch vụ</div>
+                    <div class="col-xl-12">
+                        <input name="description" type="text" class="form-control bg-white border-0 py-3 px-4"
+                        value="${service.description}" required>
+                    </div>
+                    <div>Giá dịch vụ</div>
+                    <div class="col-xl-12">
+                        <input name="price" type="number" class="form-control bg-white border-0 py-3 px-4"
+                        value="${service.price}" required>
+                    </div>
+                    <div>Trạng thái dịch vụ</div>
+                    <div class="col-xl-12">
+                        <label for="working">Cung cấp</label>
+                        <input name="status" id="working" type="radio"  
+                        value="true" checked>
+                        <label for="notworking">Ngưng cung cấp</label>
+                        <input name="status" id="notworking" type="radio" 
+                        value="false" >
+                    </div>
+                    <div>Ảnh dịch vụ</div>
+                    <div class="col-xl-12">
+                        <input name="image" type="file" accept="image/*"
+                            class="form-control bg-white border-0 py-3 px-4" placeholder="Ảnh đại diện">
+                    </div>`
+            $("#serviceContainer").html(html)
+
         })
     }
     render()
+
     $("form").submit(async function (e) {
         e.preventDefault()
-        customerID = $("input[id='userID']").val()
-        const form = event.target;
-        const formData = new FormData(form);
+        const form = e.target
+        const formData = new FormData(form)
         const imageInput = form.querySelector("input[name='image']");
         if (imageInput.files.length === 0) {
             formData.delete("image")
         }
-        await fetchData(postEndpoints.customer + `/${customerID}`, (apiResponse) => {
+        await fetchData("/service/" + serviceID, (apiResponse) => {
             if (!apiResponse.success) {
-                alert("Cập nhật thất bại!")
+                alert("Thay đổi dịch vụ thất bại!\nReason:" + apiResponse.message)
                 return
             }
-            alert(`Cập nhật thành công`);
-            window.location.href = "/customer/profile"
+            alert(`Thay đổi dịch vụ thành công`);
+            window.location.href = "/admin/service"
         }, {
             method: "PUT",
             body: formData
         })
     })
-
-
 </script>

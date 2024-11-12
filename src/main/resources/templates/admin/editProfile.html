@@ -1,4 +1,5 @@
 <div th:replace="~{/admin/header}"></div>
+<!-- Contact Start -->
 <div class="container-fluid contact py-5">
     <div class="container pt-5">
         <div class="row g-4 align-items-center justify-content-center">
@@ -10,19 +11,20 @@
                         <div class="row gx-4 gy-3">
                             <div id="profileContainer" class="row gx-4 gy-3">
                                 <div class="services-img d-flex align-items-center justify-content-center rounded">
-                                    <img src="/customer/img/services-1153.jpg" class="img-fluid rounded" alt="">
+                                    <img id="imageReview" src="/customer/img/services-1153.jpg"
+                                        class="img-fluid rounded" alt="">
                                 </div>
 
                                 <div class="col-xl-12">
-                                    <input type="text" class="form-control bg-white border-0 py-3 px-4"
+                                    <input name="id" type="text" class="form-control bg-white border-0 py-3 px-4"
                                         placeholder="Mã người dùng" readonly>
                                 </div>
                                 <div class="col-xl-12">
-                                    <input type="text" class="form-control bg-white border-0 py-3 px-4"
+                                    <input name="username" type="text" class="form-control bg-white border-0 py-3 px-4"
                                         placeholder="Tên đăng nhập" readonly>
                                 </div>
                                 <div class="col-xl-12">
-                                    <input type="password" class="form-control bg-white border-0 py-3 px-4"
+                                    <input type="password" name="pass" class="form-control bg-white border-0 py-3 px-4"
                                         placeholder="Mật khẩu" readonly>
                                 </div>
                                 <div class="col-xl-12">
@@ -41,15 +43,18 @@
                                     <input type="date" class="form-control bg-white border-0 py-3 px-4"
                                         placeholder="Ngày sinh" readonly>
                                 </div>
+                                <div class="col-xl-12">
+                                    <input type="text" class="form-control bg-white border-0 py-3 px-4"
+                                        placeholder="Điểm tích lũy" readonly>
+                                </div>
                             </div>
                             <div class="col-12 d-flex justify-content-between mt-3">
+                                <a href="/customer/profile" class="btn btn-danger  rounded-pill"><i
+                                        class="fa fa-angle-left"></i>&nbsp Trở lại</a>
                                 <div>
-                                    <a href="/admin/changePassword"
-                                        class="btn btn-primary btn-primary-outline-0 rounded-pill me-2"><i
-                                            class="fa fa-code"></i>&nbsp Đổi mật khẩu</a>
-                                    <a href="/admin/editProfile"
-                                        class="btn btn-primary btn-primary-outline-0 rounded-pill"><i
-                                            class="fa fa-edit"></i>&nbsp Sửa thông tin</a>
+
+                                    <button type="submit" class="btn btn-primary btn-primary-outline-0 rounded-pill"><i
+                                            class="fa fa-save"></i>&nbsp Lưu</button>
                                 </div>
                             </div>
                         </div>
@@ -59,28 +64,16 @@
         </div>
     </div>
 </div>
-
+<!-- Contact End -->
 <div th:replace="~{/admin/footer}"></div>
 <script>
-    const renderProfile = function (profile) {
+    const renderEditProfile = function (profile) {
         container = $("#profileContainer");
-        html = ` <div class="services-img d-flex align-items-center justify-content-center rounded">
-                    <img src="/customer/img/${profile.image}" class="img-fluid rounded" alt="">
-                </div>
-                <div>ID người dùng</div>
-                <div class="col-xl-12">
-                <input type="text" id="userID" value="${profile.id}" class="form-control bg-white border-0 py-3 px-4"
-                placeholder="Mã người dùng" >
-                </div>
-                <div>username</div>
-                <div class="col-xl-12">
-                <input type="text" name="username" value="${profile.username}" class="form-control bg-white border-0 py-3 px-4"
-                placeholder="Tên đăng nhập" >
-                </div>
+        html = `<input type="hidden" id="userID" value="${profile.id}" class="form-control bg-white border-0 py-3 px-4"
                 <div>fullname</div>
                 <div class="col-xl-12">
-                <input type="text" name="fullName" value="${profile.fullName}" class="form-control bg-white border-0 py-3 px-4"
-                placeholder="Họ tên" >
+                    <input type="text" name="fullName" value="${profile.fullName}" class="form-control bg-white border-0 py-3 px-4"
+                    placeholder="Họ tên" >
                 </div>
                 <div>email</div>
                 <div class="col-xl-12">
@@ -97,10 +90,17 @@
                 <input type="date" name="birth" value="${profile.birth}" class="form-control bg-white border-0 py-3 px-4"
                 placeholder="Ngày sinh" >
                 </div>
-                <div>Điểm tích lũy</div>
+                <div>Avatar</div>
+            <div class="col-xl-12">
+                <input type="file" name="image" class="form-control bg-white border-0 py-3 px-4"
+                placeholder="Avatar" >
+            </div>
+                
             `;
         container.html(html);
     }
+
+
 </script>
 <script>
     async function render() {
@@ -109,11 +109,31 @@
                 throw new Error(`status:${apiResponse.code}\nmessage:${apiResponse.message}`)
             }
             profile = apiResponse.result;
-            renderProfile(profile);
-        })
-        document.querySelectorAll("input").forEach(x => {
-            x.setAttribute("readonly", true);
+            renderEditProfile(profile);
         })
     }
-    render();
+    render()
+    $("form").submit(async function (e) {
+        e.preventDefault()
+        customerID = $("input[id='userID']").val()
+        const form = event.target;
+        const formData = new FormData(form);
+        const imageInput = form.querySelector("input[name='image']");
+        if (imageInput.files.length === 0) {
+            formData.delete("image")
+        }
+        await fetchData("/employee/" + customerID, (apiResponse) => {
+            if (!apiResponse.success) {
+                alert("Cập nhật thất bại!")
+                return
+            }
+            alert(`Cập nhật thành công`);
+            window.location.href = "/admin/profile"
+        }, {
+            method: "PUT",
+            body: formData
+        })
+    })
+
+
 </script>

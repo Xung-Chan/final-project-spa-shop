@@ -34,4 +34,6 @@ public class ScheduleEntity {
 	@ManyToOne
 	@JoinColumn(name ="employee_id")
 	EmployeeEntity employee;
+	@Column(name="status")
+	boolean status;
 }
