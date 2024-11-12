@@ -23,6 +23,5 @@ public class AppointmentRequest {
 	@Future(message = "INVALID_TIME")
 	Date date;
 	Set<Long> serviceIDs;
-	Long voucherID;
 	boolean status;
 }

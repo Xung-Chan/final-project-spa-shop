@@ -11,4 +11,5 @@ import java.time.LocalDate;
 @Repository
 public interface ScheduleRepository extends JpaRepository<ScheduleEntity, Long> {
 	List<ScheduleEntity> findByDate(LocalDate date);
+	List<ScheduleEntity> findByEmployeeAccountUsername(String username);
 }

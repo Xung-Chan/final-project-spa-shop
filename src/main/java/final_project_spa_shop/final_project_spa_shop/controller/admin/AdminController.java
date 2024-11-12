@@ -63,4 +63,16 @@ public class AdminController {
 	public String revenue() {
 		return "admin/revenue";
 	}
+	@GetMapping("/bill")
+	public String bill() {
+		return "admin/bill";
+	}
+	@GetMapping("/addBill")
+	public String addBill() {
+		return "admin/addBill";
+	}
+	@GetMapping("/mySchedule")
+	public String mySchedule() {
+		return "admin/mySchedule";
+	}
 }

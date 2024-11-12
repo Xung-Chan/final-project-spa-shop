@@ -13,7 +13,6 @@ import final_project_spa_shop.final_project_spa_shop.dto.request.AccountRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.request.CustomerRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.AccountResponse;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.CustomerResponse;
-import final_project_spa_shop.final_project_spa_shop.dto.respone.EmployeeResponse;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.PaginationResponse;
 import final_project_spa_shop.final_project_spa_shop.entity.CustomerEntity;
 import final_project_spa_shop.final_project_spa_shop.exception.ErrorCode;
@@ -92,7 +91,6 @@ public class CustomerService implements ICustomerService {
 			customerEntity.setImagePath(oldCustomerEntity.getImagePath());
 		}
 		customerEntity.setAccount(oldCustomerEntity.getAccount());
-		customerEntity.setPoints(oldCustomerEntity.getPoints());
 		String username = oldCustomerEntity.getAccount().getUsername();
 		String password = oldCustomerEntity.getAccount().getPassword();
 		CustomerResponse customerResponse = customerMapper.toCustomerRessponse(customerRepository.save(customerEntity));

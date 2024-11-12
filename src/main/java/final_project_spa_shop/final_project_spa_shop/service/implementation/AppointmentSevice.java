@@ -16,13 +16,11 @@ import final_project_spa_shop.final_project_spa_shop.dto.respone.AppointmentResp
 import final_project_spa_shop.final_project_spa_shop.dto.respone.PaginationResponse;
 import final_project_spa_shop.final_project_spa_shop.entity.AppointmentEntity;
 import final_project_spa_shop.final_project_spa_shop.entity.ServiceEntity;
-import final_project_spa_shop.final_project_spa_shop.entity.VoucherEntity;
 import final_project_spa_shop.final_project_spa_shop.exception.ErrorCode;
 import final_project_spa_shop.final_project_spa_shop.mapper.AppointmentMapper;
 import final_project_spa_shop.final_project_spa_shop.repository.AppointmentRepository;
 import final_project_spa_shop.final_project_spa_shop.repository.CustomerRepository;
 import final_project_spa_shop.final_project_spa_shop.repository.ServiceRepository;
-import final_project_spa_shop.final_project_spa_shop.repository.VoucherRepository;
 import final_project_spa_shop.final_project_spa_shop.service.IAppointmentSevice;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
@@ -35,7 +33,6 @@ import lombok.experimental.FieldDefaults;
 public class AppointmentSevice implements IAppointmentSevice {
 	AppointmentRepository appointmentRepo;
 	CustomerRepository customerRepo;
-	VoucherRepository voucherRepository;
 	ServiceRepository serviceRepository;
 	AppointmentMapper appointmentMapper;
 
@@ -86,19 +83,14 @@ public class AppointmentSevice implements IAppointmentSevice {
 			return serviceRepository.findById(x)
 					.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_SERVICE.name()));
 		}).toList()));
-		double tolalCost = calculateTotalCost(entity.getServices());
-		double discount = 5.0;
-		if (request.getVoucherID() != null) {
-			VoucherEntity voucherEntity = voucherRepository.findById(request.getVoucherID())
-					.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_VOUCHER.name()));
-			entity.setVoucher(voucherEntity);
-			discount += voucherEntity.getPercent();
-		}
-		entity.setCost(tolalCost);
+		double initalCost = calculateTotalCost(entity.getServices());
+		double discount = 0.05*initalCost;
+		entity.setCost(initalCost-discount);
+		entity.setDiscount(discount);
+		entity.setInitalCost(initalCost);
 		AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointmentRepo.save(entity));
 		appointmentResponse
 				.setServices(new HashSet<String>(entity.getServices().stream().map(ServiceEntity::getName).toList()));
-		appointmentResponse.setDiscount(discount);
 		return appointmentResponse;
 	}
 
@@ -122,11 +114,6 @@ public class AppointmentSevice implements IAppointmentSevice {
 		AppointmentResponse appointmentResponse = appointmentMapper.toAppointmentResponse(appointmentEntity);
 		appointmentResponse.setServices(
 				new HashSet<>(appointmentEntity.getServices().stream().map(ServiceEntity::getName).toList()));
-		VoucherEntity voucherEntity = appointmentEntity.getVoucher();
-		double discount = 5.0;
-		if (voucherEntity != null)
-			discount += voucherEntity.getPercent();
-		appointmentResponse.setDiscount(discount);
 		return appointmentResponse;
 	}
 
@@ -135,11 +122,6 @@ public class AppointmentSevice implements IAppointmentSevice {
 		List<AppointmentEntity> responses = appointmentRepo.findByDate(LocalDate.now());
 		return responses.stream().map((x) -> {
 			AppointmentResponse response = appointmentMapper.toAppointmentResponse(x);
-			double discount = 5.0;
-			if (x.getVoucher() != null) {
-				discount += x.getVoucher().getPercent();
-			}
-			response.setDiscount(discount);
 			response.setServices(new HashSet<String>(x.getServices().stream().map(ServiceEntity::getName).toList()));
 			return response;
 		}).toList();
@@ -150,11 +132,6 @@ public class AppointmentSevice implements IAppointmentSevice {
 		List<AppointmentEntity> responses = appointmentRepo.findByDate(LocalDate.now().plusDays(1));
 		return responses.stream().map((x) -> {
 			AppointmentResponse response = appointmentMapper.toAppointmentResponse(x);
-			double discount = 5.0;
-			if (x.getVoucher() != null) {
-				discount += x.getVoucher().getPercent();
-			}
-			response.setDiscount(discount);
 			response.setServices(new HashSet<String>(x.getServices().stream().map(ServiceEntity::getName).toList()));
 			return response;
 		}).toList();
@@ -177,11 +154,6 @@ public class AppointmentSevice implements IAppointmentSevice {
 	public List<AppointmentResponse> searchByFullName(String fullName) {
 		return appointmentRepo.findByCustomerFullNameIgnoreCaseContaining(fullName).stream().map((x) -> {
 			AppointmentResponse response = appointmentMapper.toAppointmentResponse(x);
-			double discount = 5.0;
-			if (x.getVoucher() != null) {
-				discount += x.getVoucher().getPercent();
-			}
-			response.setDiscount(discount);
 			response.setServices(new HashSet<String>(x.getServices().stream().map(ServiceEntity::getName).toList()));
 			return response;
 		}).toList();
@@ -191,11 +163,6 @@ public class AppointmentSevice implements IAppointmentSevice {
 		Pageable pages = PageRequest.of(page-1, 5);
 		return appointmentRepo.findAll(pages).getContent().stream().map((x) -> {
 			AppointmentResponse response = appointmentMapper.toAppointmentResponse(x);
-			double discount = 5.0;
-			if (x.getVoucher() != null) {
-				discount += x.getVoucher().getPercent();
-			}
-			response.setDiscount(discount);
 			response.setServices(new HashSet<String>(x.getServices().stream().map(ServiceEntity::getName).toList()));
 			return response;
 		}).toList();

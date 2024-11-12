@@ -21,7 +21,6 @@ public class CustomerResponse {
 	String email;
 	Date birth;
 	String fullName;
-	long points;
 	Date updated_at;
 	String image;
 }

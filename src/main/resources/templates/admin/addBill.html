@@ -1,0 +1,78 @@
+<div th:replace="~{/admin/header}"></div>
+<div class="container-fluid contact py-5">
+    <div class="container pt-5">
+        <div class="row g-4 align-items-center justify-content-center">
+            <div class="col-lg-6 d-flex justify-content-center">
+                <div style="background-color: #e9ecef;" class="form-control rounded p-5 user-form">
+                    <form>
+                        <div class="display-6 mb-4" style="color: var(--bs-primary); text-align: center;"><b>TẠO HÓA
+                                ĐƠN</b></div>
+                        <div class="row gx-4 gy-3">
+                            <div id="listService">
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="status" value="false"
+                                    id="flexRadioDefault2" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    Chưa thanh toán
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="status" value="true"
+                                    id="flexRadioDefault1">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    Xác nhận thanh toán
+                                </label>
+                            </div>
+                            <div class="col-12">
+                                <button class="rounded-pill btn btn-primary btn-primary-outline-0 w-100 py-3 px-5"
+                                    type="submit">Thêm</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{/admin/footer}"></div>
+<script>
+    const renderListServices = function (services) {
+        container = $("#listService");
+        let html = ""
+        services.forEach((service) => {
+            html += ` <div class="form-check">
+                        <input type="checkbox" id="service-${service.id}" class="form-check-input"  name="services" value="${service.id}">
+                        <label class="form-check-label" for="service-${service.id}">${service.name}</label>
+                    </div>
+            `;
+        });
+        container.html(html);
+
+    }
+    const initPage = async function () {
+        await fetchData("/service/services", (apiResponse) => {
+            if (apiResponse.success) {
+                renderListServices(apiResponse.result)
+
+            }
+        })
+    }
+    initPage()
+    $("form").submit(async function (e) {
+        e.preventDefault()
+        const form = e.target
+        const formData = new FormData(form)
+        await fetchData("/bill", (apiResponse) => {
+            if (!apiResponse.success) {
+                alert("Tạo hóa đơn thất bại!\nReason:" + apiResponse.message)
+                return
+            }
+            alert(`Tạo hóa đơn thành công`);
+            window.location.href = "/admin/bill"
+        }, {
+            method: "POST",
+            body: formData
+        })
+    })
+</script>

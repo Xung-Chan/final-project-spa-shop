@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import final_project_spa_shop.final_project_spa_shop.dto.request.ScheduleRequest;
@@ -34,6 +35,11 @@ public class ScheduleService implements IScheduleService {
 	@Override
 	public List<ScheduleResponse> getToday() {
 		return scheduleRepo.findByDate(LocalDate.now()).stream().map(scheduleMapper::toScheduleResponse).toList();
+	}
+	@Override
+	public List<ScheduleResponse> mySchedule() {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		return scheduleRepo.findByEmployeeAccountUsername(username).stream().map(scheduleMapper::toScheduleResponse).toList();
 	}
 	@Override
 	public List<ScheduleResponse> getTomorow() {

@@ -32,6 +32,10 @@ public class ScheduleController {
 	public ResponseEntity<ApiResponse<List<ScheduleResponse>>> getAll() {
 		return new ResponseEntity<>(new ApiResponse<>(scheduleSer.getAll()), HttpStatus.OK);
 	}
+	@GetMapping("/mySchedule")
+	public ResponseEntity<ApiResponse<List<ScheduleResponse>>> getMySchedule() {
+		return new ResponseEntity<>(new ApiResponse<>(scheduleSer.mySchedule()), HttpStatus.OK);
+	}
 	
 	@GetMapping("/today")
 	public ResponseEntity<ApiResponse<List<ScheduleResponse>>> getToday() {

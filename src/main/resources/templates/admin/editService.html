@@ -106,7 +106,9 @@
                             class="form-control bg-white border-0 py-3 px-4" placeholder="Ảnh đại diện">
                     </div>`
             $("#serviceContainer").html(html)
-
+            if (!service.status) {
+                $("#notworking").attr("checked", true)
+            }
         })
     }
     render()

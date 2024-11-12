@@ -66,11 +66,11 @@
 						alert(apiResponse.message)
 					}
 					data = apiResponse.result;
-					console.log(document.cookie)
 					document.cookie = `token=${data.token}; path=/;`;
-					console.log(document.cookie)
-					window.location.href = "/customer/home";
-					console.log(data.token)
+					if (data.role === "EMPLOYEE")
+						window.location.href = "/admin/home";
+					else
+						window.location.href = "/customer/home";
 				}, requestOptions);
 			}
 			$("form").submit(function (event) {

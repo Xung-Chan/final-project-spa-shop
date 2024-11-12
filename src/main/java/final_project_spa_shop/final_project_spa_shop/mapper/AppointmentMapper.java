@@ -11,12 +11,13 @@ import final_project_spa_shop.final_project_spa_shop.entity.AppointmentEntity;
 public interface AppointmentMapper {
 	@Mapping(target = "customerID",source = "customer.id")
 	@Mapping(target = "customerName",source = "customer.fullName")
-	@Mapping(target = "discount",ignore = true)
 	@Mapping(target = "services",ignore = true)
 	AppointmentResponse toAppointmentResponse(AppointmentEntity entity);
 	@Mapping (target = "customer",ignore = true)
 	@Mapping (target = "services",ignore = true)
-	@Mapping (target = "voucher",ignore = true)
+	@Mapping(target = "initalCost",ignore = true)
+	@Mapping(target = "discount",ignore = true)
 	@Mapping (target = "cost",ignore = true)
+	@Mapping (target = "updated_at",ignore = true)
 	AppointmentEntity toAppointmentEntity(AppointmentRequest request);
 }

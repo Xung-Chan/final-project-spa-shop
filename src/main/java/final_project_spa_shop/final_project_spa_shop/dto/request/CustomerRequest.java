@@ -29,5 +29,4 @@ public class CustomerRequest {
 	@NotNull(message = "NULL_VALUE")
 	String fullName;
 	MultipartFile image;
-	long points = 0;
 }

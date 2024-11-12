@@ -58,6 +58,7 @@ public class AuthenticationService implements IAuthenticationService {
 		return AuthenticationResponse.builder()
 				.token(generateToken(accountEntity))
 				.authenticated(true)
+				.role(accountEntity.getRole().getName())
 				.build();
 	}
 	

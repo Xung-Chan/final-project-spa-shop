@@ -1,0 +1,128 @@
+<div th:replace="~{/admin/header}"></div>
+
+
+
+<div class="container-fluid pt-4 px-4">
+    <h3 class="mb-0 text-primary" style="text-align: center;">QUẢN LÝ HÓA ĐƠN</h3>
+    <div class="bg-light text-center rounded p-4">
+
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Danh sách hóa đơn</h6>
+            <a href="/admin/addBill" type="button" class="btn btn-primary"><i class="fa fa-plus "></i>&nbsp Tạo hóa
+                đơn</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Mã hóa đơn</th>
+                        <th scope="col">Tên dịch vụ</th>
+                        <th scope="col">Tổng chi phí</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody id="billContainer">
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end">
+                <div id="pagination-page"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{/admin/footer}"></div>
+<script>
+    const renderBill = async function (endpoint) {
+        await fetchData(endpoint, (apiResponse) => {
+            if (!apiResponse.success) {
+                throw new Error(apiResponse.message)
+            }
+            bills = apiResponse.result
+            container = $("#billContainer");
+            let html = ""
+            bills.forEach((bill, index) => {
+                statusbill = "<td>Chưa thanh toán</td>"
+                operate = `<button href="/customer/cancelbill" class="btn btn-danger btn-sm" onclick="cancelbill(${bill.id})">Hủy</button>
+                            <button  class="btn btn-success btn-sm" onclick="payBill(${bill.id})">Thanh toán</button>`
+                services = ""
+                bill.services.forEach((x) => {
+                    services += `<div>${x}</div>`
+                })
+                if (bill.status) {
+                    statusbill = "<td>Đã thanh toán</td>";
+                    operate = ""
+                }
+                html += `   <tr>
+                                <td>${index + 1}</td>
+                                <td>${bill.id}</td>
+                                <td>${services}</td>
+                                <td>${bill.cost}</td>
+                                ${statusbill}
+                                <td>
+                                    ${operate}
+                                </td>
+                            </tr>
+                `;
+            });
+            container.html(html);
+
+        })
+    }
+    const cancelbill = async function (billID) {
+        userConfirm = confirm("Bạn có chắc xóa hóa đ ?");
+        if (userConfirm) {
+            let response = await fetch(`/bill?id=${billID}`, {
+                method: "DELETE",
+            })
+            if (response.ok) {
+                alert("Xóa hóa đơn thành công")
+                await renderData()
+            }
+            else
+                alert("Thao tác thất bại")
+        }
+    }
+    const payBill = async function (id) {
+        if (confirm("Xác nhận thanh toán hóa đơn này?"))
+            await fetchData("/bill/" + id, (apiResponse) => {
+                if (!apiResponse.success) {
+                    console.error(apiResponse.message)
+
+                }
+                alert("Thanh toán thành công")
+                renderData();
+            }, {
+                method: "PUT"
+            })
+    }
+    //  async function renderData() {
+    //      
+    //
+    //  }
+    //  renderData()
+    const initPage = async function () {
+        await fetchData("/bill/totalPage", (apiRespone) => {
+            if (!apiRespone.success) {
+                console.error(apiRespone.message)
+            }
+            const totalPage = apiRespone.result.totalPage
+            $('#pagination-page').twbsPagination({
+                totalPages: totalPage,
+                visiblePages: 5,
+                onPageClick: async function (event, page) {
+                    let endpoint = "/bill/all/" + page
+                    renderBill(endpoint)
+                }
+            });
+        })
+        renderAll();
+    }
+    const renderAll = async function () {
+        $('#pagination-page').show()
+        renderBill("/bill/all/1")
+        $('#pagination-page').twbsPagination('show', 1);
+    }
+    initPage()
+</script>

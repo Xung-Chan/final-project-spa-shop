@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import final_project_spa_shop.final_project_spa_shop.dto.request.BillRequest;
 import final_project_spa_shop.final_project_spa_shop.dto.respone.BillResponse;
+import final_project_spa_shop.final_project_spa_shop.dto.respone.PaginationResponse;
 import final_project_spa_shop.final_project_spa_shop.entity.BillEntity;
 import final_project_spa_shop.final_project_spa_shop.entity.ServiceEntity;
 import final_project_spa_shop.final_project_spa_shop.exception.ErrorCode;
@@ -33,9 +36,28 @@ public class BillService implements IBillService {
 	// thống kê theo thời gian
 	@Override
 	public List<BillResponse> getAll() {
-		return billRepo.findAll().stream().map(billMapper::toBillResponse).toList();
+		return billRepo.findAll().stream().map((x) -> {
+			BillResponse billResponse = billMapper.toBillResponse(x);
+			billResponse
+					.setServices(new HashSet<String>(x.getServices().stream().map(ServiceEntity::getName).toList()));
+			return billResponse;
+		}).toList();
 	}
-
+	@Override
+	public List<BillResponse> getAll(int page){
+		Pageable pageable =PageRequest.of(page-1, 5);
+		return billRepo.findAll(pageable).getContent().stream().map((x) -> {
+			BillResponse billResponse = billMapper.toBillResponse(x);
+			billResponse
+			.setServices(new HashSet<String>(x.getServices().stream().map(ServiceEntity::getName).toList()));
+			return billResponse;
+		}).toList();
+	}
+	
+	@Override
+	public PaginationResponse getTotalPage() {
+		return new PaginationResponse((int)Math.ceil(1.0*billRepo.count()/5));
+	}
 	@Override
 	public List<BillResponse> getAllThisYear() {
 		return billRepo.findPaidBillsByYear(LocalDate.now().getYear()).stream().map((x) -> {
@@ -77,12 +99,15 @@ public class BillService implements IBillService {
 					.orElseThrow(() -> new RuntimeException(ErrorCode.INVALID_SERVICE.name()));
 		}).toList());
 		billEntity.setServices(services);
+		billEntity.setCost(calculateTotalCost(services));
 		BillResponse billResponse = billMapper.toBillResponse(billRepo.save(billEntity));
 		billResponse.setServices(
 				new HashSet<String>(billEntity.getServices().stream().map(ServiceEntity::getName).toList()));
 		return billResponse;
 	}
-
+	private double calculateTotalCost(Set<ServiceEntity> services) {
+		return services.stream().mapToDouble(ServiceEntity::getPrice).sum();
+	}
 	@Override
 	public BillResponse pay(long id) {
 		BillEntity billEntity = billRepo.findById(id)
@@ -94,5 +119,6 @@ public class BillService implements IBillService {
 				new HashSet<String>(billEntity.getServices().stream().map(ServiceEntity::getName).toList()));
 		return billResponse;
 	}
-
+	
+	
 }

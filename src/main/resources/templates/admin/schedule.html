@@ -66,13 +66,22 @@
                            ${check}
                         </td>
                         <td>
-                            <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                            <button type="button" class="btn btn-danger" onclick="deleteSchedule(${schedule.id})"><i class="fa fa-trash"></i></button>
                         </td>
                     </tr>
                 `
             })
             container.html(html)
         })
+    }
+    const deleteSchedule = async function (id) {
+        if (confirm("Bạn có chắc muốn xóa lịch trực?")) {
+            await fetchData("/schedule?id=" + id, (apiResponse) => {
+            }, {
+                method: "DELETE"
+            })
+            renderToday()
+        }
     }
     const renderToday = async function () {
         await renderSchedule("/schedule/today")

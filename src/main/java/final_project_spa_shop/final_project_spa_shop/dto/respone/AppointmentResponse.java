@@ -20,6 +20,7 @@ public class AppointmentResponse {
 	Date date;
 	boolean status;
 	Set<String> services;
-	double discount;
 	double cost;
+	double discount;
+	double initalCost;
 }

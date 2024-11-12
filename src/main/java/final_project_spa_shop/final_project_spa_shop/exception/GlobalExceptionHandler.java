@@ -1,6 +1,8 @@
 package final_project_spa_shop.final_project_spa_shop.exception;
 
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,6 +56,23 @@ public class GlobalExceptionHandler{
 	    modelAndView.addObject("errorCode", errorCode.getCode());
 	    modelAndView.addObject("errorMessage", errorCode.getMessage());
 	    return modelAndView;
+	}
+	@ExceptionHandler(value = AccessDeniedException.class)
+	public ModelAndView handleAccessDeniedException(AccessDeniedException ex) {
+		String errorKey = ex.getMessage();
+		System.out.println(ex.getMessage());
+		ErrorCode errorCode;
+		
+		try {
+			errorCode = ErrorCode.valueOf(errorKey);
+		} catch (Exception e) {
+			errorCode = ErrorCode.INVALID_EXCEPTION;
+		}
+		
+		ModelAndView modelAndView = new ModelAndView("error");
+		modelAndView.addObject("errorCode", errorCode.getCode());
+		modelAndView.addObject("errorMessage", errorCode.getMessage());
+		return modelAndView;
 	}
 	@ExceptionHandler(value = Exception.class)
 	ResponseEntity<ApiResponse> handleException(Exception ex) {

@@ -33,11 +33,6 @@ const renderProfile = function (profile) {
             <input type="date" name="birth" value="${profile.birth}" class="form-control bg-white border-0 py-3 px-4"
             placeholder="Ngày sinh" >
             </div>
-            <div>Điểm tích lũy</div>
-            <div class="col-xl-12">
-                <input type="text" name="points" value="${profile.points}" class="form-control bg-white border-0 py-3 px-4"
-                    placeholder="Điểm tích lũy" >
-            </div>
         `;
     container.html(html);
 }

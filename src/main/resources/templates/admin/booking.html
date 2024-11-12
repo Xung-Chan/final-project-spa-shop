@@ -8,17 +8,19 @@
         <div class="d-flex align-items-center justify-content-between mb-4">
             <div>
                 <h6 class="mb-0">Danh sách lịch hẹn</h6>
-                <button class="me-2" onclick="renderAll()"> Tất cả</button>
-                <button class="me-2" onclick="renderToday()">
+            </div>
+            <div>
+                <button class="me-2 btn btn-success" onclick="renderAll()"> Tất cả</button>
+                <button class="me-2 btn btn-primary" onclick="renderToday()">
                     Today
                 </button>
-                <button class="me-2" onclick="renderTomorow()">
+                <button class="me-2 btn btn-warning" onclick="renderTomorow()">
                     Tomorow
                 </button>
             </div>
-            <form class="d-none d-md-flex ms-4">
+            <form class="d-flex justify-content-end ms-4">
                 <input class="form-control border-0" id="fullName" type="search" placeholder="Search">
-                <button id="search" class="pt-1 mx-2">
+                <button id="search" class="pt-1 mx-2 btn btn-primary">
                     <i class="fas fa-search"></i>
                 </button>
             </form>
@@ -115,6 +117,7 @@
         renderAppointment("/appointment/all/1")
         $('#pagination-page').twbsPagination('show', 1);
     }
+
     $("#search").click(async function (e) {
         e.preventDefault()
         let fullName = $("#fullName").val();

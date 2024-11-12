@@ -44,19 +44,24 @@ public class SecurityConfig {
 	JwtCookieToHeaderFilter cookieToHeaderFilter;
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-		String[] publicPostEndpoints= {"/auth/**","/customer"}; 
-		String[] publicGetEndpoints= {"/customer/home","/service/limit","/employee/limit","/feedback/feedbacks","/customer/login","/customer/css/**"
-				,"/customer/js/**","/customer/img/**","/customer/lib/**","/customer/registry"}; 
+		String[] publicPostEndpoints= {"/auth/**"}; 
+		String[] publicGetEndpoints= {"/error","/customer/home","/service/limit","/employee/limit","/feedback/feedbacks","/customer/login","/customer/css/**"
+				,"/customer/js/**","/customer/img/**","/customer/lib/**","/customer/registry"};
+		String[] adminEndpoints= {};
 		httpSecurity.addFilterBefore(cookieToHeaderFilter, UsernamePasswordAuthenticationFilter.class);
 		httpSecurity.authorizeHttpRequests(
 				request -> request
 				.requestMatchers(HttpMethod.POST, publicPostEndpoints)
 				.permitAll()
+				.requestMatchers(HttpMethod.GET,"/admin/addEmployee")
+				.hasAnyRole("ADMIN")
 				.requestMatchers(HttpMethod.GET,publicGetEndpoints)
 				.permitAll()
+				.requestMatchers(HttpMethod.GET,"/admin/**")
+				.hasAnyRole("ADMIN","EMPLOYEE")
 				.anyRequest()
-//				.authenticated()
-				.permitAll()
+				.authenticated()
+//				.permitAll()
 				);
 		httpSecurity.oauth2ResourceServer(oauth2->
 				oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()).jwtAuthenticationConverter(authenticationConverter())));

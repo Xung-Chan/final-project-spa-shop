@@ -12,4 +12,6 @@ public interface IScheduleService extends IService<ScheduleResponse, ScheduleReq
 
 	public List<ScheduleResponse> getToday();
 
+	public List<ScheduleResponse> mySchedule();
+
 }

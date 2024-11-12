@@ -6,7 +6,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Future;
 import lombok.AccessLevel;
@@ -28,7 +27,9 @@ public class AppointmentEntity extends BillEntity{
 	@Future
 	@Column(name = "date")
 	Date date;
-	@OneToOne
-	@JoinColumn(name="voucher_id")
-	VoucherEntity voucher;
+	double initalCost;
+	double discount;
+//	@OneToOne
+//	@JoinColumn(name="voucher_id")
+//	VoucherEntity voucher;
 }
