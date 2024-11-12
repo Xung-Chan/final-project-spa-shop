@@ -4,14 +4,14 @@
     <div class="row g-4">
         <div class="col-sm-12 col-xl-6">
             <div class="bg-light rounded h-100 p-4">
-                <h6 class="mb-4">Doanh thu theo năm</h6>
-                <canvas id="line-chart"></canvas>
+                <h6 class="mb-4">Doanh thu năm hiện tại</h6>
+                <canvas id="line-chart-this-year"></canvas>
             </div>
         </div>
         <div class="col-sm-12 col-xl-6">
             <div class="bg-light rounded h-100 p-4">
-                <h6 class="mb-4">Doanh thu theo tháng</h6>
-                <canvas id="salse-revenue"></canvas>
+                <h6 class="mb-4">Doanh thu tháng hiện tại</h6>
+                <canvas id="line-chart-this-month"></canvas>
             </div>
         </div>
     </div>
@@ -28,16 +28,53 @@
                 console.error(apiResponse.message)
             }
             const bills = apiResponse.result
-            var ctx3 = $("#line-chart").get(0).getContext("2d");
+            bills.forEach((x) => { console.log(x) })
+            let datas = Array.from({ length: 12 }, (_) => 0);
+            let labels = datas.map((x, index) => "Tháng " + (index + 1))
+            bills.forEach(bill => {
+                let index = parseInt(bill.updated_at.split("-")[1])
+                datas[index - 1] += bill.cost
+            })
+            var ctx3 = $("#line-chart-this-year").get(0).getContext("2d");
             var myChart3 = new Chart(ctx3, {
                 type: "line",
                 data: {
-                    labels: [],
+                    labels: labels,
                     datasets: [{
                         label: "Salse",
                         fill: true,
                         backgroundColor: "rgba(0, 156, 255, .3)",
-                        data: [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15]
+                        data: datas
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+
+        })
+        await fetchData("/bill/thisMonth", (apiResponse) => {
+            if (!apiResponse.success) {
+                console.error(apiResponse.message)
+            }
+            const bills = apiResponse.result
+            bills.forEach((x) => { console.log(x) })
+            let datas = Array.from({ length: 31 }, (_) => 0);
+            let labels = datas.map((x, index) => "Ngày " + (index + 1))
+            bills.forEach(bill => {
+                let index = parseInt(bill.updated_at.split("-")[2])
+                datas[index - 1] += bill.cost
+            })
+            var ctx3 = $("#line-chart-this-month").get(0).getContext("2d");
+            var myChart3 = new Chart(ctx3, {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Salse",
+                        fill: true,
+                        backgroundColor: "rgba(0, 156, 255, .3)",
+                        data: datas
                     }]
                 },
                 options: {
